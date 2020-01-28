@@ -1,7 +1,7 @@
 """实现一个支持上下文管理器的有限状态机"""
 
-from typing import List, Callable, Set,\
-    Any, Dict, Tuple, NoReturn, Optional
+from typing import List, Set, Any, Dict,\
+    Tuple, NoReturn, Optional
 
 from ..error import Error
 from ..tools.time import TimeTools as timetools
@@ -32,7 +32,6 @@ class Event:
 
     def action(self, *args, **kwargs) -> Any:
         """接口函数 - 用于指示事件动作"""
-        pass
 
     def __repr__(self) -> str:
         """返回 repr 信息"""
@@ -53,7 +52,7 @@ class Event:
         self.__opcode: str = enctools.random(16)
         self.__extra: dict = dict()
 
-    def append(self, key, value):
+    def append(self, key, value) -> NoReturn:
         """给当前的事件添加额外信息描述"""
         self.__extra[key] = value
 
@@ -68,7 +67,7 @@ class Event:
         return self.__time
 
     @property
-    def opcode(self):
+    def opcode(self) -> str:
         """返回事件的操作码"""
         return self.__opcode
 
@@ -136,14 +135,12 @@ class State:
         进入状态时执行的函数 - 接口
         传入由什么事件导致进入该状态
         """
-        pass
 
     def exit(self, reason: Optional[Event] = None) -> NoReturn:
         """
         退出当前状态时执行的函数 - 接口
         传入因为什么事件导致退出该状态
         """
-        pass
 
 
 class Machine:
@@ -201,7 +198,8 @@ class Machine:
 
         try:
             event_class = getattr(event, "__class__", None)
-            destination: State = self.__transitions[(self.__current, event_class)]
+            destination: State = self.__transitions[(
+                self.__current, event_class)]
         except KeyError as _error:
             raise DestinationNotExist("找不到目标状态: " + str(_error.args))
 
