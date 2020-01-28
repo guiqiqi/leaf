@@ -15,9 +15,10 @@ class Authentication(mongoengine.Document):
         status: 验证方式是否可用
         description: 身份验证方式描述
     """
-    
+
     index = mongoengine.StringField(primary_key=True)
-    user = mongoengine.ObjectIdField(required=True)
+    user = mongoengine.LazyReferenceField(
+        User, reverse_delete_rule=mongoengine.CASCADE)
     salt = mongoengine.StringField(required=True)
     token = mongoengine.StringField(required=True)
     status = mongoengine.BooleanField(default=True)
