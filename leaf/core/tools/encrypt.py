@@ -47,6 +47,18 @@ class EncryptTools:
         return encoded
 
     @staticmethod
+    def base64encode_url(text: bytes) -> bytes:
+        """base64_url编码函数"""
+        result = base64.urlsafe_b64encode(text)
+        return result.replace(b'=', b'')
+
+    @staticmethod
+    def base64decode_url(encoded: bytes) -> bytes:
+        """base64_url解码函数"""
+        encoded += b'=' * (4 - len(encoded) % 4)
+        return base64.urlsafe_b64decode(encoded)
+
+    @staticmethod
     def base64decode(encoded: bytes) -> bytes:
         """base64解码函数"""
         decoded = base64.b64decode(encoded, None)
@@ -111,16 +123,16 @@ class EncryptTools:
         return clear
 
     @staticmethod
-    def HMAC_SHA1(clear: bytes, key: bytes) -> str:
+    def HMAC_SHA1(clear: bytes, key: bytes) -> bytes:
         """使用HMAC-SHA1进行对称加密"""
         signature = hmac.new(key, msg=clear, digestmod=hashlib.sha1)
-        return signature.hexdigest()
+        return signature.digest()
 
     @staticmethod
-    def HMAC_SHA256(clear: bytes, key: bytes) -> str:
+    def HMAC_SHA256(clear: bytes, key: bytes) -> bytes:
         """使用HMAC-SHA256进行对称加密"""
         signature = hmac.new(key, msg=clear, digestmod=hashlib.sha256)
-        return signature.hexdigest()
+        return signature.digest()
 
     @staticmethod
     def SHA1(clear: str) -> str:
