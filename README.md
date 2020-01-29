@@ -1,6 +1,6 @@
 # Leaf - 开源微信商城系统框架
 
-![Python](https://img.shields.io/badge/Python-3.5%2B-orange) ![PyLint](https://img.shields.io/badge/PyLint-9.93%2F10-brightgreen) ![TypeHinting](https://img.shields.io/badge/typehinting-support-blue)
+![Python](https://img.shields.io/badge/Python-3.5%2B-orange) ![Pylint](https://img.shields.io/badge/Pylint-9.93%2F10-brightgreen) ![TypeHinting](https://img.shields.io/badge/typehinting-support-blue)
 
 `Leaf` 旨在实现一个对普通用户易用、对开发者友好的 *轻型* 开源 CMS 框架；`Leaf` 基于 `Python3.5+` 构建，后端使用 `Flask` 作为基础框架、`mongoengine` 进行数据库建模。
 
