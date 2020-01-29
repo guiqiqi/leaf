@@ -9,13 +9,13 @@ import config
 # leaf.Master.connect()
 
 init = leaf.Init()
-leaf.init.kernel()
-leaf.init.logging(config.logging)
-leaf.init.server()
-leaf.init.database(config.database)
-leaf.init.plugins(config.plugins)
-leaf.init.weixin(config.weixin)
-leaf.init.wxpay(config.wxpay)
+init.kernel()
+init.logging(config.logging)
+init.server()
+init.database(config.database)
+init.plugins(config.plugins)
+init.weixin(config.weixin)
+init.wxpay(config.wxpay)
 
 # 获取服务模块
 server: flask.Flask = leaf.modules.server
