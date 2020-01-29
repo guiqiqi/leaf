@@ -1,4 +1,4 @@
-name: CI
+name: PyLint for project Leaf
 
 on: [push]
 
