@@ -260,7 +260,3 @@ class Init:
             pass
 
         return logging
-
-
-# 初始化对象
-init = Init(modules)
