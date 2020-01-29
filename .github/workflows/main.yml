@@ -9,5 +9,5 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: GitHub Action for pylint
-      uses: cclauss/GitHub-Action-for-pylint@0.7.0
+    - name: Python Pylint Github Action
+      uses: fylein/python-pylint-github-action@v4
