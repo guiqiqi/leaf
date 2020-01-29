@@ -4,15 +4,12 @@ from queue import Queue
 
 from typing import List
 from typing import NoReturn
-from typing import Optional
 
 from .stock import Stock
 from .product import Product
 from .product import ProductParameters
 
 from ...core.algorithm import tree
-
-import mongoengine
 
 
 class StocksGenerator:
@@ -110,15 +107,15 @@ class StocksGenerator:
 
     def calculate(self) -> NoReturn:
         """生成与遍历树 - 内存中生成所有的商品对象"""
-        tree = self._generate(self.__product)
-        attributes = self._traverse(tree)
+        ctree = self._generate(self.__product)
+        attributes = self._traverse(ctree)
 
         for attribute in attributes:
             good = Stock(individual=False,
-                        product=self.__product,
-                        name=self.__product.name,
-                        attributes=attribute,
-                        describe=self.__product.describe,
-                        addition=self.__product.addition,
-                        tags=self.__product.tags)
+                         product=self.__product,
+                         name=self.__product.name,
+                         attributes=attribute,
+                         describe=self.__product.describe,
+                         addition=self.__product.addition,
+                         tags=self.__product.tags)
             self.__stocks.append(good)

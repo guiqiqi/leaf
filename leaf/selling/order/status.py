@@ -1,6 +1,5 @@
 """订单的所有状态"""
 
-from typing import NoReturn, Dict
 from ...core.algorithm import fsm
 
 from . import events

@@ -1,7 +1,6 @@
 """实现一个支持上下文管理器的有限状态机"""
 
-from typing import List, Set, Any, Dict,\
-    Tuple, NoReturn, Optional
+from typing import List, Set, Dict, Tuple, NoReturn
 
 from ..error import Error
 from ..tools.time import TimeTools as timetools
@@ -30,8 +29,8 @@ class Event:
     """事件类"""
     description: str = str()
 
-    def action(self, *args, **kwargs) -> Any:
-        """接口函数 - 用于指示事件动作"""
+    # def action(self, *args, **kwargs) -> Any:
+    #     """接口函数 - 用于指示事件动作"""
 
     def __repr__(self) -> str:
         """返回 repr 信息"""
@@ -128,19 +127,21 @@ class State:
     def accept(self, event: Event) -> bool:
         """检查当前的状态是否接受指定的事件"""
         event_class = getattr(event, "__class__", None)
-        return True if event_class in self.__accepted_events else False
+        if event_class in self.__accepted_events:
+            return True
+        return False
 
-    def enter(self, reason: Optional[Event] = None) -> NoReturn:
-        """
-        进入状态时执行的函数 - 接口
-        传入由什么事件导致进入该状态
-        """
+    # def enter(self, reason: Optional[Event] = None) -> NoReturn:
+    #     """
+    #     进入状态时执行的函数 - 接口
+    #     传入由什么事件导致进入该状态
+    #     """
 
-    def exit(self, reason: Optional[Event] = None) -> NoReturn:
-        """
-        退出当前状态时执行的函数 - 接口
-        传入因为什么事件导致退出该状态
-        """
+    # def exit(self, reason: Optional[Event] = None) -> NoReturn:
+    #     """
+    #     退出当前状态时执行的函数 - 接口
+    #     传入因为什么事件导致退出该状态
+    #     """
 
 
 class Machine:
@@ -213,9 +214,9 @@ class Machine:
         """给状态转移表中添加一条记录"""
         self.__transitions[(origin, event)] = destination
 
-    def start(self, event: Event) -> NoReturn:
+    def start(self, state: State) -> NoReturn:
         """启动状态机运行初始进入函数"""
-        self.__current = event
+        self.__current = state
         self.__current.enter()
 
     def stop(self) -> NoReturn:

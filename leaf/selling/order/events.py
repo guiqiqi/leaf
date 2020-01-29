@@ -2,7 +2,6 @@
 
 from typing import NoReturn, Dict
 
-from ...core.algorithm.keydict import StaticDict
 from ...core.tools import encrypt
 from ...core.abstract import payment
 from ...core.algorithm import fsm
@@ -126,4 +125,5 @@ class RefundFailed(fsm.Event):
     description: str = settings.Description.RefundFailed
 
     def action(self, reason: str) -> NoReturn:
+        """记录退款失败信息"""
         self.append(settings.ExtraInformation.RefundFailReason, reason)

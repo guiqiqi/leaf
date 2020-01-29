@@ -1,7 +1,7 @@
 """实现一个支持通过 . 操作符访问键的字典类"""
 
 from typing import Hashable, NoReturn, Tuple
-from multiprocessing.managers import BaseProxy
+# from multiprocessing.managers import BaseProxy
 
 
 class AttrDict(dict):

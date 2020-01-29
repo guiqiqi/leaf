@@ -4,10 +4,8 @@ from typing import Union as _Union
 from typing import Tuple as _Tuple
 from typing import Hashable as _Hashable
 from typing import Optional as _Optional
-from typing import Hashable as _Hashable
 from typing import NoReturn as _NoReturn
 
-from multiprocessing import Process as _Process
 from multiprocessing import current_process as _current_proc
 from multiprocessing.managers import Namespace as _Namespace
 from multiprocessing.managers import SyncManager as _Manager

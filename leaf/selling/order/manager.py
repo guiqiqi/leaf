@@ -64,7 +64,7 @@ class StatusManager(fsm.Machine):
         else:
             current = None
 
-        events = map(lambda event: {
+        mapping = map(lambda event: {
             settings.Events.Key.Time: event.time,
             settings.Events.Key.OperationCode: event.opcode,
             settings.Events.Key.Extra: event.extra,
@@ -74,5 +74,5 @@ class StatusManager(fsm.Machine):
         return web.JSONcreater({
             settings.Manager.Key.Name: self.name,
             settings.Manager.Key.CurrentStat: current,
-            settings.Manager.Key.EventsRecorder: list(events)
+            settings.Manager.Key.EventsRecorder: list(mapping)
         })
