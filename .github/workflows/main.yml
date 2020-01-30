@@ -14,6 +14,6 @@ jobs:
 
             # 安装依赖并使用评分
             -name: installing packages
-             uses: cclauss/GitHub-Action-for-pylint@master
+             uses: cclauss/GitHub-Action-for-pylint@0.7.0
              with:
                  args: pip install -r requirements.txt; pylint leaf
