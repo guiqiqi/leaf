@@ -6,8 +6,7 @@ import flask
 import leaf
 import config
 
-# leaf.Master.connect()
-
+print("Initialing leaf modules...")
 init = leaf.Init()
 init.kernel()
 init.logging(config.logging)
@@ -27,5 +26,4 @@ weixin: leaf.core.algorithm.AttrDict = leaf.modules.weixin
 schedules: leaf.core.schedule.Manager = leaf.modules.schedules
 database: leaf.core.database.MongoDBPool = leaf.modules.database
 
-# __import__("pdb").set_trace()
-# server.run()
+print("All modules has been imported...")
