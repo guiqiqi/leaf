@@ -1,20 +1,19 @@
 # 这个作业将在项目发生 PUSH 操作之后使用 Pylint 为代码评分
-name: Pylint for updates
+name: AutoPylint
 on: [push]
 
 jobs:
     pylint:
         # 作业在最新版本的 ubuntu 运行
-        name: Github Action automatic-pylint
         runs-on: ubuntu-latest
         
         steps:
-            # 代码检出
-            - name: checkout
-              uses: actions/checkout@master
+        # 代码检出
+        - name: checkout
+          uses: actions/checkout@v2
 
-            # 安装依赖并使用评分
-            - name: GitHub Action for pylint
-              uses: cclauss/GitHub-Action-for-pylint@0.7.0
-              with:
-                 args: pip install -r requirements.txt; pylint leaf
+        # 安装依赖并使用评分
+        - name: GitHub Action for pylint
+          uses: cclauss/GitHub-Action-for-pylint@0.7.0
+          with:
+             args: pip install -r requirements.txt; pylint leaf
