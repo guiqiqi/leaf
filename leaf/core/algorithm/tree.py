@@ -518,10 +518,10 @@ class Tree:
                         text = treenode.value[index]
                     dictnode[treenode.tag].append(text)
                     continue
-                else:
-                    next_level = dict()
-                    dictnode[treenode.tag].append(next_level)
-                    dictnode = next_level
+
+                next_level = dict()
+                dictnode[treenode.tag].append(next_level)
+                dictnode = next_level
 
             # 否则创建新键添加内容
             else:
@@ -535,9 +535,9 @@ class Tree:
                     else:
                         dictnode[treenode.tag] = treenode.value[index]
                     continue
-                else:
-                    dictnode[treenode.tag] = dict()
-                    dictnode = dictnode[treenode.tag]
+
+                dictnode[treenode.tag] = dict()
+                dictnode = dictnode[treenode.tag]
 
             for child in treenode:
                 uncopied.put((child, dictnode))
