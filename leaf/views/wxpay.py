@@ -60,7 +60,7 @@ def refund_notify_handler() -> str:
     response = request.data.decode(encoding="utf-8", errors="ignore")
 
     # 暂未获取到官方文档, 在 logger 中打日志
-    logger.info("WXPay-refund-notify received: " + response)
+    logger.info(response)
 
     return _STANDARD_REPLY
 
@@ -74,7 +74,7 @@ def payment_notify_handler() -> str:
     try:
         response = web.XMLparser(response)
     except ParseError as _error:
-        logger.info("WXPay-notify parsing failed: " + response)
+        logger.info(response)
         return _STANDARD_REPLY
 
     response = response.get(const.WXPayAddress.XMLTag, {})
