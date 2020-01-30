@@ -1,0 +1,19 @@
+# 这个作业将在项目发生 PUSH 操作之后使用 Pylint 为代码评分
+name: Pylint for updates
+on: [push]
+
+jobs:
+    pylint:
+        # 作业在最新版本的 ubuntu 运行
+        name: Github Action automatic-pylint
+        runs-on: ubuntu-latest
+        
+        steps:
+            # 代码检出
+            -uses: actions/checkout@master
+
+            # 安装依赖并使用评分
+            -name: installing packages
+             uses: cclauss/GitHub-Action-for-pylint@master
+             with:
+                 args: pip install -r requirements.txt; pylint leaf
