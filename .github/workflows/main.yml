@@ -10,10 +10,11 @@ jobs:
         
         steps:
             # 代码检出
-            -uses: actions/checkout@master
+            - name: checkout
+            - uses: actions/checkout@master
 
             # 安装依赖并使用评分
-            -name: GitHub Action for pylint
-             uses: cclauss/GitHub-Action-for-pylint@0.7.0
-             with:
+            - name: GitHub Action for pylint
+              uses: cclauss/GitHub-Action-for-pylint@0.7.0
+              with:
                  args: pip install -r requirements.txt; pylint leaf
