@@ -5,7 +5,7 @@ import mongoengine
 from ..settings import User as settings
 from ...core.tools import time
 
-from . import Group
+from .group import Group
 
 
 class UserIndex(mongoengine.EmbeddedDocument):

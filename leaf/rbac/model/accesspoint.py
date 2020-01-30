@@ -2,7 +2,7 @@
 
 import mongoengine
 
-from . import User
+from .user import User
 
 
 class AccessPoint(mongoengine.Document):

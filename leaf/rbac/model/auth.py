@@ -2,7 +2,7 @@
 
 import mongoengine
 
-from . user import User
+from .user import User
 
 
 class Authentication(mongoengine.Document):
