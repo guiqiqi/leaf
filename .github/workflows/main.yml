@@ -1,0 +1,43 @@
+name: Test and Pylint
+
+on: [push]
+
+jobs:
+  linting:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      id: checkout
+    
+    - name: Setup Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install --requirements requirements.txt
+        
+    - name: Test modules
+      run: python run.py
+      id: test
+      
+    - name: Pylinting
+      if: success()
+      run: python linting.py
+      id: linting
+    
+    - name: Low score warning
+      if: steps.linting.outputs.score < 9
+      run: echo "Test passed, but score was too low."
+    
+    - name: Passed
+      if: steps.linting.outputs.score >= 9
+      run: echo "All passed."
+    
+    - name: Show score
+      run: echo "Your score is ${{ steps.linting.outputs.score }}."
