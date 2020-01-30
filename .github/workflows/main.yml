@@ -11,7 +11,7 @@ jobs:
         steps:
             # 代码检出
             - name: checkout
-            - uses: actions/checkout@master
+              uses: actions/checkout@master
 
             # 安装依赖并使用评分
             - name: GitHub Action for pylint
