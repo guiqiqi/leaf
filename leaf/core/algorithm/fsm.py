@@ -1,6 +1,6 @@
 """实现一个支持上下文管理器的有限状态机"""
 
-from typing import List, Set, Dict, Tuple, NoReturn
+from typing import List, Set, Dict, Tuple, NoReturn, Optional, Any
 
 from ..error import Error
 from ..tools.time import TimeTools as timetools
@@ -29,8 +29,8 @@ class Event:
     """事件类"""
     description: str = str()
 
-    # def action(self, *args, **kwargs) -> Any:
-    #     """接口函数 - 用于指示事件动作"""
+    def action(self, *args, **kwargs) -> Any:
+        """接口函数 - 用于指示事件动作"""
 
     def __repr__(self) -> str:
         """返回 repr 信息"""
@@ -131,17 +131,17 @@ class State:
             return True
         return False
 
-    # def enter(self, reason: Optional[Event] = None) -> NoReturn:
-    #     """
-    #     进入状态时执行的函数 - 接口
-    #     传入由什么事件导致进入该状态
-    #     """
+    def enter(self, reason: Optional[Event] = None) -> NoReturn:
+        """
+        进入状态时执行的函数 - 接口
+        传入由什么事件导致进入该状态
+        """
 
-    # def exit(self, reason: Optional[Event] = None) -> NoReturn:
-    #     """
-    #     退出当前状态时执行的函数 - 接口
-    #     传入因为什么事件导致退出该状态
-    #     """
+    def exit(self, reason: Optional[Event] = None) -> NoReturn:
+        """
+        退出当前状态时执行的函数 - 接口
+        传入因为什么事件导致退出该状态
+        """
 
 
 class Machine:
