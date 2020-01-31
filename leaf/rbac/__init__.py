@@ -2,3 +2,4 @@
 
 from . import jwt
 from . import model
+from . import functions
