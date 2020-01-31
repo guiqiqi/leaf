@@ -7,7 +7,8 @@ import logging
 import datetime
 import ipaddress
 import traceback
-from typing import Callable, Type, Dict, NoReturn, Optional, Iterable
+from typing import Callable, Type, Dict,\
+    NoReturn, Optional, Iterable, Any, List
 
 from flask import abort
 from flask import request
@@ -17,10 +18,12 @@ from bson import ObjectId
 from werkzeug.exceptions import HTTPException
 
 from . import settings
+from .. import rbac
 from ..core import error
 
 
 logger = logging.getLogger("leaf.api")
+
 
 class __TypeConverter:
     """类型转换注册器"""
@@ -122,6 +125,77 @@ def iplimit(allowed: Iterable[str]) -> Callable:
         # 重命名函数防止 overwriting existing endpoint function
         wrapper.__name__ = function.__name__
 
+        return wrapper
+    return decorator
+
+
+def require(pointname: str) -> Callable:
+    """
+    一个权限验证装饰器:
+        通过 flask 获取 Bearer-Token
+        验证用户的 Token 是否合法
+        使用 jwt 包查看访问的用户级别
+        通过 accesspoint 查询数据库所需要的访问级别
+        如果可以访问返回函数值
+        否则返回 403
+    """
+
+    def decorator(function: Callable) -> Callable:
+        """函数包装器"""
+
+        def wrapper(*args, **kwargs) -> Any:
+            """参数包装器"""
+            # 获取 Bearer-Token
+            authorization: str = request.headers.get("Authorization")
+
+            # 通过 Authorization 头获取 Token
+            token: str = str()
+            if authorization:
+                token = authorization.replace("Bearer", '', 1)
+
+            # 通过 jwt 验证 token 是否形式正确
+            try:
+                verification = rbac.jwt.Verify(token)
+                verification.header()
+                payload = verification.payload()
+            except error.Error as _error:
+                logger.warning(_error)
+                return settings.Authorization.UnAuthorized(_error)
+
+            # 通过 payload 获取用户盐并判断 Token 是否正确
+            try:
+                userid = payload.get(rbac.jwt.const.Payload.Issuer)
+                auth = rbac.functions.auth.byindex(str(userid))
+                assert not auth is None
+                verification.signature(auth.salt)
+            except AssertionError as _error:
+                return settings.Authorization.UnAuthorized(auth)
+            except error.Error as _error:
+                logger.warning(_error)
+                return settings.Authorization.UnAuthorized(_error)
+
+            # 获取权限点所需要的权限
+            permitted: List[int] = payload.get(
+                rbac.jwt.settings.Payload.Permission)
+            ap: rbac.model.AccessPoint = rbac.functions.accesspoint.byname(
+                pointname)
+
+            # 验证是否是特权用户 + 验证权限是否满足
+            if not ObjectId(userid) in ap.exception:
+                if not ap.strict:
+                    if ap.required > max(permitted):
+                        diff = ap.required - max(permitted)
+                        return settings.Authorization.NotPermitted(diff, False)
+                else:
+                    if not ap.required in permitted:
+                        return settings.Authorization.NotPermitted(
+                            ap.required, True)
+
+            # 验证都已经通过
+            return function(*args, **kwargs)
+
+        # 重命名函数防止 overwriting existing endpoint function
+        wrapper.__name__ = function.__name__
         return wrapper
     return decorator
 

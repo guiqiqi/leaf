@@ -1,6 +1,8 @@
 # Leaf - 开源微信商城系统框架
 
-![Python](https://img.shields.io/badge/Python-3.5%2B-orange) ![PyLint](https://img.shields.io/badge/PyLint-9.93%2F10-brightgreen) ![TypeHinting](https://img.shields.io/badge/typehinting-support-blue) ![license](https://img.shields.io/badge/license-Apache2-blue)
+![Python](https://img.shields.io/badge/Python-3.5%2B-orange) ![PyLint](https://img.shields.io/badge/PyLint-9.89%2F10-brightgreen) ![TypeHinting](https://img.shields.io/badge/typehinting-support-blue) ![license](https://img.shields.io/badge/license-Apache2-blue)
+
+![Logo](https://github.com/guiqiqi/leaf/blob/dev-jwtauth/logo.png?raw=true)
 
 `Leaf` 旨在实现一个对普通用户易用、对开发者友好的 *轻型* 开源 CMS 框架；`Leaf` 基于 `Python3.5+` 构建，后端使用 `Flask` 作为基础框架、`mongoengine` 进行数据库建模。
 
@@ -117,7 +119,7 @@ leaf.modules.server.run()
 
 ### Todo
 
-1. 完善 `JWT Token` 的鉴权流程，实现 `api.wraps.require` 装饰器 - 一周内
+1. ~~完善 `JWT Token` 的鉴权流程，实现 `api.wraps.require` 装饰器 - 一周内~~ (已完成)
 2. 完成用户/组/权限/访问点相关的 `CRUD` 以及视图函数 - 近期
 3. 完成 `SKU/SPU` 的 `CRUD` 以及视图函数 - 近期
 4. 完成订单模块的 `CRUD` 以及视图函数 - 近期
