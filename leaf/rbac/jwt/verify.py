@@ -14,21 +14,19 @@ from . import settings
 class Verify:
     """JWT Token 验证类"""
 
-    def __init__(self, secret: str, token: str):
+    def __init__(self, token: str):
         """
         JWT Token验证类:
             分割并检查Token格式是否正确
             还原被encode的信息
             algorithm - 使用的加密算法
             content - 无签名部分的token
-            secret - 签名密钥
         """
         try:
             header, payload, signature = token.split('.')
         except ValueError as _error:
             raise error.InvalidToken(token)
 
-        self.__secret: str = secret
         self.__algorithm: Callable[[bytes, bytes], str] = None
         self.__header: str = encrypt.base64decode_url(header.encode()).decode()
         self.__payload: str = encrypt.base64decode_url(payload.encode()).decode()
@@ -57,8 +55,8 @@ class Verify:
 
         return payload
 
-    def signature(self) -> NoReturn:
+    def signature(self, secret: str) -> NoReturn:
         """验证签名是否正确"""
-        target = self.__algorithm(self.__content.encode(), self.__secret.encode())
+        target = self.__algorithm(self.__content.encode(), secret.encode())
         if target != self.__signature:
             raise error.SignatureNotValid(self.__signature)
