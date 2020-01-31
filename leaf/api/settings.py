@@ -1,5 +1,30 @@
 """API 接口的设置文件"""
 
+from typing import Optional
+from flask import abort
+from ..core import error
+
+
+class Authorization:
+    """权限验证中的设置"""
+
+    @staticmethod
+    def UnAuthorized(_reason: error.Error):
+        """
+        验证失败时的返回值:
+            _reason: 原因-错误类型
+        """
+        return abort(403)
+
+    @staticmethod
+    def NotPermitted(_diff: int, _strict: Optional[bool] = False):
+        """
+        权限不足时的返回值:
+            _diff: 所需权限与拥有权限的差值
+            _strict: 是否指定需要某一级别权限值
+        """
+        return abort(403)
+
 
 class Response:
     """响应中的设置"""

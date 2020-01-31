@@ -9,4 +9,5 @@ Leaf 框架 API 支持:
 from . import settings
 from .wrapper import wrap
 from .wrapper import iplimit
+from .wrapper import require
 from .wrapper import converter
