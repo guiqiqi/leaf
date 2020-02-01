@@ -84,11 +84,7 @@ class FileTools:
 
     @staticmethod
     def read_config(handler: IO[str]) -> dict:
-        """
-        读取配置文件并返回字典
-
-        *同时会关闭传入的文件句柄
-        """
+        """读取配置文件并返回字典"""
         # 生成 config_reader 类
         config_reader = configparser.ConfigParser()
         config_reader.read_file(handler)
@@ -104,16 +100,11 @@ class FileTools:
                 value = config_reader.get(section, option)
                 config[section][option] = value
 
-        # 关闭句柄
-        handler.close()
         return config
 
     @staticmethod
     def write_config(handler: IO[str], config: dict) -> NoReturn:
-        """将制定配置写入配置文件
-
-        *同时会关闭传入的文件句柄
-        """
+        """将制定配置写入配置文件"""
 
         sections = config.keys()
         config_writer = configparser.ConfigParser()
@@ -129,16 +120,10 @@ class FileTools:
 
         # 写入配置
         config_writer.write(handler)
-        handler.close()
-
-        raise DeprecationWarning("该功能将要被废弃")
 
     @staticmethod
     def edit_config(handler: IO[str], change: Tuple[str, str, str]) -> NoReturn:
-        """按照配置修改文件
-
-        *同时会关闭传入的文件句柄
-        """
+        """按照配置修改文件"""
 
         # 创建 configparser 实例
         config_editor = configparser.ConfigParser()
@@ -153,8 +138,5 @@ class FileTools:
             config_editor.add_section(section)
         config_editor.set(section, option, value)
 
-        # 写入配置并关闭句柄
+        # 写入配置
         config_editor.write(handler)
-        handler.close()
-
-        raise DeprecationWarning("该功能将要被废弃")
