@@ -6,6 +6,11 @@ import logging
 
 from typing import Optional, IO
 
+
+# Leaf 系统使用的最小/最大错误码
+MIN_LEAF_ERRCODE = 10000
+MAX_LEAF_ERRCODE = 19999
+
 # 默认错误消息格式
 _ERROR_MSG_FORMAT = \
     """
