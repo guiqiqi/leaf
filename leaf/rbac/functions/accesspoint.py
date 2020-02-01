@@ -34,4 +34,4 @@ class Delete:
         #pylint: disable=no-member
         found: List[AccessPoint] = AccessPoint.objects(pointname=name)
         if found:
-            return found[0].delete()
+            found[0].delete()
