@@ -23,6 +23,7 @@ class Generator:
     def valid(index: str, password: str) -> bool:
         """对用户的某一登陆方式进行验证"""
         # pylint: disable=no-member
+        index = encrypt.base64encode(index.encode()).decode()
         auth: Authentication = Authentication.objects(index=index)
         if not auth or Generator.calc(
                 password, auth[0].salt) != auth[0].token:
@@ -33,8 +34,8 @@ class Generator:
     def validbyid(userid: ObjectId, password: str) -> NoReturn:
         """通过用户ID文档验证密码是否正确"""
         # pylint: disable=no-member
-        authbyid: List[Authentication] = Authentication.objects(
-            index=str(userid))
+        index = encrypt.base64encode(str(userid).encode()).decode()
+        authbyid: List[Authentication] = Authentication.objects(index=index)
         if not authbyid:
             raise error.AuthenticationByIdFailed(str(userid))
         if Generator.calc(password, authbyid[0].salt) != authbyid[0].token:
@@ -49,7 +50,8 @@ class Generator:
     def shahash(previous: str, depth: Optional[int]
                 = settings.Security.PasswordHashCycle) -> str:
         """对密码进行迭代hash"""
-        if depth != 0:
+        if depth > 0:
+            previous = encrypt.SHA256(previous)
             return Generator.shahash(previous, depth - 1)
         return previous
 
@@ -65,8 +67,8 @@ class Create:
         之后的密码验证需要以该文档作为基础
         该文档的登陆验证登陆选项默认是禁用
         """
-        salt = encrypt.random(settings.Security.SaltLength / 8)
-        index = encrypt.base64encode(str(userid))
+        salt = encrypt.random(int(settings.Security.SaltLength / 8))
+        index = encrypt.base64encode(str(userid).encode()).decode()
         auth = Authentication(
             index=index, user=userid,
             salt=salt, token=Generator.calc(password, salt),
