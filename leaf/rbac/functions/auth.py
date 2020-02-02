@@ -150,3 +150,15 @@ class Update:
         for auth in auths:
             auth.token = Generator.calc(new, auth.salt)
             auth.save()
+
+
+class Delete:
+    """删除静态函数集合"""
+
+    @staticmethod
+    def byindex(index: str) -> int:
+        """根据index删除一个身份验证文档"""
+        # pylint: disable=no-member
+        index = encrypt.base64encode(index.encode()).decode()
+        auth: List[Authentication] = Authentication.objects(index=index)
+        return auth[0].delete() if auth else 0
