@@ -16,38 +16,74 @@
 
 ### 安装
 
-您可以在此直接下载我们最新版本的源代码进行安装
+提供两种安装方式，推荐使用自动安装：
+- 手动安装：从本项目下载代码到您的目录，运行 `python setup.py install`
+- 自动安装：运行 `pip install wxleaf`
 
 **请注意，在正式版本发布之前，在代码分支 `dev`, `beta` 的代码都不可用于生产环境**
 
-将要支持：`pip install wxleaf` - 此功能待稳定版本产出后增加
+在正式版本的 `release` 之前，*推荐* 使用手动安装模式（自动安装的包仍会不定期更新）
 
 ---
 
 ### 使用
 
+下面是一个简单的使用示例，在项目的 `demo` 文件夹内会有更多的实例演示。
+
+**示例配置文件请参考 `config.py`**
+
 ```python
+import logging
+
 import leaf
 import config
 
 init = leaf.Init()
 init.kernel()
+init.logging(config.logging)
+logger = logging.getLogger("leaf.demo")
 
-# 可选项 - 模块请根据自己需要加载
+# 可选项 - 下面的模块请根据自己需要加载
 # 请注意：非稳定版本的模块可能会有变动
 # 关于模块之间的相互依赖，请参阅文档
-init.logging(config.logging)
 init.server()
 init.database(config.database)
 init.plugins(config.plugins)
 init.weixin(config.weixin)
 init.wxpay(config.wxpay)
 
+# 插件管理器
+plugins_manager = leaf.modules.plugins
+
+# 获取事件管理器并绑定两个函数到退出事件上
+events_manager = leaf.modules.events
+whatever_exit = events_manager.event("leaf.exit")
+whatever_exit.hook(lambda: print("Goodbye~"))
+whatever_exit.hook(plugins_manager.stopall)
+
 # 运行服务器
+server = leaf.modules.server
+
+@server.route("/hello/<string:name>")
+def greeting(name: str) -> str:
+    """来自 Leaf 的问候"""
+    logger.log("Visit from client named " + name)
+    return "Here's a greeting from Leaf to " + name
+    
+@leaf.api.wrapper.require("leaf.exit")
+@server.route("/goodbye")
+def exiting():
+    """主动关闭退出"""
+    # 手动触发退出事件
+    # 会触发:
+    # 	1. 关闭数据库连接池
+    #	2. print("Goodbye~")
+    #	3. 关闭所有插件
+    whatever_exit.notify()
+    return "Goodbye~"
+   
 leaf.modules.server.run()
 ```
-
-示例配置文件请参考 `config.py`
 
 ---
 
