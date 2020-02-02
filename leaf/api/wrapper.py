@@ -165,11 +165,11 @@ def require(pointname: str) -> Callable:
             # 通过 payload 获取用户盐并判断 Token 是否正确
             try:
                 userid = payload.get(rbac.jwt.const.Payload.Issuer)
-                auth = rbac.functions.auth.byindex(str(userid))
-                assert not auth is None
-                verification.signature(auth.salt)
+                salt = rbac.functions.auth.Retrieve.saltbyindex(str(userid))
+                # assert not auth is None
+                verification.signature(salt)
             except AssertionError as _error:
-                return settings.Authorization.UnAuthorized(auth)
+                return settings.Authorization.UnAuthorized(_error)
             except error.Error as _error:
                 logger.warning(_error)
                 return settings.Authorization.UnAuthorized(_error)
@@ -177,8 +177,8 @@ def require(pointname: str) -> Callable:
             # 获取权限点所需要的权限
             permitted: List[int] = payload.get(
                 rbac.jwt.settings.Payload.Permission)
-            ap: rbac.model.AccessPoint = rbac.functions.accesspoint.byname(
-                pointname)
+            ap: rbac.model.AccessPoint =\
+                rbac.functions.accesspoint.Retrieve.byname(pointname)
 
             # 验证是否是特权用户 + 验证权限是否满足
             if not ObjectId(userid) in ap.exception:

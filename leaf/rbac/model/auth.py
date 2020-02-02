@@ -7,7 +7,7 @@ from .user import User
 
 class Authentication(mongoengine.Document):
     """
-    身份验证内嵌文档模型:
+    身份验证文档模型:
         user: 被建立登陆方式的用户id
         index: 用户索引(账户名-主键)
         salt: 用户密码盐
