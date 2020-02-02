@@ -22,6 +22,7 @@ class Authentication:
     class Security:
         """安全策略设置"""
         SaltLength = 128 # 密钥盐的长度(bits)
+        SaltCahce = 128 # 盐数据库查询的缓存数量
         PasswordHashCycle = 4 # 对密码进行迭代哈希的次数
 
     class Description:
