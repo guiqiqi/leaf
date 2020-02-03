@@ -70,9 +70,9 @@ wxpay = Static({
 
 # 数据库配置
 database = Static({
-    "size": 20,  # 数据库连接池的大小
-    "server": "localhost",  # 数据库服务器地址
-    "port": 27017,  # 数据库端口
+    "database": "test", # 需要连接的数据库
+    "host": "localhost",  # 数据库服务器地址
+    "port": 27017,  # 数据库服务端口
     "username": None,  # 数据库用户名 - None 表示不需要
     "password": None,  # 数据库密码 - None 表示不需要
     "timeout": 5  # 连接超时时间 - 秒为单位

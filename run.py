@@ -24,6 +24,5 @@ events: leaf.core.events.Manager = leaf.modules.events
 wxpay: leaf.core.algorithm.AttrDict = leaf.payments.wxpay
 weixin: leaf.core.algorithm.AttrDict = leaf.modules.weixin
 schedules: leaf.core.schedule.Manager = leaf.modules.schedules
-database: leaf.core.database.MongoDBPool = leaf.modules.database
 
 print("All modules has been imported...")

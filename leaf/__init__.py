@@ -13,6 +13,7 @@ import atexit as _atexit
 from typing import Optional as _Optional
 from typing import NoReturn as _NoReturn
 
+import mongoengine
 from flask import Flask as _Flask
 
 from . import api
@@ -205,22 +206,27 @@ class Init:
 
         return self.__modules.server
 
-    def database(self, conf: core.algorithm.StaticDict) -> core.database.Pool:
+    def database(self, conf: core.algorithm.StaticDict) -> mongoengine.pymongo.MongoClient:
         """
         数据库连接池初始化函数
             初始化数据库连接池
             设置退出时关闭连接池
             设置数据库信息
         """
-        pool = core.database.MongoDBPool(
-            conf.size, conf.server, conf.port,
-            conf.username, conf.password, conf.timeout)
-        self.__modules.database = pool
+        # 取消数据库池的使用
+        # pool = core.database.MongoDBPool(
+        #     conf.size, conf.server, conf.port,
+        #     conf.username, conf.password, conf.timeout)
+        # self.__modules.database = pool
+
+        client = mongoengine.connect(db=conf.database, host=conf.host, port=conf.port,
+                                     username=conf.username, password=conf.password,
+                                     connectTimeoutMS=conf.timeout * 1000)
 
         exiting: core.events.Event = self.__modules.events.event("leaf.exit")
-        exiting.hook(pool.stop)
+        exiting.hook(mongoengine.disconnect)
 
-        return pool
+        return client
 
     def logging(self, conf: core.algorithm.StaticDict) -> core.error.Logging:
         """
