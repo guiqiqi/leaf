@@ -432,7 +432,7 @@ class Tree:
 
         # 添加至新节点函数
         def add(target: Node, nodes: Iterable[Node]) -> int:
-            return target.adds(*nodes)
+            return target.adds(list(nodes))
 
         Tree._copy(et, root, new, degree, copy, add)
         return root
