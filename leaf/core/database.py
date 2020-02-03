@@ -139,5 +139,3 @@ class MongoDBPool(Pool):
 
 class MongoEnginePool(MongoDBPool):
     """使用 MongoEngine 管理链接不需要手动管理池"""
-
-    raise DeprecationWarning("使用 MongoEngine 管理链接不需要手动管理池")

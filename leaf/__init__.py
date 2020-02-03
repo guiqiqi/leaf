@@ -13,6 +13,7 @@ import atexit as _atexit
 from typing import Optional as _Optional
 from typing import NoReturn as _NoReturn
 
+import pymongo
 import mongoengine
 from flask import Flask as _Flask
 
@@ -206,7 +207,7 @@ class Init:
 
         return self.__modules.server
 
-    def database(self, conf: core.algorithm.StaticDict) -> mongoengine.pymongo.MongoClient:
+    def database(self, conf: core.algorithm.StaticDict) -> pymongo.MongoClient:
         """
         数据库连接池初始化函数
             初始化数据库连接池
