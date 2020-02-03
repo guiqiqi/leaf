@@ -135,3 +135,7 @@ class MongoDBPool(Pool):
         """获取一个数据库对象"""
         connection = super().get()
         return connection
+
+
+class MongoEnginePool(MongoDBPool):
+    """使用 MongoEngine 管理链接不需要手动管理池"""
