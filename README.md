@@ -1,8 +1,8 @@
 # Leaf - 开源微信商城系统框架
 
-![Python](https://img.shields.io/badge/Python-3.5%2B-orange) ![PyLint](https://img.shields.io/badge/PyLint-9.89%2F10-brightgreen) ![TypeHinting](https://img.shields.io/badge/typehinting-support-blue) ![license](https://img.shields.io/badge/license-Apache2-blue)
+![Python](https://img.shields.io/badge/Python-3.5%2B-blue) ![Pylint](https://img.shields.io/badge/PyLint-9.89%2F10-brightgreen) ![TypeHinting](https://img.shields.io/badge/typehinting-support-green) ![license](https://img.shields.io/badge/license-Apache2-yellow) ![PyPi](https://img.shields.io/badge/PyPi-support-orange)
 
-![Logo](https://github.com/guiqiqi/leaf/blob/dev/logo.png?raw=true)
+![Logo](https://github.com/guiqiqi/leaf/blob/dev/docs/logo-bar.png?raw=true)
 
 `Leaf` 旨在实现一个对普通用户易用、对开发者友好的 *轻型* 开源 CMS 框架；`Leaf` 基于 `Python3.5+` 构建，后端使用 `Flask` 作为基础框架、`mongoengine` 进行数据库建模。
 
@@ -16,7 +16,7 @@
 
 ### 安装
 
-提供两种安装方式，推荐使用自动安装：
+提供两种安装方式：
 - 手动安装：从本项目下载代码到您的目录，运行 `python setup.py install`
 - 自动安装：运行 `pip install wxleaf`
 
@@ -28,7 +28,7 @@
 
 ### 使用
 
-下面是一个简单的使用示例，在项目的 `demo` 文件夹内会有更多的实例演示。
+下面是一个简单的使用示例，在项目的 `demo` 文件夹内会不断更新更多的实例演示。
 
 **示例配置文件请参考 `config.py`**
 
@@ -74,8 +74,7 @@ def greeting(name: str) -> str:
 @server.route("/goodbye")
 def exiting():
     """主动关闭退出"""
-    # 手动触发退出事件
-    # 会触发:
+    # 手动触发退出事件:
     # 	1. 关闭数据库连接池
     #	2. print("Goodbye~")
     #	3. 关闭所有插件
@@ -147,16 +146,14 @@ leaf.modules.server.run()
 
 ### Wanted
 
-`Leaf` 仍在开发当中，仍有很多不完美的地方，希望大家能够在 `Issue` 中提出，帮助她变得更好。
-
-`Leaf` 到现在还没有一个合适的 Logo, 希望各位能够帮助
-
-`Leaf` 的后端工作已经接近完成，现在需要前端/美工小伙伴们的支持，将它变成一个好看的全栈项目。
+- `Leaf` 仍在开发阶段，仍有很多不完美的地方，希望大家能够在 `Issue` 中提出，帮助她变得更好。
+- `Leaf` 的后端工作已经接近完成，现在需要前端小伙伴们的支持，将它变成一个好看的全栈项目。
+- ~~`Leaf` 到现在还没有一个合适的 Logo, 希望各位能够帮助~~ (已实现)
 
 ### Todo
 
 1. ~~完善 `JWT Token` 的鉴权流程，实现 `api.wraps.require` 装饰器 - 一周内~~ (已完成)
-2. 完成用户/组/权限/访问点相关的 `CRUD` 以及视图函数 - 近期
+2. 完成用户/组/权限/访问点相关的 `CRUD` 以及视图函数 - 一周内
 3. 完成 `SKU/SPU` 的 `CRUD` 以及视图函数 - 近期
 4. 完成订单模块的 `CRUD` 以及视图函数 - 近期
 5. 完善微信公众平台的 `API` 支持 - 两个月内
@@ -170,8 +167,26 @@ leaf.modules.server.run()
 
 ### Contributors
 
-[@guiqiqi](https://github.com/guiqiqi)
+[@guiqiqi](https://github.com/guiqiqi) - `Leaf` 框架及后端支持
 
-希望这次疫情快速过去，武汉加油，中国加油！♥
+[@lsdlab](https://github.com/lsdlab) - 前端及官网展示页面支持
+
+@刘修岩 from *天津大学建筑学院* - `Logo` 制作
+
+另外，我们现在已经建立了一个微信讨论组，如果你也想提供 *点子/创意/技术支持/...* 欢迎加入我们：
+
+![GroupChat](https://github.com/guiqiqi/leaf/blob/dev/docs/groupchat.jpg?raw=true)
+
+### Thanks
+
+`Leaf` 项目的诞生离不开众多开源项目的支持。事实上，我们和他们一样都希望构建一个更好的开源世界。我总是相信：**We can make the world a better place.**
+
+在此特别感谢以下开源项目：
+- [python](https://github.com/python/cpython)
+- [flask](https://github.com/Legrandin/pycryptodome)
+- [mongoengine](https://github.com/MongoEngine/mongoengine)
+- [pycryptodome](https://github.com/Legrandin/pycryptodome)
+
+**另外，希望这次疫情快速过去，武汉加油，中国加油！♥**
 
 **祝您使用愉快 ;)**
