@@ -39,8 +39,8 @@ class Retrieve:
         """查询用户是否被初始化"""
         user: User = Retrieve.byid(userid)
         if not user.indexs:
-            return True
-        return False
+            return False
+        return True
 
 
 class Update:
@@ -77,8 +77,7 @@ class Update:
         """
         try:
             # pylint: disable=no-member
-            user: List[User] = User.objects(id=userid)
-            user: User = user.pop()
+            user: User = Retrieve.byid(userid)
 
             # 为用户创建Id索引
             typeid, description = settings.User.Index.Id
