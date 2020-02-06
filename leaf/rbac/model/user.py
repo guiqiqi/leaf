@@ -21,7 +21,7 @@ class UserIndex(mongoengine.EmbeddedDocument):
         unique=not settings.AllowMultiAccountBinding, required=True)
     value = mongoengine.StringField(unique=True, required=True)
     description = mongoengine.StringField(default=str)
-    extension = mongoengine.MapField(field=mongoengine.StringField())
+    extension = mongoengine.DictField()
 
 
 class User(mongoengine.Document):
