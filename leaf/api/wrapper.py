@@ -10,6 +10,7 @@ import traceback
 from typing import Callable, Type, Dict,\
     NoReturn, Optional, Iterable, Any, List
 
+import mongoengine
 from flask import abort
 from flask import request
 from flask import Response
@@ -65,6 +66,7 @@ converter.register(ObjectId, str)
 converter.register(datetime.datetime, lambda obj: obj.isoformat())
 converter.register(datetime.time, lambda obj: obj.isoformat)
 converter.register(Exception, str)
+converter.register(mongoengine.Document, lambda obj: obj.to_json())
 
 
 class Encoder(json.JSONEncoder):
