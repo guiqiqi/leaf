@@ -121,7 +121,7 @@ class Retrieve:
         found: List[Authentication] = Authentication.objects(index=index)
         if not found:
             raise error.AuthenticationNotFound(index)
-        return found.pop()
+        return found[0]
 
     @staticmethod
     def byuser(userid: ObjectId) -> List[Authentication]:

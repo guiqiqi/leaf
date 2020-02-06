@@ -20,8 +20,7 @@ class Retrieve:
         found: List[AccessPoint] = AccessPoint.objects(pointname=name)
         if not found:
             raise error.AccessPointNotFound(name)
-        return found.pop()
-
+        return found[0]
 
 class Update:
     """更新静态函数集合"""

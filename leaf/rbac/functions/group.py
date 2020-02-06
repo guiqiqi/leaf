@@ -1,6 +1,6 @@
 """用户组操作的相关函数集合"""
 
-from typing import NoReturn, List
+from typing import List
 
 from bson import ObjectId
 
@@ -22,7 +22,7 @@ class Retrieve:
         found: List[Group] = Group.objets(id=groupid)
         if not found:
             raise error.GroupNotFound(str(groupid))
-        return found.pop()
+        return found[0]
 
 
 class Update:

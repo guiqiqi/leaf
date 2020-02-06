@@ -32,7 +32,7 @@ class Retrieve:
         users = User.objects(id=userid)
         if not users:
             raise error.UserNotFound(str(userid))
-        return users.pop()
+        return users[0]
 
     @staticmethod
     def initialized(userid: ObjectId) -> bool:
