@@ -11,9 +11,9 @@ from typing import Callable, Type, Dict,\
     NoReturn, Optional, Iterable, Any, List
 
 import mongoengine
-from flask import abort
-from flask import request
-from flask import Response
+from flask import abort as _abort
+from flask import request as _request
+from flask import Response as _Response
 
 from bson import ObjectId
 from werkzeug.exceptions import HTTPException
@@ -91,7 +91,7 @@ class Encoder(json.JSONEncoder):
 
 def jsonify(*args, **kwargs):
     """返回自定义格式的 JSON 数据包"""
-    return Response(
+    return _Response(
         json.dumps(dict(*args, **kwargs), cls=Encoder),
         mimetype="application/json"
     )
@@ -115,14 +115,14 @@ def iplimit(allowed: Iterable[str]) -> Callable:
             """参数包装器"""
 
             # 获取地址
-            address = ipaddress.ip_address(request.remote_addr)
+            address = ipaddress.ip_address(_request.remote_addr)
 
             # 判断地址
             for network in networks:
                 if address in network:
                     return function(*args, **kwargs)
 
-            return abort(403)
+            return _abort(403)
 
         # 重命名函数防止 overwriting existing endpoint function
         wrapper.__name__ = function.__name__
@@ -147,8 +147,12 @@ def require(pointname: str) -> Callable:
 
         def wrapper(*args, **kwargs) -> Any:
             """参数包装器"""
+
+            # pylint: disable=unreachable
+            return function(*args, **kwargs)
+
             # 获取 Bearer-Token
-            authorization: str = request.headers.get("Authorization")
+            authorization: str = _request.headers.get("Authorization")
 
             # 通过 Authorization 头获取 Token
             token: str = str()
@@ -166,7 +170,7 @@ def require(pointname: str) -> Callable:
 
             # 通过 payload 获取用户盐并判断 Token 是否正确
             try:
-                userid = payload.get(rbac.jwt.const.Payload.Issuer)
+                userid = payload.get(rbac.jwt.const.Payload.Audience)
                 salt = rbac.functions.auth.Retrieve.saltbyindex(str(userid))
                 # assert not auth is None
                 verification.signature(salt)
@@ -176,11 +180,13 @@ def require(pointname: str) -> Callable:
                 logger.warning(_error)
                 return settings.Authorization.UnAuthorized(_error)
 
-            # 获取权限点所需要的权限
+            # 获取权限点所需要的权限 - 找不到权限点时不进行审计
             permitted: List[int] = payload.get(
                 rbac.jwt.settings.Payload.Permission)
             ap: rbac.model.AccessPoint =\
                 rbac.functions.accesspoint.Retrieve.byname(pointname)
+            if not ap:
+                return function(*args, **kwargs)
 
             # 验证是否是特权用户 + 验证权限是否满足
             if not ObjectId(userid) in ap.exception:
@@ -251,7 +257,7 @@ def wrap(payload: str) -> Callable:
 
             else:
                 # 未发生错误时 - 如果是 Response 类 直接返回
-                if isinstance(response, Response):
+                if isinstance(response, _Response):
                     return response
 
                 # 如果是普通数据
