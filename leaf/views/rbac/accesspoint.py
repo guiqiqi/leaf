@@ -10,7 +10,7 @@ from . import rbac
 from ...api import wrapper
 from ...rbac.model import AccessPoint
 from ...rbac.functions import user
-from ...rbac.functions import funcserror
+from ...rbac.functions import error as funcserror
 from ...rbac.functions import accesspoint as funcs
 
 
@@ -60,7 +60,7 @@ def update_or_create_accesspoint(pointname: str) -> AccessPoint:
     except funcserror.AccessPointNotFound as _error:
         point: AccessPoint = AccessPoint(pointname=pointname, required=required,
                                          strict=strict, description=description)
-    
+
     return point.save()
 
 
@@ -70,7 +70,7 @@ def update_or_create_accesspoint(pointname: str) -> AccessPoint:
 def add_exception_user_for_accesspoint(pointname: str) -> AccessPoint:
     """为指定的 AccessPoint 管理特权用户"""
     point: AccessPoint = funcs.Retrieve.byname(pointname)
-    exceptions: List[str] = request.form.getlist("exceptions", type=ObjectId)    
+    exceptions: List[str] = request.form.getlist("exceptions", type=ObjectId)
     diff: Set[ObjectId] = set(exceptions) - set(point.exception)
 
     # 检查每一个用户是否都存在
