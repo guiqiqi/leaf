@@ -1,6 +1,6 @@
 """JWT Token 类"""
 
-from typing import Tuple, Optional, Callable, NoReturn
+from typing import Tuple, Optional, Callable, NoReturn, Dict
 
 from ...core.tools import web
 from ...core.tools import time
@@ -34,7 +34,7 @@ class Token:
 
     def payload(self, issuer: str, audience: str,
                 period: int = settings.Signature.ValidPeriod,
-                **kwargs) -> NoReturn:
+                other: Optional[Dict[str, str]] = None) -> NoReturn:
         """计算载荷部分的值"""
         now = time.now()
         payload = {
@@ -43,7 +43,8 @@ class Token:
             const.Payload.IssuedAt: now,
             const.Payload.Expiration: now + period
         }
-        payload.update(kwargs)
+        if not other is None:
+            payload.update(other)
         text = web.JSONcreater(payload)
         self.__parts.append(encrypt.base64encode_url(text.encode()).decode())
 
