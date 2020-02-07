@@ -205,6 +205,11 @@ class Init:
         self.__modules.server.logger = self.__modules.logging.logger
         self.__modules.server.secret_key = core.tools.encrypt.random(64)
 
+        # 引用其他的 views 视图函数并注册 Blueprints 蓝图
+        server: _Flask = self.__modules.server
+        from .views.rbac import rbac as _rbac
+        server.register_blueprint(_rbac, url_prefix="/rbac")
+
         return self.__modules.server
 
     def database(self, conf: core.algorithm.StaticDict) -> pymongo.MongoClient:
