@@ -46,7 +46,7 @@ def delete_accesspoint(pointname: str) -> bool:
 @wrapper.require("leaf.views.rbac.accesspoint.update")
 @wrapper.wrap("accesspoint")
 def update_or_create_accesspoint(pointname: str) -> AccessPoint:
-    """更新/删除某一个访问点信息"""
+    """更新/增加某一个访问点信息"""
     required: int = request.form.get("required", type=int, default=0)
     strict: bool = request.form.get("strict", type=bool, default=False)
     description: str = request.form.get("description", type=str, default='')
