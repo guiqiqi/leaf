@@ -30,7 +30,7 @@ manager.add(issued)
 manager.add(failed)
 
 
-@rbac.route("/jwt/issue/<string:usertoken>", methods=["POST"])
+@rbac.route("/jwts/<string:usertoken>", methods=["POST"])
 @wrapper.wrap("token")
 def issue_jwt_token(usertoken: str) -> str:
     """为指定的用户颁发 JWT Token"""
