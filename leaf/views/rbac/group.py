@@ -1,6 +1,6 @@
 """用户组管理视图函数"""
 
-from typing import List
+from typing import List, Set
 from flask import request
 from bson import ObjectId
 from . import rbac
@@ -12,7 +12,7 @@ from ...rbac.functions import group as funcs
 from ...rbac.functions import user as user_funcs
 
 
-@rbac.route("/group/<string:groupid>", methods=["GET"])
+@rbac.route("/groups/<string:groupid>", methods=["GET"])
 @wrapper.require("leaf.views.rbac.group.query")
 @wrapper.wrap("group")
 def query_group_byid(groupid: str) -> Group:
@@ -20,7 +20,7 @@ def query_group_byid(groupid: str) -> Group:
     return funcs.Retrieve.byid(groupid)
 
 
-@rbac.route("/group", methods=["GET"])
+@rbac.route("/groups", methods=["GET"])
 @wrapper.require("leaf.views.rbac.group.list")
 @wrapper.wrap("groups")
 def list_all_groups() -> List[Group]:
@@ -29,7 +29,7 @@ def list_all_groups() -> List[Group]:
     return Group.objects
 
 
-@rbac.route("/group/<string:name>", methods=["GET"])
+@rbac.route("/groups/<string:name>", methods=["GET"])
 @wrapper.require("leaf.views.rbac.group.query")
 @wrapper.wrap("groups")
 def query_group_byname(name: str) -> List[Group]:
@@ -38,7 +38,7 @@ def query_group_byname(name: str) -> List[Group]:
     return Group.objects(name=name)
 
 
-@rbac.route("/group/<srting:groupid>", methods=["DELETE"])
+@rbac.route("/groups/<srting:groupid>", methods=["DELETE"])
 @wrapper.require("leaf.views.rbac.group.delete")
 @wrapper.wrap("status")
 def delete_group(groupid: str) -> bool:
@@ -47,7 +47,7 @@ def delete_group(groupid: str) -> bool:
     return group.delete()
 
 
-@rbac.route("/group", methods=["POST"])
+@rbac.route("/groups", methods=["POST"])
 @wrapper.require("leaf.views.rbac.group.add")
 @wrapper.wrap("group")
 def add_group() -> Group:
@@ -59,7 +59,7 @@ def add_group() -> Group:
     return group.save()
 
 
-@rbac.route("/group/<string:groupid>", methods=["POST"])
+@rbac.route("/groups/<string:groupid>", methods=["PUT"])
 @wrapper.require("leaf.views.rbac.group.update")
 @wrapper.wrap("group")
 def update_group(groupid: str) -> Group:
@@ -74,17 +74,22 @@ def update_group(groupid: str) -> Group:
     return group.save()
 
 
-@rbac.route("/group/users/<string:groupid>", methods=["POST"])
-@wrapper.require("leaf.views.rbac.group.adduser")
+@rbac.route("/groups/<string:groupid>/users", methods=["PUT"])
+@wrapper.require("leaf.views.rbac.group.edituser")
 @wrapper.wrap("group")
 def add_users_to_group(groupid: str) -> Group:
-    """向用户组中添加用户"""
+    """编辑用户组中的用户"""
+    group: Group = funcs.Retrieve.byid(groupid)
     users: List[User] = request.form.getlist("users", type=ObjectId)
 
+    # 计算多增加的那一部分 - 用集合的差计算
+    # 原有用户列表 {1, 2, 3} - 现有新用户列表 {2, 3, 4}
+    # 需要检查的仅为 {4} = {2, 3, 4} - {1, 2, 3}
+    diff: Set[ObjectId] = set(users) - set(group.users)
+
     # 检查是否所有的用户都存在
-    for user in users:
+    for user in diff:
         user_funcs.Retrieve.byid(user)
 
-    group: Group = funcs.Retrieve.byid(groupid)
-    group.users.extend(users)
+    group.users = users
     return group.save()
