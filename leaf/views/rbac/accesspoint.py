@@ -4,17 +4,18 @@ from typing import List, Set
 
 from flask import request
 from bson import ObjectId
+from mongoengine import NotUniqueError
 
 from . import rbac
+from . import error
 
 from ...api import wrapper
 from ...rbac.model import AccessPoint
 from ...rbac.functions import user
-from ...rbac.functions import error as funcserror
 from ...rbac.functions import accesspoint as funcs
 
 
-@rbac.route("/accesspoint/<string:pointname>", methods=["GET"])
+@rbac.route("/accesspoints/<string:pointname>", methods=["GET"])
 @wrapper.require("leaf.views.rbac.accesspoint.query")
 @wrapper.wrap("accesspoint")
 def query_accesspoint_byname(pointname: str) -> AccessPoint:
@@ -23,7 +24,7 @@ def query_accesspoint_byname(pointname: str) -> AccessPoint:
     return point
 
 
-@rbac.route("/accesspoint", methods=["GET"])
+@rbac.route("/accesspoints", methods=["GET"])
 @wrapper.require("leaf.views.rbac.accesspoint.getall")
 @wrapper.wrap("accesspoints")
 def getall_accesspoints() -> List[AccessPoint]:
@@ -32,7 +33,7 @@ def getall_accesspoints() -> List[AccessPoint]:
     return list(AccessPoint.objects)
 
 
-@rbac.route("/accesspoint/<string:pointname>", methods=["DELETE"])
+@rbac.route("/accesspoints/<string:pointname>", methods=["DELETE"])
 @wrapper.require("leaf.views.rbac.accesspoint.delete")
 @wrapper.wrap("status")
 def delete_accesspoint(pointname: str) -> bool:
@@ -42,29 +43,44 @@ def delete_accesspoint(pointname: str) -> bool:
     return True
 
 
-@rbac.route("/accesspoint/<string:pointname>", methods=["POST"])
-@wrapper.require("leaf.views.rbac.accesspoint.update")
+@rbac.route("/accesspoints", methods=["POST"])
+@wrapper.require("leaf.views.rbac.accesspoint.create")
 @wrapper.wrap("accesspoint")
-def update_or_create_accesspoint(pointname: str) -> AccessPoint:
-    """更新/增加某一个访问点信息"""
+def create_accesspoint() -> AccessPoint:
+    """创建一个访问点信息"""
+    pointname: str = request.form.get("pointname", type=str, default='')
     required: int = request.form.get("required", type=int, default=0)
     strict: bool = request.form.get("strict", type=bool, default=False)
     description: str = request.form.get("description", type=str, default='')
 
-    # 检查是否已经存在了
     try:
-        point: AccessPoint = funcs.Retrieve.byname(pointname)
-        point.required = required
-        point.strict = strict
-        point.description = description
-    except funcserror.AccessPointNotFound as _error:
-        point: AccessPoint = AccessPoint(pointname=pointname, required=required,
-                                         strict=strict, description=description)
+        point: AccessPoint = AccessPoint(
+            pointname, required, strict, description)
+        return point.save()
+    except NotUniqueError as _error:
+        raise error.AccessPointNameConflicting(pointname)
+
+
+@rbac.route("/accesspoints/<string:pointname>", methods=["PUT"])
+@wrapper.require("leaf.views.rbac.accesspoint.update")
+@wrapper.wrap("accesspoint")
+def update_accesspoint(pointname: str) -> AccessPoint:
+    """更新某一个访问点信息"""
+    required: int = request.form.get("required", type=int, default=0)
+    strict: bool = request.form.get("strict", type=bool, default=False)
+    description: str = request.form.get("description", type=str, default='')
+
+    point: AccessPoint = funcs.Retrieve.byname(pointname)
+    point.required = required
+    point.strict = strict
+    point.description = description
+    point: AccessPoint = AccessPoint(pointname=pointname, required=required,
+                                     strict=strict, description=description)
 
     return point.save()
 
 
-@rbac.route("/accesspoint/<string:pointname>/exception", methods=["POST"])
+@rbac.route("/accesspoints/<string:pointname>/exception", methods=["PUT"])
 @wrapper.require("leaf.views.rbac.accesspoint.exception")
 @wrapper.wrap("accesspoint")
 def add_exception_user_for_accesspoint(pointname: str) -> AccessPoint:
