@@ -19,3 +19,9 @@ class InvalidExceptionAccessPonint(error.Error):
     """前端传入的例外用户组无法识别/用户ID错误"""
     code = 13003
     description = "传入的例外用户组无法被识别/用户ID错误"
+
+
+class AccessPointNameConflicting(error.Error):
+    """访问点名称冲突"""
+    code = 13004
+    description = "访问点名称冲突"
