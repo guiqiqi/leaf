@@ -38,7 +38,7 @@ def query_group_byname(name: str) -> List[Group]:
     return Group.objects(name=name)
 
 
-@rbac.route("/groups/<srting:groupid>", methods=["DELETE"])
+@rbac.route("/groups/<string:groupid>", methods=["DELETE"])
 @wrapper.require("leaf.views.rbac.group.delete")
 @wrapper.wrap("status")
 def delete_group(groupid: str) -> bool:
