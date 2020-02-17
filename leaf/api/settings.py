@@ -8,6 +8,8 @@ from ..core import error
 class Authorization:
     """权限验证中的设置"""
 
+    ExecuteAPMissing = True  # 在未找到接入点信息时是否允许
+
     @staticmethod
     def UnAuthorized(_reason: error.Error):
         """

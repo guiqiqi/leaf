@@ -1,6 +1,6 @@
 # Leaf - 开源微信商城系统框架
 
-![Python](https://img.shields.io/badge/Python-3.5%2B-blue) ![Pylint](https://img.shields.io/badge/PyLint-9.89%2F10-brightgreen) ![TypeHinting](https://img.shields.io/badge/typehinting-support-green) ![license](https://img.shields.io/badge/license-Apache2-yellow) ![PyPi](https://img.shields.io/badge/PyPi-support-orange)
+![Python](https://img.shields.io/badge/Python-3.5%2B-blue) ![Pylint](https://img.shields.io/badge/Pylint-9.90%2F10-brightgreen) ![TypeHinting](https://img.shields.io/badge/typehinting-support-green) ![license](https://img.shields.io/badge/license-Apache2-yellow) ![pypi](https://img.shields.io/badge/Pypi-support-orange)
 
 ![Logo](https://github.com/guiqiqi/leaf/blob/dev/docs/logo-bar.png?raw=true)
 
@@ -153,7 +153,7 @@ leaf.modules.server.run()
 ### Todo
 
 1. ~~完善 `JWT Token` 的鉴权流程，实现 `api.wraps.require` 装饰器 - 一周内~~ (已完成)
-2. 完成用户/组/权限/访问点相关的 `CRUD` 以及视图函数 - 一周内
+2. 完成用户/组/权限/访问点相关的 `CRUD` 以及视图函数 - 一周内 (2020.2.17 修了一周假)
 3. 完成 `SKU/SPU` 的 `CRUD` 以及视图函数 - 近期
 4. 完成订单模块的 `CRUD` 以及视图函数 - 近期
 5. 完善微信公众平台的 `API` 支持 - 两个月内
@@ -173,9 +173,7 @@ leaf.modules.server.run()
 
 @刘修岩 from *天津大学建筑学院* - `Logo` 制作
 
-另外，我们现在已经建立了一个微信讨论组，如果你也想提供 *点子/创意/技术支持/...* 欢迎加入我们：
-
-![GroupChat](https://github.com/guiqiqi/leaf/blob/dev/docs/groupchat.jpg?raw=true)
+~~另外，我们现在已经建立了一个微信讨论组，如果你也想提供 *点子/创意/技术支持/...* 欢迎加入我们~~
 
 ### Thanks
 

@@ -1,4 +1,6 @@
 """订单的所有状态"""
+# pylint: disable=signature-differs
+# # pylint: disable=arguments-differ
 
 from ...core.algorithm import fsm
 

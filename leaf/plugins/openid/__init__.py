@@ -30,7 +30,7 @@ modules.plugins.register(plugin, ["openid"])
 
 
 @plugin.route("/<string:code>", methods=["GET"])
-@api.wrap("openid")
+@api.wrapper.wrap("openid")
 def openid(code: str) -> str:
     """获取 OpenID"""
     response, _ = web.get(const.address, {

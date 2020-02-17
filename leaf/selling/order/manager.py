@@ -3,6 +3,7 @@
 通过已经创建的事件和状态
 对订单状态进行自动的调度
 """
+# pylint: disable=arguments-differ
 
 from typing import NoReturn
 from ...core.tools import web
