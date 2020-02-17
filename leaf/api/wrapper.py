@@ -250,7 +250,7 @@ def require(pointname: str, byuser: bool = False) -> Callable:
             if byuser:
                 _g.handover: bool = True
                 _g.userid = payload.get(rbac.jwt.const.Payload.Audience)
-                return function(*arg, **kwargs)
+                return function(*args, **kwargs)
 
             return settings.Authorization.NotPermitted(str(diff))
 

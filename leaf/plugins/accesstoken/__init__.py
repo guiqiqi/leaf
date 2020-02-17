@@ -32,8 +32,8 @@ modules.plugins.register(plugin, ["accesstoken"])
 
 
 @plugin.route("/", methods=["POST"])
-@api.iplimit(["127.0.0.1"])
-@api.wrap("accesstoken")
+@api.wrapper.iplimit(["127.0.0.1"])
+@api.wrapper.wrap("accesstoken")
 def accesstoken():
     """获取当前已经缓存的 accesstoken"""
     return patcher.get()
