@@ -1,4 +1,5 @@
 """所有的订单状态事件"""
+# pylint: disable=arguments-differ
 
 from typing import NoReturn, Dict
 
