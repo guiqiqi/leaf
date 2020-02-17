@@ -87,9 +87,11 @@ def add_users_to_group(groupid: str) -> Group:
     # 需要检查的仅为 {4} = {2, 3, 4} - {1, 2, 3}
     diff: Set[ObjectId] = set(users) - set(group.users)
 
-    # 检查是否所有的用户都存在
-    for user in diff:
-        user_funcs.Retrieve.byid(user)
+    # 检查是否所有的用户都存在 - 给用户添加组信息
+    for userid in diff:
+        user: User = user_funcs.Retrieve.byid(userid)
+        user.groups.append(group)
+        user.save()
 
     group.users = users
     return group.save()
