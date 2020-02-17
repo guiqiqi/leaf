@@ -10,6 +10,7 @@ from ...rbac.model import User
 # from ...rbac.model import Group
 # from ...rbac.model import UserIndex
 # from ...rbac.model import Authentication
+from ...rbac.functions import auth as authfuncs
 from ...rbac.functions import user as functions
 
 
@@ -42,7 +43,7 @@ def get_user_byindex(indexid: str, index: str) -> User:
 
 
 @rbac.route("/users/<string:userid>/informations", methods=["PUT"])
-@wrapper.require("leaf.views.rbac.user.update")
+@wrapper.require("leaf.views.rbac.user.update", byuser=True)
 @wrapper.wrap("user")
 def update_user_informations(userid: str) -> User:
     """更新用户 informations 信息"""
@@ -52,22 +53,29 @@ def update_user_informations(userid: str) -> User:
     return user.save()
 
 
-# @rbac.route("/users", methods=["POST"])
-# @wrapper.require("leaf.views.rbac.user.create")
-# @wrapper.wrap("user")
-# def create_user() -> User:
-#     """
-#     创建一个用户的接口调用顺序如下:
-#         1. 首先调用创建用户接口 - User(**info...)
-#         2. 调用为用户设置密码接口 - auth.Create.withuserid
-#         3. 为用户设置文档ID索引 - user.Update.inituser
-#     这里密码应该通过 post 参数传入
-#     """
-#     status: bool = request.form.get("status", default=True, type=bool)
-#     password: str = request.form.get("password", default='', type=str)
+@rbac.route("/users", methods=["POST"])
+@wrapper.require("leaf.views.rbac.user.create")
+@wrapper.wrap("user")
+def create_user() -> User:
+    """
+    创建一个用户的接口调用顺序如下:
+        1. 首先调用创建用户接口 - User(**info...)
+        2. 调用为用户设置密码接口 - auth.Create.withuserid
+        3. 为用户设置文档ID索引 - user.Update.inituser
+    这里密码应该通过 post 参数传入
+    """
+    status: bool = request.form.get("status", default=True, type=bool)
+    password: str = request.form.get("password", default='', type=str)
+    user: User = User(disabled=not status)
+    user.save()
+    # pylint: disable=no-member
+    authfuncs.Create.withuserid(user.id, password)
+    return functions.Update.inituser(user.id)
 
 
 # @rbac.route("/users/<string:userid>/indexs", methods=["POST"])
+# @wrapper.require("leaf.views.rbac.user.")
+
 # @rbac.route("/users/<string:userid>/status", methods=["POST"])
 # @rbac.route("/users/<string:userid>/indexs", methods=["DELETE"])
 # @rbac.route("/users/<string:userid>", methods=["DELETE"])

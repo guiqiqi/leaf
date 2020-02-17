@@ -1,8 +1,10 @@
 """用户组管理视图函数"""
 
 from typing import List, Set
-from flask import request
+
 from bson import ObjectId
+from flask import request
+
 from . import rbac
 
 from ...api import wrapper
