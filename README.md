@@ -1,6 +1,6 @@
 # Leaf - 开源微信商城系统框架
 
-![Python](https://img.shields.io/badge/Python-3.5%2B-blue) ![Pylint](https://img.shields.io/badge/PyLint-9.89%2F10-brightgreen) ![TypeHinting](https://img.shields.io/badge/typehinting-support-green) ![license](https://img.shields.io/badge/license-Apache2-yellow) ![PyPi](https://img.shields.io/badge/PyPi-support-orange)
+![Python](https://img.shields.io/badge/Python-3.5%2B-blue) ![Pylint](https://img.shields.io/badge/Pylint-9.90%2F10-brightgreen) ![TypeHinting](https://img.shields.io/badge/typehinting-support-green) ![license](https://img.shields.io/badge/license-Apache2-yellow) ![pypi](https://img.shields.io/badge/Pypi-support-orange)
 
 ![Logo](https://github.com/guiqiqi/leaf/blob/dev/docs/logo-bar.png?raw=true)
 
@@ -173,9 +173,7 @@ leaf.modules.server.run()
 
 @刘修岩 from *天津大学建筑学院* - `Logo` 制作
 
-另外，我们现在已经建立了一个微信讨论组，如果你也想提供 *点子/创意/技术支持/...* 欢迎加入我们：
-
-![GroupChat](https://github.com/guiqiqi/leaf/blob/dev/docs/groupchat.jpg?raw=true)
+~~另外，我们现在已经建立了一个微信讨论组，如果你也想提供 *点子/创意/技术支持/...* 欢迎加入我们~~
 
 ### Thanks
 
