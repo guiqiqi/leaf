@@ -120,7 +120,7 @@ def update_user_index(userid: str) -> List[UserIndex]:
 
     description = indexs.get(typeid)
     index = UserIndex(typeid, value, description, extension)
-    return functions.Update.index(userid, index)
+    return functions.Create.index(userid, index)
 
 
 @rbac.route("/users/<string:userid>/indexs/<string:typeid>", methods=["DELETE"])
@@ -134,10 +134,7 @@ def delete_user_index(userid: str, typeid: str) -> List[UserIndex]:
         return settings.Authorization.UnAuthorized(
             error.AuthenticationError(g.userid))
 
-    user: User = functions.Retrieve.byid(userid)
-    index = user.indexs.get(typeid=typeid)
-    user.indexs.remove(index)
-    return user.indexs.save()
+    return functions.Delete.index(userid, typeid)
 
 
 @rbac.route("/users/<string:userid>", methods=["DELETE"])

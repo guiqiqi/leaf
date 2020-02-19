@@ -2,9 +2,7 @@
 
 import mongoengine
 
-from ..settings import User as settings
 from ...core.tools import time
-
 from .group import Group
 
 
