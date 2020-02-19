@@ -12,7 +12,8 @@ class User:
     # 是否允许同一种索引方式存在多个
     # 例如同账户绑定了多个不同的微信号
     # 默认情况不被允许
-    AllowMultiAccountBinding = False
+    # 选项被禁用 - 2020.2.19
+    # AllowMultiAccountBinding = False
 
     Indexs = StaticDict({
         # 根据 Id 的索引方式请勿删除 - 会导致错误
