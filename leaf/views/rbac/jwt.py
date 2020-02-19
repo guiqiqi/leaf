@@ -6,8 +6,8 @@ from typing import List
 from flask import request
 from bson import ObjectId
 
-from . import rbac
 from . import error
+from . import rbac
 
 from ...api import wrapper
 from ...core import events

@@ -55,3 +55,9 @@ class UserIndexTypeBound(error.Error):
     """用户索引类型已经被绑定 - 当前策略不允许多绑定"""
     code = 10023
     description = "您所给定的用户索引类型已经被绑定 - 且当前策略不允许多绑定"
+
+
+class AuthenticationByIdCanNotDelete(error.Error):
+    """不允许删除根据 Id 创建的认证文档"""
+    code = 10024
+    description = "不能删除根据 用户Id 创建的认证文档"
