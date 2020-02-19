@@ -207,10 +207,8 @@ def require(pointname: str, byuser: bool = False) -> Callable:
         byuser: 是否获取用户给视图层处理:
             0. 如果未启用按照正常的权限验证流程处理(即权限不足时403)
             1. 如果启用了在权限验证不足时会:
-                0. 设置 g.handover = True - 标志位, 表示是否捕获到用户信息
-                1. 设置 g.userid: str - 通过数据库查询的用户信息
-                2. 将权限交予视图层函数处理
-            *权限验证足够时会设置 g.handover = False 不会设置 g.userid
+                0. 设置 g.userid: str - 通过数据库查询的用户信息
+                1. 将权限交予视图层函数处理
 
         0. 通过 flask 获取 Bearer-Token 并验证用户的 JWT Token 是否合法
         1. 通过 accesspoint 查询数据库所需要的访问级别
@@ -241,15 +239,13 @@ def require(pointname: str, byuser: bool = False) -> Callable:
                 if not settings.Authorization.ExecuteAPMissing:
                     return settings.Authorization.NotPermitted(_error)
 
-            # 设置标志位并返回函数值
-            _g.handover: bool = False
+            # 记录用户 userid 并返回函数值
+            _g.userid = payload.get(rbac.jwt.const.Payload.Audience)
             if not diff:
                 return function(*args, **kwargs)
 
             # 如果需要记录用户信息
             if byuser:
-                _g.handover: bool = True
-                _g.userid = payload.get(rbac.jwt.const.Payload.Audience)
                 return function(*args, **kwargs)
 
             return settings.Authorization.NotPermitted(str(diff))

@@ -154,3 +154,16 @@ class Update:
 
 class Delete:
     """删除静态函数集合"""
+
+    @staticmethod
+    def byindex(userid: str, index: str) -> NoReturn:
+        """
+        删除一个认证文档:
+            检查当前的 index 是不是对应了 id 文档
+            如果不是再进行删除
+        """
+        userid = encrypt.base64encode(str(userid).encode()).decode()
+        if userid == index:
+            raise error.AuthenticationByIdCanNotDelete(userid)
+        auth = Retrieve.byindex(index)
+        auth.delete()

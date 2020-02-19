@@ -1,15 +1,20 @@
 """用户视图函数"""
 
 from typing import List
+
+from flask import g
 from flask import request
 from bson import ObjectId
+
 from . import rbac
+from . import error
 
 from ...api import wrapper
+from ...api import settings
+from ...core import tools
+from ...rbac import settings as _rbac_settings
 from ...rbac.model import User
-# from ...rbac.model import Group
-# from ...rbac.model import UserIndex
-# from ...rbac.model import Authentication
+from ...rbac.model import UserIndex
 from ...rbac.functions import auth as authfuncs
 from ...rbac.functions import user as functions
 
@@ -47,6 +52,12 @@ def get_user_byindex(indexid: str, index: str) -> User:
 @wrapper.wrap("user")
 def update_user_informations(userid: str) -> User:
     """更新用户 informations 信息"""
+
+    # 检查是否由本人发起
+    if userid != g.userid:
+        return settings.Authorization.UnAuthorized(
+            error.AuthenticationError(g.userid))
+
     user: User = functions.Retrieve.byid(userid)
     informations: dict = request.form.to_dict()
     user.informations = informations
@@ -73,9 +84,70 @@ def create_user() -> User:
     return functions.Update.inituser(user.id)
 
 
-# @rbac.route("/users/<string:userid>/indexs", methods=["POST"])
-# @wrapper.require("leaf.views.rbac.user.")
+@rbac.route("/users/<string:userid>/status", methods=["PUT"])
+@wrapper.require("leaf.views.rbac.user.update")
+@wrapper.wrap("user")
+def update_user_status(userid: str) -> User:
+    """更新一个用户的状态"""
+    status: bool = request.form.get("status", default=True, type=bool)
+    user: User = functions.Retrieve.byid(userid)
+    user.disabled = not status
+    return user.save()
 
-# @rbac.route("/users/<string:userid>/status", methods=["POST"])
-# @rbac.route("/users/<string:userid>/indexs", methods=["DELETE"])
-# @rbac.route("/users/<string:userid>", methods=["DELETE"])
+
+@rbac.route("/users/<string:userid>/indexs", methods=["POST"])
+@wrapper.require("leaf.views.rbac.user.update", byuser=True)
+@wrapper.wrap("user")
+def update_user_index(userid: str) -> List[UserIndex]:
+    """
+    为指定用户增加一个索引信息
+    请确保给定的索引方式在 rbac.settings.User.Index 中存在
+    """
+
+    # 检查是否由本人发起
+    if userid != g.userid:
+        return settings.Authorization.UnAuthorized(
+            error.AuthenticationError(g.userid))
+
+    indexs = dict(_rbac_settings.User.Indexs.values())
+
+    typeid = request.form.get("typeid", type=str)
+    value = request.form.get("value", type=str)
+    extension = request.form.get("extension", type=str, default="{}")
+    extension = tools.web.JSONparser(extension)
+    if not typeid in indexs.keys():
+        raise error.UndefinedUserIndex(typeid)
+
+    description = indexs.get(typeid)
+    index = UserIndex(typeid, value, description, extension)
+    return functions.Create.index(userid, index)
+
+
+@rbac.route("/users/<string:userid>/indexs/<string:typeid>", methods=["DELETE"])
+@wrapper.require("leaf.views.rbac.user.update", byuser=True)
+@wrapper.wrap("user")
+def delete_user_index(userid: str, typeid: str) -> List[UserIndex]:
+    """删除用户的一种指定索引"""
+
+    # 检查是否由本人发起
+    if userid != g.userid:
+        return settings.Authorization.UnAuthorized(
+            error.AuthenticationError(g.userid))
+
+    return functions.Delete.index(userid, typeid)
+
+
+@rbac.route("/users/<string:userid>", methods=["DELETE"])
+@wrapper.require("leaf.views.rbac.user.delete", byuser=True)
+@wrapper.wrap("status")
+def delete_user(userid: str) -> bool:
+    """删除某一个用户"""
+
+    # 检查是否由本人发起
+    if userid != g.userid:
+        return settings.Authorization.UnAuthorized(
+            error.AuthenticationError(g.userid))
+
+    user: User = functions.Retrieve.byid(userid)
+    user.delete()
+    return True

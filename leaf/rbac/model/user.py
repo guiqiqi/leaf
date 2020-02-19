@@ -2,9 +2,7 @@
 
 import mongoengine
 
-from ..settings import User as settings
 from ...core.tools import time
-
 from .group import Group
 
 
@@ -17,8 +15,7 @@ class UserIndex(mongoengine.EmbeddedDocument):
         extension: 扩展描述字典
     """
 
-    typeid = mongoengine.StringField(
-        unique=not settings.AllowMultiAccountBinding, required=True)
+    typeid = mongoengine.StringField(unique=True, required=True)
     value = mongoengine.StringField(unique=True, required=True)
     description = mongoengine.StringField(default=str)
     extension = mongoengine.DictField()
