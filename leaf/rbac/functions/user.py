@@ -80,7 +80,7 @@ class Update:
             user: User = Retrieve.byid(userid)
 
             # 为用户创建Id索引
-            typeid, description = settings.User.Index.Id
+            typeid, description = settings.User.Indexs.Id
             idindex = UserIndex(
                 typeid=typeid, value=str(userid),
                 description=description)
