@@ -103,7 +103,12 @@ def update_user_index(userid: str) -> List[UserIndex]:
     为指定用户增加一个索引信息
     请确保给定的索引方式在 rbac.settings.User.Index 中存在
     """
-    user: User = functions.Retrieve.byid(userid)
+
+    # 检查是否由本人发起
+    if userid != g.userid:
+        return settings.Authorization.UnAuthorized(
+            error.AuthenticationError(g.userid))
+
     indexs = dict(_rbac_settings.User.Indexs.values())
 
     typeid = request.form.get("typeid", type=str)
@@ -115,17 +120,21 @@ def update_user_index(userid: str) -> List[UserIndex]:
 
     description = indexs.get(typeid)
     index = UserIndex(typeid, value, description, extension)
-    user.indexs.append(index)
-    return user.indexs.save()
+    return functions.Update.index(userid, index)
 
 
-@rbac.route("/users/<string:userid>/indexs", methods=["DELETE"])
-@wrapper.require("leaf.views.rbac.user.delete", byuser=True)
+@rbac.route("/users/<string:userid>/indexs/<string:typeid>", methods=["DELETE"])
+@wrapper.require("leaf.views.rbac.user.update", byuser=True)
 @wrapper.wrap("user")
-def delete_user_index(userid: str) -> List[UserIndex]:
+def delete_user_index(userid: str, typeid: str) -> List[UserIndex]:
     """删除用户的一种指定索引"""
+
+    # 检查是否由本人发起
+    if userid != g.userid:
+        return settings.Authorization.UnAuthorized(
+            error.AuthenticationError(g.userid))
+
     user: User = functions.Retrieve.byid(userid)
-    typeid = request.form.get("typeid", type=str)
     index = user.indexs.get(typeid=typeid)
     user.indexs.remove(index)
     return user.indexs.save()
@@ -136,6 +145,12 @@ def delete_user_index(userid: str) -> List[UserIndex]:
 @wrapper.wrap("status")
 def delete_user(userid: str) -> bool:
     """删除某一个用户"""
+
+    # 检查是否由本人发起
+    if userid != g.userid:
+        return settings.Authorization.UnAuthorized(
+            error.AuthenticationError(g.userid))
+
     user: User = functions.Retrieve.byid(userid)
     user.delete()
     return True
