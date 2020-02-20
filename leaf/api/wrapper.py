@@ -154,15 +154,13 @@ def require(pointname: str, byuser: bool = False) -> Callable:
         def wrapper(*args, **kwargs) -> Any:
             """参数包装器"""
 
-            # pylint: disable=unreachable
-            # return function(*args, **kwargs)
-
             # 验证 token 是否正确
             try:
                 payload: dict = validator.jwttoken()
             except error.Error as _error:
                 logger.warning(_error)
                 return settings.Authorization.UnAuthorized(_error)
+            _g.userid = payload.get(rbac.jwt.const.Payload.Audience)
 
             # 检查用户权限是否符合要求
             try:
@@ -174,17 +172,15 @@ def require(pointname: str, byuser: bool = False) -> Callable:
                 logger.warning(_error)
                 if not settings.Authorization.ExecuteAPMissing:
                     return settings.Authorization.NotPermitted(_error)
-
-            # 记录用户 userid 并返回函数值
-            _g.userid = payload.get(rbac.jwt.const.Payload.Audience)
-            if not diff:
                 return function(*args, **kwargs)
+            else:
+                # 如果权限符合 - 直接返回
+                # 如果权限不符合但是需要检查userid - 同样返回
+                if not diff or byuser:
+                    return function(*args, **kwargs)
 
-            # 如果需要记录用户信息
-            if byuser:
-                return function(*args, **kwargs)
-
-            return settings.Authorization.NotPermitted(str(diff))
+                # 如果不需要手动检查userid, 权限也不正确则返回403
+                return settings.Authorization.NotPermitted(str(diff))
 
         # 重命名函数防止 overwriting existing endpoint function
         wrapper.__name__ = function.__name__
