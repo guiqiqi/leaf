@@ -2,7 +2,7 @@
 
 from typing import List
 
-from . import error
+from .. import error
 from ..model import AccessPoint
 
 

@@ -6,7 +6,7 @@ import mongoengine
 from bson import ObjectId
 
 from . import auth
-from . import error
+from .. import error
 from .. import settings
 from ..model import User
 from ..model import UserIndex
@@ -106,7 +106,11 @@ class Delete:
         """
 
         user: User = Retrieve.byid(userid)
-        index = user.indexs.get(typeid=typeid)
+        try:
+            index = user.indexs.get(typeid=typeid)
+        except mongoengine.errors.DoesNotExist as _error:
+            return user.indexs
+
         user.indexs.remove(index)
         user.indexs.save()
 

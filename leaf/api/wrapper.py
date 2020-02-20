@@ -8,7 +8,7 @@ import datetime
 import ipaddress
 import traceback
 from typing import Callable, Type, Dict,\
-    NoReturn, Optional, Iterable, Any, List
+    NoReturn, Optional, Iterable, Any
 
 import bson
 import mongoengine
@@ -19,6 +19,7 @@ from flask import Response as _Response
 from werkzeug.exceptions import HTTPException
 
 from . import settings
+from . import validator
 from .. import rbac
 from ..core import error
 
@@ -66,7 +67,9 @@ converter.register(bson.ObjectId, str)
 converter.register(datetime.datetime, lambda obj: obj.isoformat())
 converter.register(datetime.time, lambda obj: obj.isoformat)
 converter.register(Exception, str)
+converter.register(mongoengine.QuerySet, list)
 converter.register(mongoengine.Document, lambda obj: obj.to_json())
+converter.register(mongoengine.EmbeddedDocument, lambda obj: obj.to_json())
 
 
 class Encoder(json.JSONEncoder):
@@ -131,83 +134,15 @@ def iplimit(allowed: Iterable[str]) -> Callable:
     return decorator
 
 
-def __valid_jwt_token() -> dict:
-    """
-    验证传入的 JWT Token 是否正确并返回 payload, 可能的错误:
-        rbac.jwt.error.InvalidToken - Token 解析失败
-        rbac.jwt.error.TokenNotFound - 未找到 Token
-        rbac.jwt.error.InvalidHeader - 非法的头部信息
-        rbac.jwt.error.TimeExired - Token 已经过期
-        rbac.jwt.error.SignatureNotValid - 签名信息验证失败
-    """
-    # 获取 Bearer-Token
-    authorization: str = _request.headers.get("Authorization")
-
-    # 通过 Authorization 头获取 Token
-    token: str = str()
-    if not authorization:
-        raise rbac.jwt.error.TokenNotFound()
-    token = authorization.replace("Bearer", '', 1)
-
-    # 验证 JWT Token 信息
-    verification = rbac.jwt.Verify(token)
-    verification.header()
-    payload = verification.payload()
-
-    # 通过 payload 获取用户盐并判断 Token 是否正确
-    userid = payload.get(rbac.jwt.const.Payload.Audience)
-    salt = rbac.functions.auth.Retrieve.saltbyindex(str(userid))
-    verification.signature(salt)
-
-    return payload
-
-
-def __valid_jwt_permission(pointname: str, payload: dict) -> int:
-    """
-    验证 JWT Token 的权限是否足够访问对应接入点:
-        pointname: 接入点名称
-        payload: JWT Token 的 Payload 部分
-
-    返回的数值 diff: int 表示所需权限差:
-        diff == 0 - 表示权限验证符合
-        diff < 0 - 表示所需要权限不足(返回的差表示差多少)
-        diff > 0 - 表示所需要权限足够但该访问点要求用户组对应
-
-    可能返回的错误:
-        rbac.functions.error.AccessPointNotFound - 未找到对应的接入点信息
-        bson.errors.InvalidId - 非法的 UserId 信息
-    """
-    # 获取权限点所需要的权限
-    permitted: List[int] = payload.get(rbac.jwt.settings.Payload.Permission)
-    accesspoint = rbac.functions.accesspoint.Retrieve.byname(pointname)
-    if not accesspoint:
-        raise rbac.functions.error.AccessPointNotFound(pointname)
-    userid = bson.ObjectId(payload.get(rbac.jwt.const.Payload.Audience))
-
-    # 验证是否是特权用户
-    if userid in accesspoint.exception:
-        return 0
-
-    # 检查是否需要指定用户组
-    if accesspoint.strict:
-        if not accesspoint.required in permitted:
-            return max(permitted) - accesspoint.required
-        return 0
-
-    # 检查权限是否足够
-    if accesspoint.required > max(permitted):
-        return max(permitted) - accesspoint.required
-    return 0
-
-
-def require(pointname: str, byuser: bool = False) -> Callable:
+def require(pointname: str, checkuser: bool = False) -> Callable:
     """
     一个权限验证装饰器:
         pointname: 需要的权限点名称
-        byuser: 是否获取用户给视图层处理:
+        checkuser: 是否获取用户给视图层处理:
             0. 如果未启用按照正常的权限验证流程处理(即权限不足时403)
             1. 如果启用了在权限验证不足时会:
-                0. 设置 g.userid: str - 通过数据库查询的用户信息
+                0. 设置 g.operator: str - 通过数据库查询的用户信息
+                1. 设置 g.checkuser: bool = True
                 1. 将权限交予视图层函数处理
 
         0. 通过 flask 获取 Bearer-Token 并验证用户的 JWT Token 是否合法
@@ -223,32 +158,33 @@ def require(pointname: str, byuser: bool = False) -> Callable:
 
             # 验证 token 是否正确
             try:
-                payload: dict = __valid_jwt_token()
+                payload: dict = validator.jwttoken()
             except error.Error as _error:
                 logger.warning(_error)
                 return settings.Authorization.UnAuthorized(_error)
+            _g.checkuser: bool = False
+            _g.operator = payload.get(rbac.jwt.const.Payload.Audience)
 
             # 检查用户权限是否符合要求
             try:
-                diff: int = __valid_jwt_permission(pointname, payload)
+                diff: int = validator.permission(pointname, payload)
             except bson.errors.InvalidId as _error:
                 logger.warning(_error)
                 return settings.Authorization.UnAuthorized(_error)
-            except rbac.functions.error.AccessPointNotFound as _error:
+            except rbac.error.AccessPointNotFound as _error:
                 logger.warning(_error)
                 if not settings.Authorization.ExecuteAPMissing:
                     return settings.Authorization.NotPermitted(_error)
-
-            # 记录用户 userid 并返回函数值
-            _g.userid = payload.get(rbac.jwt.const.Payload.Audience)
-            if not diff:
                 return function(*args, **kwargs)
+            else:
+                # 如果权限符合 - 直接返回
+                # 如果权限不符合但是需要检查userid - 同样返回
+                if not diff or checkuser:
+                    _g.checkuser = checkuser
+                    return function(*args, **kwargs)
 
-            # 如果需要记录用户信息
-            if byuser:
-                return function(*args, **kwargs)
-
-            return settings.Authorization.NotPermitted(str(diff))
+                # 如果不需要手动检查userid, 权限也不正确则返回403
+                return settings.Authorization.NotPermitted(str(diff))
 
         # 重命名函数防止 overwriting existing endpoint function
         wrapper.__name__ = function.__name__

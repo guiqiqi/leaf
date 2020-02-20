@@ -4,7 +4,7 @@ from typing import List
 
 from bson import ObjectId
 
-from . import error
+from .. import error
 from ..model.group import Group
 
 
