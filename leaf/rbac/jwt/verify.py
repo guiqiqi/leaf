@@ -2,13 +2,12 @@
 
 from typing import NoReturn, Callable, Optional, Tuple
 
+from . import const
+from . import settings
+from .. import error
 from ...core.tools import web
 from ...core.tools import time
 from ...core.tools import encrypt
-
-from . import error
-from . import const
-from . import settings
 
 
 class Verify:

@@ -6,7 +6,7 @@ import mongoengine
 from bson import ObjectId
 
 from . import auth
-from . import error
+from .. import error
 from .. import settings
 from ..model import User
 from ..model import UserIndex

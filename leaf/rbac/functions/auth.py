@@ -5,7 +5,7 @@ from typing import List, Optional, NoReturn
 
 from bson import ObjectId
 
-from . import error
+from .. import error
 from ...core.tools import encrypt
 from ..model import Authentication
 from ..settings import Authentication as settings
