@@ -1,8 +1,9 @@
 """API 函数工具库"""
 
-from typing import List
+from typing import List, NoReturn
 
 import bson
+from flask import g as _g
 from flask import request as _request
 
 from . import error
@@ -21,6 +22,24 @@ def objectid(obj: str) -> bson.ObjectId:
         raise error.InvalidObjectId(obj)
 
 
+def operator(modified: str) -> bson.ObjectId:
+    """
+    检查当前的操作者是否为指定对象(被修改对象):
+        当检查不通过时则掷出 rbac.error.AuthenticationError
+        当检查通过时候返回操作者的 userid: bson.ObjectId 对象
+    """
+    try:
+        checkuser: bool = _g.checkuser
+        _operator: str = _g.operator
+    except AttributeError as _error:
+        raise rbac.error.AuthenticationError(modified)
+
+    # 当检查到操作者和被操作者不是同一用户时
+    if checkuser and str(modified) != _operator:
+        raise rbac.error.AuthenticationError(operator)
+    return objectid(modified)
+
+
 def jwttoken() -> dict:
     """
     验证传入的 JWT Token 是否正确并返回 payload, 可能的错误:
@@ -36,7 +55,7 @@ def jwttoken() -> dict:
     # 通过 Authorization 头获取 Token
     token: str = str()
     if not authorization:
-        raise rbac.jwt.error.TokenNotFound()
+        raise rbac.error.TokenNotFound()
     token = authorization.replace("Bearer", '', 1)
 
     # 验证 JWT Token 信息
@@ -71,7 +90,7 @@ def permission(pointname: str, payload: dict) -> int:
     permitted: List[int] = payload.get(rbac.jwt.settings.Payload.Permission)
     accesspoint = rbac.functions.accesspoint.Retrieve.byname(pointname)
     if not accesspoint:
-        raise rbac.functions.error.AccessPointNotFound(pointname)
+        raise rbac.error.AccessPointNotFound(pointname)
     userid = objectid(payload.get(rbac.jwt.const.Payload.Audience))
 
     # 验证是否是特权用户
