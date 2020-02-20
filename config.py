@@ -37,7 +37,7 @@ logging = Static({
 
     # 文件输出配置
     "file": Static({
-        "level": INFO,
+        "level": ERROR,
         "format": None  # 表示使用父级 logger 配置
     })
 })
