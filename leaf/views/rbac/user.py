@@ -7,14 +7,16 @@ from flask import request
 from bson import ObjectId
 
 from . import rbac
-from . import error
 
+from ...core import tools
+from ...api import validator
 from ...api import wrapper
 from ...api import settings
-from ...core import tools
-from ...rbac import settings as _rbac_settings
+
+from ...rbac import error
 from ...rbac.model import User
 from ...rbac.model import UserIndex
+from ...rbac import settings as _rbac_settings
 from ...rbac.functions import auth as authfuncs
 from ...rbac.functions import user as functions
 
@@ -36,6 +38,7 @@ def get_batch_users() -> List[User]:
 @wrapper.wrap("user")
 def get_user_byid(userid: str) -> User:
     """根据用户 ID 查询用户"""
+    userid = validator.objectid(userid)
     return functions.Retrieve.byid(userid)
 
 
@@ -44,7 +47,8 @@ def get_user_byid(userid: str) -> User:
 @wrapper.wrap("user")
 def get_user_byindex(indexid: str, index: str) -> User:
     """根据用户 Index 查询用户"""
-    return functions.Retrieve.byindex(indexid, index)
+    users: [User] = functions.Retrieve.byindex(indexid, index)
+    return users
 
 
 @rbac.route("/users/<string:userid>/informations", methods=["PUT"])

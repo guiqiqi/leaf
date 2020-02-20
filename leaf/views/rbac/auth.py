@@ -5,10 +5,11 @@ from flask import g
 from flask import request
 
 from . import rbac
-from . import error
 
 from ...api import wrapper
 from ...api import settings
+
+from ...rbac import error
 from ...rbac.model import UserIndex
 from ...rbac.functions import error as rbacerror
 from ...rbac.functions import auth as authfuncs

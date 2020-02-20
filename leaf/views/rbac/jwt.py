@@ -6,7 +6,6 @@ from typing import List
 from flask import request
 from bson import ObjectId
 
-from . import error
 from . import rbac
 
 from ...api import wrapper
@@ -14,6 +13,7 @@ from ...core import events
 from ...core import modules
 
 from ...rbac import jwt
+from ...rbac import error
 from ...rbac.model import Group
 from ...rbac.functions import user
 from ...rbac.functions import auth

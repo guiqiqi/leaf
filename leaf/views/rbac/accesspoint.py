@@ -7,9 +7,9 @@ from bson import ObjectId
 from mongoengine import NotUniqueError
 
 from . import rbac
-from . import error
 
 from ...api import wrapper
+from ...rbac import error
 from ...rbac.model import AccessPoint
 from ...rbac.functions import user
 from ...rbac.functions import accesspoint as funcs
