@@ -133,14 +133,15 @@ def iplimit(allowed: Iterable[str]) -> Callable:
     return decorator
 
 
-def require(pointname: str, byuser: bool = False) -> Callable:
+def require(pointname: str, checkuser: bool = False) -> Callable:
     """
     一个权限验证装饰器:
         pointname: 需要的权限点名称
-        byuser: 是否获取用户给视图层处理:
+        checkuser: 是否获取用户给视图层处理:
             0. 如果未启用按照正常的权限验证流程处理(即权限不足时403)
             1. 如果启用了在权限验证不足时会:
-                0. 设置 g.userid: str - 通过数据库查询的用户信息
+                0. 设置 g.operator: str - 通过数据库查询的用户信息
+                1. 设置 g.checkuser: bool = True
                 1. 将权限交予视图层函数处理
 
         0. 通过 flask 获取 Bearer-Token 并验证用户的 JWT Token 是否合法
@@ -160,7 +161,8 @@ def require(pointname: str, byuser: bool = False) -> Callable:
             except error.Error as _error:
                 logger.warning(_error)
                 return settings.Authorization.UnAuthorized(_error)
-            _g.userid = payload.get(rbac.jwt.const.Payload.Audience)
+            _g.checkuser: bool = False
+            _g.operator = payload.get(rbac.jwt.const.Payload.Audience)
 
             # 检查用户权限是否符合要求
             try:
@@ -176,7 +178,8 @@ def require(pointname: str, byuser: bool = False) -> Callable:
             else:
                 # 如果权限符合 - 直接返回
                 # 如果权限不符合但是需要检查userid - 同样返回
-                if not diff or byuser:
+                if not diff or checkuser:
+                    _g.checkuser = checkuser
                     return function(*args, **kwargs)
 
                 # 如果不需要手动检查userid, 权限也不正确则返回403
