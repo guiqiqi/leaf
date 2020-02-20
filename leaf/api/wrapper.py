@@ -155,7 +155,7 @@ def require(pointname: str, byuser: bool = False) -> Callable:
             """参数包装器"""
 
             # pylint: disable=unreachable
-            return function(*args, **kwargs)
+            # return function(*args, **kwargs)
 
             # 验证 token 是否正确
             try:
@@ -170,7 +170,7 @@ def require(pointname: str, byuser: bool = False) -> Callable:
             except bson.errors.InvalidId as _error:
                 logger.warning(_error)
                 return settings.Authorization.UnAuthorized(_error)
-            except rbac.functions.error.AccessPointNotFound as _error:
+            except rbac.error.AccessPointNotFound as _error:
                 logger.warning(_error)
                 if not settings.Authorization.ExecuteAPMissing:
                     return settings.Authorization.NotPermitted(_error)
