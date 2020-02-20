@@ -69,6 +69,7 @@ converter.register(datetime.time, lambda obj: obj.isoformat)
 converter.register(Exception, str)
 converter.register(mongoengine.QuerySet, list)
 converter.register(mongoengine.Document, lambda obj: obj.to_json())
+converter.register(mongoengine.EmbeddedDocument, lambda obj: obj.to_json())
 
 
 class Encoder(json.JSONEncoder):

@@ -1,6 +1,6 @@
 """API 函数工具库"""
 
-from typing import List, NoReturn
+from typing import List
 
 import bson
 from flask import g as _g

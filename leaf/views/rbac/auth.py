@@ -1,17 +1,14 @@
 """控制用户的认证相关数据"""
 
 from typing import List, Tuple
-from flask import g
 from flask import request
 
 from . import rbac
 
 from ...api import wrapper
-from ...api import settings
 
 from ...rbac import error
 from ...rbac.model import UserIndex
-from ...rbac.functions import error as rbacerror
 from ...rbac.functions import auth as authfuncs
 from ...rbac.functions import user as userfuncs
 
@@ -44,17 +41,11 @@ def update_status_for_authdoc(index: str) -> bool:
 
 
 @rbac.route("/auths/<string:index>", methods=["DELETE"])
-@wrapper.require("leaf.views.rbac.auth.delete", byuser=True)
+@wrapper.require("leaf.views.rbac.auth.delete", checkuser=True)
 @wrapper.wrap("status")
 def delete_authdoc(index: str) -> bool:
     """删除用户的某一种认证方式"""
     userid: str = request.form.get("userid", type=str)
-
-    # 检查是否由本人发起
-    if userid != g.userid:
-        return settings.Authorization.UnAuthorized(
-            error.AuthenticationError(g.userid))
-
     authfuncs.Delete.byindex(userid, index)
     return True
 
@@ -75,7 +66,7 @@ def query_auth_map_with_userid(userid: str) -> List[Tuple[UserIndex, bool]]:
     for index in indexs:
         try:
             authfuncs.Retrieve.byindex(index.value)
-        except rbacerror.AuthenticationNotFound as _error:
+        except error.AuthenticationNotFound as _error:
             continue
         else:
             mapping.append((index, True))
@@ -84,16 +75,10 @@ def query_auth_map_with_userid(userid: str) -> List[Tuple[UserIndex, bool]]:
 
 
 @rbac.route("/auths/<string:userid>/password", methods=["PUT"])
-@wrapper.require("leaf.views.rbac.auth.update", byuser=True)
+@wrapper.require("leaf.views.rbac.auth.update", checkuser=True)
 @wrapper.wrap("status")
 def update_password(userid: str) -> bool:
     """更新用户密码"""
-
-    # 检查是否由本人发起
-    if userid != g.userid:
-        return settings.Authorization.UnAuthorized(
-            error.AuthenticationError(g.userid))
-
     current: str = request.form.get("current", type=str)
     new: str = request.form.get("new", type=str)
     authfuncs.Update.password(userid, current, new)

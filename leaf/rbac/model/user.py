@@ -15,8 +15,8 @@ class UserIndex(mongoengine.EmbeddedDocument):
         extension: 扩展描述字典
     """
 
-    typeid = mongoengine.StringField(unique=True, required=True)
-    value = mongoengine.StringField(unique=True, required=True)
+    typeid = mongoengine.StringField(required=True)
+    value = mongoengine.StringField(required=True)
     description = mongoengine.StringField(default=str)
     extension = mongoengine.DictField()
 
