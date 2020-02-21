@@ -6,6 +6,7 @@ import mongoengine
 from bson import ObjectId
 
 from . import auth
+from . import group
 from .. import error
 from .. import settings
 from ..model import User
@@ -35,6 +36,24 @@ class Create:
         else:
             user.indexs.save()
             return user.indexs
+
+    @staticmethod
+    def group(userid: ObjectId, groupid: ObjectId) -> User:
+        """
+        向组中添加用户:
+            向用户组的用户记录中添加
+            向用户的组记录中添加
+        """
+        user = Retrieve.byid(userid)
+        ugroup = group.Retrieve.byid(groupid)
+        if not ugroup in user.groups:
+            user.groups.append(groupid)
+
+        if not userid in ugroup.users:
+            ugroup.users.append(userid)
+        ugroup.save()
+
+        return user.save()
 
 
 class Retrieve:
@@ -124,3 +143,20 @@ class Delete:
             authdoc.delete()
 
         return user.indexs
+
+    @staticmethod
+    def group(userid: ObjectId, groupid: ObjectId) -> NoReturn:
+        """
+        将用户从某个用户组中移除:
+            将用户从用户组中移除
+            将组中的用户记录删除
+        """
+        user = Retrieve.byid(userid)
+        ugroup = group.Retrieve.byid(groupid)
+        if ugroup in user.groups:
+            user.groups.remove(ugroup)
+        user.save()
+
+        if userid in ugroup.users:
+            ugroup.users.remove(userid)
+        ugroup.save()
