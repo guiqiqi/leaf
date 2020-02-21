@@ -2,7 +2,7 @@
 
 import setuptools
 
-VERSION = "1.0.6.1.dev1"
+VERSION = "1.0.6.3.dev1"
 
 # 读取项目说明
 with open("README.md", "r", encoding="utf-8") as handler:
