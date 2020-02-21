@@ -28,6 +28,17 @@ class Authorization:
         return abort(403)
 
 
+class HTTPResponseHeader:
+    """HTTP响应头部分的设置"""
+    AddCORSSupport = True  # 是否启用 CORS 请求支持
+    CORSDomain = '*'  # 启用支持 CORS 的域设置
+    SupportMethods = [
+        'GET', 'HEAD', 'POST', 'PUT',
+        'DELETE', 'CONNECT', 'OPTIONS',
+        'TRACE', 'PATCH'
+    ]  # 支持的请求类型 - 如非必要请勿修改
+
+
 class Response:
     """响应中的设置"""
     Code = "code"  # 错误代码键

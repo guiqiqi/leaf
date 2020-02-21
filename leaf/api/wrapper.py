@@ -94,10 +94,18 @@ class Encoder(json.JSONEncoder):
 
 def jsonify(*args, **kwargs):
     """返回自定义格式的 JSON 数据包"""
-    return _Response(
+    response = _Response(
         json.dumps(dict(*args, **kwargs), cls=Encoder),
-        mimetype="application/json"
-    )
+        mimetype="application/json")
+
+    # 增加跨域请求支持
+    if settings.HTTPResponseHeader.AddCORSSupport:
+        methods = settings.HTTPResponseHeader.SupportMethods
+        domain = settings.HTTPResponseHeader.CORSDomain
+        response.headers.add("Access-Control-Allow-Origin", domain)
+        response.headers.add("Access-Control-Allow-Methods", methods)
+
+    return response
 
 
 def iplimit(allowed: Iterable[str]) -> Callable:
