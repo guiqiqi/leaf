@@ -19,7 +19,7 @@ class Retrieve:
     def byid(groupid: ObjectId) -> Group:
         """通过用户组 ID 查找用户组记录"""
         # pylint: disable=no-member
-        found: List[Group] = Group.objets(id=groupid)
+        found: List[Group] = Group.objects(id=groupid)
         if not found:
             raise error.GroupNotFound(str(groupid))
         return found[0]

@@ -1,0 +1,1686 @@
+<!DOCTYPE html>
+      <html>
+      <head>
+      <title>leaf</title>
+      <meta charset="utf-8" />
+      <style>@charset "UTF-8";
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote {
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 设置滚动条的样式 */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* 外层轨道 */
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset006pxrgba(255, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.5);
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimSun, sans-serif;
+  font-size: 13px;
+  line-height: 25px;
+  color: #393838;
+  position: relative;
+}
+
+table {
+  margin: 10px 0 15px 0;
+  border-collapse: collapse;
+}
+
+td,
+th {
+  border: 1px solid #ddd;
+  padding: 3px 10px;
+}
+
+th {
+  padding: 5px 10px;
+}
+
+a, a:link, a:visited {
+  color: #34495e;
+  text-decoration: none;
+}
+
+a:hover, a:focus {
+  color: #59d69d;
+  text-decoration: none;
+}
+
+a img {
+  border: none;
+}
+
+p {
+  padding-left: 10px;
+  margin-bottom: 9px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #404040;
+  line-height: 36px;
+}
+
+h1 {
+  color: #2c3e50;
+  font-weight: 600;
+  margin-bottom: 16px;
+  font-size: 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #ddd;
+  line-height: 50px;
+}
+
+h2 {
+  font-size: 28px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+h3 {
+  clear: both;
+  font-weight: 400;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-left: 3px solid #59d69d;
+  padding-left: 8px;
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  font-size: 13px;
+}
+
+hr {
+  margin: 0 0 19px;
+  border: 0;
+  border-bottom: 1px solid #ccc;
+}
+
+blockquote {
+  padding: 13px 13px 21px 15px;
+  margin-bottom: 18px;
+  font-family: georgia, serif;
+  font-style: italic;
+}
+
+blockquote:before {
+  font-size: 40px;
+  margin-left: -10px;
+  font-family: georgia, serif;
+  color: #eee;
+}
+
+blockquote p {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 18px;
+  margin-bottom: 0;
+  font-style: italic;
+}
+
+code,
+pre {
+  font-family: Monaco, Andale Mono, Courier New, monospace;
+}
+
+code {
+  background-color: #fee9cc;
+  color: rgba(0, 0, 0, 0.75);
+  padding: 1px 3px;
+  font-size: 12px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+
+pre {
+  display: block;
+  padding: 14px;
+  margin: 0 0 18px;
+  line-height: 16px;
+  font-size: 11px;
+  border: 1px solid #d9d9d9;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  background: #f6f6f6;
+}
+
+pre code {
+  background-color: #f6f6f6;
+  color: #737373;
+  font-size: 11px;
+  padding: 0;
+}
+
+sup {
+  font-size: 0.83em;
+  vertical-align: super;
+  line-height: 0;
+}
+
+* {
+  -webkit-print-color-adjust: exact;
+}
+
+@media print {
+  body,
+  code,
+  pre code,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: black;
+  }
+
+  table,
+  pre {
+    page-break-inside: avoid;
+  }
+}
+html,
+body {
+  height: 100%;
+}
+
+.table-of-contents {
+  position: fixed;
+  top: 61px;
+  left: 0;
+  bottom: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 260px;
+}
+
+.table-of-contents > ul > li > a {
+  font-size: 20px;
+  margin-bottom: 16px;
+  margin-top: 16px;
+}
+
+.table-of-contents ul {
+  overflow: auto;
+  margin: 0px;
+  height: 100%;
+  padding: 0px 0px;
+  box-sizing: border-box;
+  list-style-type: none;
+}
+
+.table-of-contents ul li {
+  padding-left: 20px;
+}
+
+.table-of-contents a {
+  padding: 2px 0px;
+  display: block;
+  text-decoration: none;
+}
+
+.content-right {
+  max-width: 700px;
+  margin-left: 290px;
+  padding-left: 70px;
+  flex-grow: 1;
+}
+.content-right h2:target {
+  padding-top: 80px;
+}
+
+body > p {
+  margin-left: 30px;
+}
+
+body > table {
+  margin-left: 30px;
+}
+
+body > pre {
+  margin-left: 30px;
+}
+
+.curProject {
+  position: fixed;
+  top: 20px;
+  font-size: 25px;
+  color: black;
+  margin-left: -240px;
+  width: 240px;
+  padding: 5px;
+  line-height: 25px;
+  box-sizing: border-box;
+}
+
+.g-doc {
+  margin-top: 56px;
+  padding-top: 24px;
+  display: flex;
+}
+
+.curproject-name {
+  font-size: 42px;
+}
+
+.m-header {
+  background: #32363a;
+  height: 56px;
+  line-height: 56px;
+  padding-left: 60px;
+  display: flex;
+  align-items: center;
+  position: fixed;
+  z-index: 9;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+.m-header .title {
+  font-size: 22px;
+  color: #fff;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  margin-left: 16px;
+  padding: 0;
+  line-height: 56px;
+  border: none;
+}
+.m-header .nav {
+  color: #fff;
+  font-size: 16px;
+  position: absolute;
+  right: 32px;
+  top: 0;
+}
+.m-header .nav a {
+  color: #fff;
+  margin-left: 16px;
+  padding: 8px;
+  transition: color .2s;
+}
+.m-header .nav a:hover {
+  color: #59d69d;
+}
+
+.m-footer {
+  border-top: 1px solid #ddd;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+/*# sourceMappingURL=defaultTheme.css.map */
+</style>
+      </head>
+      <body>
+        <div class="m-header">
+          <a href="#" style="display: inherit;"><svg class="svg" width="32px" height="32px" viewBox="0 0 64 64" version="1.1"><title>Icon</title><desc>Created with Sketch.</desc><defs><linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1"><stop stop-color="#FFFFFF" offset="0%"></stop><stop stop-color="#F2F2F2" offset="100%"></stop></linearGradient><circle id="path-2" cx="31.9988602" cy="31.9988602" r="2.92886048"></circle><filter x="-85.4%" y="-68.3%" width="270.7%" height="270.7%" filterUnits="objectBoundingBox" id="filter-3"><feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset><feGaussianBlur stdDeviation="1.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur><feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.159703351 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix></filter></defs><g id="首页" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="大屏幕"><g id="Icon"><circle id="Oval-1" fill="url(#linearGradient-1)" cx="32" cy="32" r="32"></circle><path d="M36.7078009,31.8054514 L36.7078009,51.7110548 C36.7078009,54.2844537 34.6258634,56.3695395 32.0579205,56.3695395 C29.4899777,56.3695395 27.4099998,54.0704461 27.4099998,51.7941246 L27.4099998,31.8061972 C27.4099998,29.528395 29.4909575,27.218453 32.0589004,27.230043 C34.6268432,27.241633 36.7078009,29.528395 36.7078009,31.8054514 Z" id="blue" fill="#2359F1" fill-rule="nonzero"></path><path d="M45.2586091,17.1026914 C45.2586091,17.1026914 45.5657231,34.0524383 45.2345291,37.01141 C44.9033351,39.9703817 43.1767091,41.6667796 40.6088126,41.6667796 C38.040916,41.6667796 35.9609757,39.3676862 35.9609757,37.0913646 L35.9609757,17.1034372 C35.9609757,14.825635 38.0418959,12.515693 40.6097924,12.527283 C43.177689,12.538873 45.2586091,14.825635 45.2586091,17.1026914 Z" id="green" fill="#57CF27" fill-rule="nonzero" transform="translate(40.674608, 27.097010) rotate(60.000000) translate(-40.674608, -27.097010) "></path><path d="M28.0410158,17.0465598 L28.0410158,36.9521632 C28.0410158,39.525562 25.9591158,41.6106479 23.3912193,41.6106479 C20.8233227,41.6106479 18.7433824,39.3115545 18.7433824,37.035233 L18.7433824,17.0473055 C18.7433824,14.7695034 20.8243026,12.4595614 23.3921991,12.4711513 C25.9600956,12.4827413 28.0410158,14.7695034 28.0410158,17.0465598 Z" id="red" fill="#FF561B" fill-rule="nonzero" transform="translate(23.392199, 27.040878) rotate(-60.000000) translate(-23.392199, -27.040878) "></path><g id="inner-round"><use fill="black" fill-opacity="1" filter="url(#filter-3)" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#path-2"></use><use fill="#F7F7F7" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#path-2"></use></g></g></g></g></svg></a>
+          <a href="#"><h1 class="title">YAPI 接口文档</h1></a>
+          <div class="nav">
+            <a href="https://hellosean1025.github.io/yapi/">YApi</a>
+          </div>
+        </div>
+        <div class="g-doc">
+          <div class="table-of-contents"><ul><li><a href="#jwt20tokenu7ba1u7406u63a5u53e3">JWT Token管理接口</a><ul><li><a href="#u8bf7u6c4220jwt-token0a3ca20id3du8bf7u6c4220jwt-token3e203ca3e">请求 JWT-Token
+<a id=请求 JWT-Token> </a></a></li></ul></li><li><a href="#u7528u6237u63a5u53e3">用户接口</a><ul><li><a href="#u6279u91cfu83b7u53d6u7528u62370a3ca20id3du6279u91cfu83b7u53d6u7528u62373e203ca3e">批量获取用户
+<a id=批量获取用户> </a></a></li><li><a href="#u67e5u8be2u5355u4e2au7528u623720-20u6839u636e20userid0a3ca20id3du67e5u8be2u5355u4e2au7528u623720-20u6839u636e20userid3e203ca3e">查询单个用户 - 根据 userid
+<a id=查询单个用户 - 根据 userid> </a></a></li><li><a href="#u67e5u8be2u7528u623720-20u6839u636eu7528u623720index0a3ca20id3du67e5u8be2u7528u623720-20u6839u636eu7528u623720index3e203ca3e">查询用户 - 根据用户 index
+<a id=查询用户 - 根据用户 index> </a></a></li><li><a href="#u521bu5efau7528u62370a3ca20id3du521bu5efau7528u62373e203ca3e">创建用户
+<a id=创建用户> </a></a></li><li><a href="#u52a0u5165u7528u6237u7ec40a3ca20id3du52a0u5165u7528u6237u7ec43e203ca3e">加入用户组
+<a id=加入用户组> </a></a></li><li><a href="#u4e3au7528u6237u65b0u589eu7d22u5f150a3ca20id3du4e3au7528u6237u65b0u589eu7d22u5f153e203ca3e">为用户新增索引
+<a id=为用户新增索引> </a></a></li><li><a href="#u66f4u65b0u7528u6237u4e2au4ebau4fe1u606f0a3ca20id3du66f4u65b0u7528u6237u4e2au4ebau4fe1u606f3e203ca3e">更新用户个人信息
+<a id=更新用户个人信息> </a></a></li><li><a href="#u66f4u65b0u7528u6237u72b6u60010a3ca20id3du66f4u65b0u7528u6237u72b6u60013e203ca3e">更新用户状态
+<a id=更新用户状态> </a></a></li><li><a href="#u5220u9664u7528u62370a3ca20id3du5220u9664u7528u62373e203ca3e">删除用户
+<a id=删除用户> </a></a></li><li><a href="#u5220u9664u7528u6237u7279u5b9au7d22u5f150a3ca20id3du5220u9664u7528u6237u7279u5b9au7d22u5f153e203ca3e">删除用户特定索引
+<a id=删除用户特定索引> </a></a></li><li><a href="#u79fbu51fau7528u6237u7ec40a3ca20id3du79fbu51fau7528u6237u7ec43e203ca3e">移出用户组
+<a id=移出用户组> </a></a></li><li><a href="#u67e5u8be2u7d22u5f15u7c7bu578bu4fe1u606f0a3ca20id3du67e5u8be2u7d22u5f15u7c7bu578bu4fe1u606f3e203ca3e">查询索引类型信息
+<a id=查询索引类型信息> </a></a></li></ul></li><li><a href="#u7528u6237u7ec4u63a5u53e3">用户组接口</a><ul><li><a href="#u521bu5efau7528u6237u7ec40a3ca20id3du521bu5efau7528u6237u7ec43e203ca3e">创建用户组
+<a id=创建用户组> </a></a></li><li><a href="#u5220u9664u7528u6237u7ec40a3ca20id3du5220u9664u7528u6237u7ec43e203ca3e">删除用户组
+<a id=删除用户组> </a></a></li><li><a href="#u6279u91cfu83b7u53d6u7528u6237u7ec40a3ca20id3du6279u91cfu83b7u53d6u7528u6237u7ec43e203ca3e">批量获取用户组
+<a id=批量获取用户组> </a></a></li><li><a href="#u66f4u65b0u7528u6237u5217u88680a3ca20id3du66f4u65b0u7528u6237u5217u88683e203ca3e">更新用户列表
+<a id=更新用户列表> </a></a></li><li><a href="#u66f4u65b0u7528u6237u7ec4u4fe1u606f0a3ca20id3du66f4u65b0u7528u6237u7ec4u4fe1u606f3e203ca3e">更新用户组信息
+<a id=更新用户组信息> </a></a></li><li><a href="#u67e5u8be2u5355u4e2au7528u6237u7ec420-20u6839u636e20groupid0a3ca20id3du67e5u8be2u5355u4e2au7528u6237u7ec420-20u6839u636e20groupid3e203ca3e">查询单个用户组 - 根据 groupid
+<a id=查询单个用户组 - 根据 groupid> </a></a></li><li><a href="#u67e5u8be2u5355u4e2au7528u6237u7ec420-20u6839u636e20name0a3ca20id3du67e5u8be2u5355u4e2au7528u6237u7ec420-20u6839u636e20name3e203ca3e">查询单个用户组 - 根据 name
+<a id=查询单个用户组 - 根据 name> </a></a></li></ul></li></ul></div>
+          <div id="right" class="content-right">
+           <h1 class="curproject-name"> leaf </h1> 
+ Leaf 开发文档与测试 - RBAC 部分
+<p>Leaf 实现了基于角色的权限管理系统，通过用户组的方式对用户分类并给予不同的角色。<br>
+Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口。<br>
+下面分为四个部分对这个部分的 API 进行说明：用户、用户组、认证、访问点。</p>
+<h3 id="">公共信息</h3>
+<p><em>Leaf</em> 实现了基于角色的权限管理系统，通过用户组的方式对用户分类并给予不同的角色；在 <code data-backticks="1">RBAC</code> 的管理框架中涉及到了四个子类：</p>
+<table>
+<thead>
+<tr>
+<th>类名</th>
+<th>说明</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code data-backticks="1">User</code></td>
+<td>用户类</td>
+<td>用户信息存储</td>
+</tr>
+<tr>
+<td><code data-backticks="1">Group</code></td>
+<td>用户组类</td>
+<td>用于分组用户，同时也机遇用户所在组权限</td>
+</tr>
+<tr>
+<td><code data-backticks="1">Authentication</code></td>
+<td>认证类</td>
+<td>用于认证用户登录</td>
+</tr>
+<tr>
+<td><code data-backticks="1">AccessPoint</code></td>
+<td>接入点类</td>
+<td>用于动态的控制每一个 <code data-backticks="1">API</code> 所需要的访问权限</td>
+</tr>
+</tbody>
+</table>
+<p>我们所有的 <code data-backticks="1">API</code> 都是 <code data-backticks="1">RESTful</code> 风格的，而认证则使用了基于 <code data-backticks="1">JWT Token</code> 的认证方案。</p>
+<p>下面是一些<strong>重要的概念</strong>：</p>
+<ul>
+<li>
+<p><code data-backticks="1">ObjectId</code><br>
+我们的文档类都有自己的一个唯一 <code data-backticks="1">id</code>, 一般情况下它是一个长度为 <strong>24</strong> 的十六进制字符串，它们看起来像是这样：<code data-backticks="1">5dfdebd0a2ed28fc8397f723</code><br>
+在前后端的传输过程中可以直接使用这样的字符串指代对应的用户、用户组。</p>
+</li>
+<li>
+<p>角色与用户组<br>
+每一个用户组文档中都包含有一个 <code data-backticks="1">permission</code> 值，用以指代该用户组的权限，而用户组中的用户就拥有这个等级的权限（角色）</p>
+</li>
+<li>
+<p>访问点<br>
+访问点是我们用来对接口进行动态权限管理的工具，每一个访问点 <code data-backticks="1">AccessPoint</code> 文档中都类似这样：</p>
+</li>
+</ul>
+<pre><code>{
+    "_id" : "leaf.plugins.wxtoken.get",
+    "required" : 3,
+    "strict" : false,
+    "description" : "获取微信接口Token权限",
+    "exception" : []
+}
+</code></pre>
+<p>访问点的 <code data-backticks="1">id</code> 表示访问点名称（这里是少数不使用 <code data-backticks="1">ObjectId</code> 的地方），全局且唯一；<br>
+<code data-backticks="1">required</code> 表示需要的权限值 - 对应用户组的组权限；<br>
+<code data-backticks="1">strict</code> 表示是否启用严格认证，当启用后，仅指定的权限值用户可以访问；<br>
+<code data-backticks="1">exception</code> 存储了例外用户，这些用户可以无视权限认证直接访问该接口</p>
+<ul>
+<li>个人信息与扩展<br>
+和其他的 <code data-backticks="1">CMS</code> 框架有所不同，在 <em>Leaf</em> 中为了保证高扩展性，每一个用户的个人信息并不是由数据库中的某个字段直接进行存储的，而是类似 <code data-backticks="1">JSON</code> 文档一般，所以在用户个人信息的更新过程中请直接在 <code data-backticks="1">POST</code> 的 <code data-backticks="1">form</code> 中提交所有的个人信息键值对，类似这样：</li>
+</ul>
+<pre><code>{
+    "用户昵称": "桂小方",
+    "年龄": 20,
+    "有女朋友吗": "简直是在做梦",
+    ...
+}
+</code></pre>
+<p>而在几乎所有的文档中都保留了一个扩展信息字典，用以方便后期的扩展。</p>
+<ul>
+<li>用户索引<br>
+用户索引指的是用以对用户进行查找、鉴权文档创建的信息，它看起来像是这样：</li>
+</ul>
+<pre><code>{
+    "typeid" : "0C6B4A2B8AAEDDBC",
+    "value" : "桂小方",
+    "description" : "用户名索引",
+    "extension" : {}  /* 用于存储扩展信息 */
+}
+</code></pre>
+<p>每一个索引都有自己的 <code data-backticks="1">typeid</code> 作为索引值，而 <code data-backticks="1">value</code> 则表示索引的真正值<br>
+在 <strong>查询索引类型信息</strong> 接口中可以通过 <code data-backticks="1">API</code> 来获取所有后端允许的索引信息：</p>
+<pre><code>"Id": ["1B4E705F3305F7FB", "通过用户ID索引"],
+"Mail": ["EAC366AD5FEA1B28", "通过邮件索引"],
+"Name": ["0C6B4A2B8AAEDDBC", "通过用户名索引"],
+"Phone": ["5E4BC1ABDDAACA4A", "通过手机号索引"]
+...
+</code></pre>
+<p>而在提交时请携带索引的 <code data-backticks="1">typeid</code> 与 <code data-backticks="1">value</code> 值。<br>
+而每一个用户都有一个通过 <code data-backticks="1">Id</code> 的索引，此索引<strong>不能被删除/修改</strong>。</p>
+<p>以上就是四类接口中基础概念的介绍，下面是接口文档 :)</p>
+<h1 id="jwt20tokenu7ba1u7406u63a5u53e3">JWT Token管理接口</h1>
+<p></p>
+<h2 id="u8bf7u6c4220jwt-token0a3ca20id3du8bf7u6c4220jwt-token3e203ca3e">请求 JWT-Token
+<a id=请求 JWT-Token> </a></h2>
+<p></p>
+<h3 id="-2">基本信息</h3>
+<p><strong>Path：</strong> /rbac/jwts/{token}</p>
+<p><strong>Method：</strong> POST</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-3">请求参数</h3>
+<p><strong>Headers</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数值</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>application/x-www-form-urlencoded</td>
+<td>是</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>路径参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>token</td>
+<td>5dfdebd0a2ed28fc8397f723</td>
+<td>用户的认证令牌</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数类型</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>password</td>
+<td>text</td>
+<td>是</td>
+<td>12345678</td>
+<td>用户口令</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-4">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回消息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回说明</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> token</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回的 JWT-Token</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h1 id="u7528u6237u63a5u53e3">用户接口</h1>
+<p></p>
+<h2 id="u6279u91cfu83b7u53d6u7528u62370a3ca20id3du6279u91cfu83b7u53d6u7528u62373e203ca3e">批量获取用户
+<a id=批量获取用户> </a></h2>
+<p></p>
+<h3 id="-5">基本信息</h3>
+<p><strong>Path：</strong> /rbac/users</p>
+<p><strong>Method：</strong> GET</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-6">请求参数</h3>
+<p><strong>Query</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>previous</td>
+<td>否</td>
+<td>5dfdebd0a2ed28fc8397f723</td>
+<td>上次获取到的最后一个 userid</td>
+</tr>
+<tr>
+<td>count</td>
+<td>否</td>
+<td>10</td>
+<td>需要获取的个数</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-7">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5><p key=5><span style="font-weight: '700'">mock: </span><span>@natural</span></p></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回消息</span></td><td key=5><p key=5><span style="font-weight: '700'">mock: </span><span>@string</span></p></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回说明</span></td><td key=5><p key=5><span style="font-weight: '700'">mock: </span><span>@string</span></p></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> users</span></td><td key=1><span>string []</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">用户列表</span></td><td key=5><p key=3><span style="font-weight: '700'">item 类型: </span><span>string</span></p></td></tr><tr key=array-123><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> </span></td><td key=1><span></span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">用户JSON信息</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h2 id="u67e5u8be2u5355u4e2au7528u623720-20u6839u636e20userid0a3ca20id3du67e5u8be2u5355u4e2au7528u623720-20u6839u636e20userid3e203ca3e">查询单个用户 - 根据 userid
+<a id=查询单个用户 - 根据 userid> </a></h2>
+<p></p>
+<h3 id="-8">基本信息</h3>
+<p><strong>Path：</strong> /rbac/users/{userid}</p>
+<p><strong>Method：</strong> GET</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-9">请求参数</h3>
+<p><strong>路径参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>userid</td>
+<td>5dfdebd0a2ed28fc8397f723</td>
+<td>userid</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-10">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5><p key=5><span style="font-weight: '700'">mock: </span><span>@natural</span></p></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回消息</span></td><td key=5><p key=5><span style="font-weight: '700'">mock: </span><span>@string</span></p></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回说明</span></td><td key=5><p key=5><span style="font-weight: '700'">mock: </span><span>@string</span></p></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> user</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回用户JSON信息</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h2 id="u67e5u8be2u7528u623720-20u6839u636eu7528u623720index0a3ca20id3du67e5u8be2u7528u623720-20u6839u636eu7528u623720index3e203ca3e">查询用户 - 根据用户 index
+<a id=查询用户 - 根据用户 index> </a></h2>
+<p></p>
+<h3 id="-11">基本信息</h3>
+<p><strong>Path：</strong> /rbac/users/{typeid}/{index}</p>
+<p><strong>Method：</strong> GET</p>
+<p><strong>接口描述：</strong></p>
+<p>用户的 UserIndex 指的是用户索引，调用此API所需的信息有：</p>
+<ul>
+<li>index.typeid - 索引的类型id，一串随机字符串</li>
+<li>index.value - 索引值，例如用户名之类的索引</li>
+</ul>
+<p>具体的介绍请参照说明文档的 <code data-backticks="1">RBAC</code> 部分，开发者可以通过调用 <code data-backticks="1">api.rbac.other.indexs</code> 来获取所有的用户索引介绍。</p>
+<h3 id="-12">请求参数</h3>
+<p><strong>路径参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>typeid</td>
+<td>0C6B4A2B8AAEDDBC</td>
+<td>查询的 Index-Type-Id</td>
+</tr>
+<tr>
+<td>index</td>
+<td>桂小方</td>
+<td>查询的 Index-Value</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-13">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5><p key=5><span style="font-weight: '700'">mock: </span><span>@natural</span></p></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回信息</span></td><td key=5><p key=5><span style="font-weight: '700'">mock: </span><span>@string</span></p></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回描述</span></td><td key=5><p key=5><span style="font-weight: '700'">mock: </span><span>@string</span></p></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> users</span></td><td key=1><span>string []</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">用户信息组</span></td><td key=5><p key=3><span style="font-weight: '700'">item 类型: </span><span>string</span></p></td></tr><tr key=array-124><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> </span></td><td key=1><span></span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">用户JSON信息</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h2 id="u521bu5efau7528u62370a3ca20id3du521bu5efau7528u62373e203ca3e">创建用户
+<a id=创建用户> </a></h2>
+<p></p>
+<h3 id="-14">基本信息</h3>
+<p><strong>Path：</strong> /rbac/users</p>
+<p><strong>Method：</strong> POST</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-15">请求参数</h3>
+<p><strong>Headers</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数值</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>application/x-www-form-urlencoded</td>
+<td>是</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数类型</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>password</td>
+<td>text</td>
+<td>是</td>
+<td>12345678</td>
+<td>用户密码</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-16">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回值</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回信息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回描述</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> user</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">用户JSON信息</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h2 id="u52a0u5165u7528u6237u7ec40a3ca20id3du52a0u5165u7528u6237u7ec43e203ca3e">加入用户组
+<a id=加入用户组> </a></h2>
+<p></p>
+<h3 id="-17">基本信息</h3>
+<p><strong>Path：</strong> /rbac/users/{userid}/groups/{groupid}</p>
+<p><strong>Method：</strong> POST</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-18">请求参数</h3>
+<p><strong>Headers</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数值</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>application/x-www-form-urlencoded</td>
+<td>是</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>路径参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>userid</td>
+<td>5dfdebd0a2ed28fc8397f723</td>
+<td>用户 Id</td>
+</tr>
+<tr>
+<td>groupid</td>
+<td>5dff912877612a4a58a0e6af</td>
+<td>用户组 Id</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-19">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回消息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回描述</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> user</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回用户JSON信息</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h2 id="u4e3au7528u6237u65b0u589eu7d22u5f150a3ca20id3du4e3au7528u6237u65b0u589eu7d22u5f153e203ca3e">为用户新增索引
+<a id=为用户新增索引> </a></h2>
+<p></p>
+<h3 id="-20">基本信息</h3>
+<p><strong>Path：</strong> /rbac/users/{userid}/indexs</p>
+<p><strong>Method：</strong> POST</p>
+<p><strong>接口描述：</strong></p>
+<p>返回值示例：</p>
+<pre><code>{
+  "code": 0,
+  "message": "success",
+  "description": "成功",
+  "user": [
+    "{\"typeid\": \"1B4E705F3305F7FB\", \"value\": \"5dfdebd0a2ed28fc8397f723\", \"description\": \"\\u901a\\u8fc7\\u7528\\u6237ID\\u7d22\\u5f15\", \"extension\": {}}",
+    "{\"typeid\": \"0C6B4A2B8AAEDDBC\", \"value\": \"\\u6842\\u5c0f\\u65b9\", \"description\": \"\\u7528\\u6237\\u540d\\u7d22\\u5f15\", \"extension\": {}}",
+    "{\"typeid\": \"EAC366AD5FEA1B28\", \"value\": \"guiqiqi187@gmail.com\", \"description\": \"\\u901a\\u8fc7\\u90ae\\u4ef6\\u7d22\\u5f15\", \"extension\": {\"verified\": false}}"
+  ]
+}
+</code></pre>
+<h3 id="-21">请求参数</h3>
+<p><strong>Headers</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数值</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>application/x-www-form-urlencoded</td>
+<td>是</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>路径参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>userid</td>
+<td>/users/<a href="string:userid">string:userid</a>/indexs</td>
+<td>用户 userid</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数类型</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>typeid</td>
+<td>text</td>
+<td>是</td>
+<td>EAC366AD5FEA1B28</td>
+<td>索引类型 Id</td>
+</tr>
+<tr>
+<td>value</td>
+<td>text</td>
+<td>是</td>
+<td>guiqiqi187@gmail.com</td>
+<td>索引值</td>
+</tr>
+<tr>
+<td>extension</td>
+<td>text</td>
+<td>否</td>
+<td>{&quot;verified&quot;: false}</td>
+<td>扩展信息JSON字串</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-22">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回信息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回说明</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> indexs</span></td><td key=1><span>string []</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">增加之后的索引列表</span></td><td key=5><p key=3><span style="font-weight: '700'">item 类型: </span><span>string</span></p></td></tr><tr key=array-125><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> </span></td><td key=1><span></span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap"></span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h2 id="u66f4u65b0u7528u6237u4e2au4ebau4fe1u606f0a3ca20id3du66f4u65b0u7528u6237u4e2au4ebau4fe1u606f3e203ca3e">更新用户个人信息
+<a id=更新用户个人信息> </a></h2>
+<p></p>
+<h3 id="-23">基本信息</h3>
+<p><strong>Path：</strong> /rbac/users/{userid}/informations</p>
+<p><strong>Method：</strong> PUT</p>
+<p><strong>接口描述：</strong></p>
+<p>调用此API时请直接将所有的信息以键值对的形式保存在 `form` 中即可</p>
+<h3 id="-24">请求参数</h3>
+<p><strong>Headers</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数值</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>application/x-www-form-urlencoded</td>
+<td>是</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>路径参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>userid</td>
+<td>5dfdebd0a2ed28fc8397f723</td>
+<td>用户的 userid</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数类型</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>名字</td>
+<td>text</td>
+<td>否</td>
+<td>桂小方</td>
+<td>任意参数对</td>
+</tr>
+<tr>
+<td>性别</td>
+<td>text</td>
+<td>否</td>
+<td>男</td>
+<td>任意参数对</td>
+</tr>
+<tr>
+<td>女朋友</td>
+<td>text</td>
+<td>否</td>
+<td>没有，不要想了</td>
+<td>任意参数对</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-25">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5><p key=5><span style="font-weight: '700'">mock: </span><span>@natural</span></p></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回消息</span></td><td key=5><p key=5><span style="font-weight: '700'">mock: </span><span>@string</span></p></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回描述</span></td><td key=5><p key=5><span style="font-weight: '700'">mock: </span><span>@string</span></p></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> user</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">用户JSON信息</span></td><td key=5><p key=5><span style="font-weight: '700'">mock: </span><span>@string</span></p></td></tr>
+               </tbody>
+              </table>
+<h2 id="u66f4u65b0u7528u6237u72b6u60010a3ca20id3du66f4u65b0u7528u6237u72b6u60013e203ca3e">更新用户状态
+<a id=更新用户状态> </a></h2>
+<p></p>
+<h3 id="-26">基本信息</h3>
+<p><strong>Path：</strong> /rbac/users/{userid}/status</p>
+<p><strong>Method：</strong> PUT</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-27">请求参数</h3>
+<p><strong>Headers</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数值</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>application/x-www-form-urlencoded</td>
+<td>是</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>路径参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>userid</td>
+<td>5dfdebd0a2ed28fc8397f723</td>
+<td>用户 userid</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数类型</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>status</td>
+<td>text</td>
+<td>是</td>
+<td>true</td>
+<td>更新之后的用户状态</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-28">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5><p key=5><span style="font-weight: '700'">mock: </span><span>@natural</span></p></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回信息</span></td><td key=5><p key=5><span style="font-weight: '700'">mock: </span><span>@string</span></p></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回描述</span></td><td key=5><p key=5><span style="font-weight: '700'">mock: </span><span>@string</span></p></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> user</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">用户JSON信息</span></td><td key=5><p key=5><span style="font-weight: '700'">mock: </span><span>@string</span></p></td></tr>
+               </tbody>
+              </table>
+<h2 id="u5220u9664u7528u62370a3ca20id3du5220u9664u7528u62373e203ca3e">删除用户
+<a id=删除用户> </a></h2>
+<p></p>
+<h3 id="-29">基本信息</h3>
+<p><strong>Path：</strong> /rbac/users/{userid}</p>
+<p><strong>Method：</strong> DELETE</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-30">请求参数</h3>
+<p><strong>Headers</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数值</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>application/x-www-form-urlencoded</td>
+<td>是</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>路径参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>userid</td>
+<td>5e4e9ce45745485a14e0401c</td>
+<td>用户 userid</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-31">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回信息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回描述</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> status</span></td><td key=1><span>boolean</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">操作状态</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h2 id="u5220u9664u7528u6237u7279u5b9au7d22u5f150a3ca20id3du5220u9664u7528u6237u7279u5b9au7d22u5f153e203ca3e">删除用户特定索引
+<a id=删除用户特定索引> </a></h2>
+<p></p>
+<h3 id="-32">基本信息</h3>
+<p><strong>Path：</strong> /rbac/users/{userid}/indexs/{typeid}</p>
+<p><strong>Method：</strong> DELETE</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-33">请求参数</h3>
+<p><strong>Headers</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数值</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>application/x-www-form-urlencoded</td>
+<td>是</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>路径参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>userid</td>
+<td>5dfdebd0a2ed28fc8397f723</td>
+<td>用户 userid</td>
+</tr>
+<tr>
+<td>typeid</td>
+<td>0C6B4A2B8AAEDDBC</td>
+<td>指定的索引类型</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-34">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回消息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回值</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> indexs</span></td><td key=1><span>string []</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">删除过后的索引列表</span></td><td key=5><p key=3><span style="font-weight: '700'">item 类型: </span><span>string</span></p></td></tr><tr key=array-126><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> </span></td><td key=1><span></span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap"></span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h2 id="u79fbu51fau7528u6237u7ec40a3ca20id3du79fbu51fau7528u6237u7ec43e203ca3e">移出用户组
+<a id=移出用户组> </a></h2>
+<p></p>
+<h3 id="-35">基本信息</h3>
+<p><strong>Path：</strong> /rbac/users/{userid}/groups/{groupid}</p>
+<p><strong>Method：</strong> DELETE</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-36">请求参数</h3>
+<p><strong>Headers</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数值</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>application/x-www-form-urlencoded</td>
+<td>是</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>路径参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>userid</td>
+<td>5dfdebd0a2ed28fc8397f723</td>
+<td>用户 Id</td>
+</tr>
+<tr>
+<td>groupid</td>
+<td>5dff912877612a4a58a0e6af</td>
+<td>用户组 Id</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-37">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回消息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回描述</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> status</span></td><td key=1><span>boolean</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">操作状态</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h2 id="u67e5u8be2u7d22u5f15u7c7bu578bu4fe1u606f0a3ca20id3du67e5u8be2u7d22u5f15u7c7bu578bu4fe1u606f3e203ca3e">查询索引类型信息
+<a id=查询索引类型信息> </a></h2>
+<p></p>
+<h3 id="-38">基本信息</h3>
+<p><strong>Path：</strong> /rbac/users/indexs</p>
+<p><strong>Method：</strong> GET</p>
+<p><strong>接口描述：</strong></p>
+<p>返回值类似如下：</p>
+<pre><code>{
+  "code": 0,
+  "message": "success",
+  "description": "成功",
+  "indexs": {
+    "Id": [
+      "1B4E705F3305F7FB",
+      "通过用户ID索引"
+    ],
+    "Mail": [
+      "EAC366AD5FEA1B28",
+      "通过邮件索引"
+    ],
+    "Name": [
+      "0C6B4A2B8AAEDDBC",
+      "通过用户名索引"
+    ],
+    "Phone": [
+      "5E4BC1ABDDAACA4A",
+      "通过手机号索引"
+    ]
+  }
+}
+</code></pre>
+<h3 id="-39">请求参数</h3>
+<h3 id="-40">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回信息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回描述</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> indexs</span></td><td key=1><span>object</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap"></span></td><td key=5></td></tr><tr key=0-3-0><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> Id</span></td><td key=1><span>string []</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">索引名称</span></td><td key=5><p key=3><span style="font-weight: '700'">item 类型: </span><span>string</span></p></td></tr><tr key=array-127><td key=0><span style="padding-left: 40px"><span style="color: #8c8a8a">├─</span> </span></td><td key=1><span></span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap"></span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h1 id="u7528u6237u7ec4u63a5u53e3">用户组接口</h1>
+<p></p>
+<h2 id="u521bu5efau7528u6237u7ec40a3ca20id3du521bu5efau7528u6237u7ec43e203ca3e">创建用户组
+<a id=创建用户组> </a></h2>
+<p></p>
+<h3 id="-41">基本信息</h3>
+<p><strong>Path：</strong> /rbac/groups</p>
+<p><strong>Method：</strong> POST</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-42">请求参数</h3>
+<p><strong>Headers</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数值</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>application/x-www-form-urlencoded</td>
+<td>是</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数类型</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>text</td>
+<td>是</td>
+<td>单身狗们</td>
+<td>用户组名称</td>
+</tr>
+<tr>
+<td>permission</td>
+<td>text</td>
+<td>是</td>
+<td>1</td>
+<td>用户组权限 - 整形</td>
+</tr>
+<tr>
+<td>description</td>
+<td>text</td>
+<td>是</td>
+<td>别怕，让我留在你身边，都陪你度过</td>
+<td>用户组描述</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-43">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回消息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回描述</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> group</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">用户组JSON信息</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h2 id="u5220u9664u7528u6237u7ec40a3ca20id3du5220u9664u7528u6237u7ec43e203ca3e">删除用户组
+<a id=删除用户组> </a></h2>
+<p></p>
+<h3 id="-44">基本信息</h3>
+<p><strong>Path：</strong> /rbac/groups/{groupid}</p>
+<p><strong>Method：</strong> DELETE</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-45">请求参数</h3>
+<p><strong>Headers</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数值</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>application/x-www-form-urlencoded</td>
+<td>是</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>路径参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>groupid</td>
+<td>5dff912877612a4a58a0e6af</td>
+<td>用户组 groupid</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-46">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回消息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回描述</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> status</span></td><td key=1><span>boolean</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">操作状态</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h2 id="u6279u91cfu83b7u53d6u7528u6237u7ec40a3ca20id3du6279u91cfu83b7u53d6u7528u6237u7ec43e203ca3e">批量获取用户组
+<a id=批量获取用户组> </a></h2>
+<p></p>
+<h3 id="-47">基本信息</h3>
+<p><strong>Path：</strong> /rbac/groups</p>
+<p><strong>Method：</strong> GET</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-48">请求参数</h3>
+<h3 id="-49">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回消息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回描述</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> groups</span></td><td key=1><span>string []</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">用户组信息</span></td><td key=5><p key=3><span style="font-weight: '700'">item 类型: </span><span>string</span></p></td></tr><tr key=array-128><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> </span></td><td key=1><span></span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">用户组JSON字符串</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h2 id="u66f4u65b0u7528u6237u5217u88680a3ca20id3du66f4u65b0u7528u6237u5217u88683e203ca3e">更新用户列表
+<a id=更新用户列表> </a></h2>
+<p></p>
+<h3 id="-50">基本信息</h3>
+<p><strong>Path：</strong> /rbac/groups/{groupid}/users</p>
+<p><strong>Method：</strong> PUT</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-51">请求参数</h3>
+<p><strong>Headers</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数值</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>application/x-www-form-urlencoded</td>
+<td>是</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>路径参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>groupid</td>
+<td>5e50b479b3834e3d451a6588</td>
+<td>用户组 groupid</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数类型</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>users</td>
+<td>text</td>
+<td>是</td>
+<td>[&quot;5dfdebd0a2ed28fc8397f723&quot;, &quot;5e502981d4818c9d0c79163f&quot;]</td>
+<td>用户 userid 列表</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-52">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回信息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回描述</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> group</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">更新过后的 group JSON 信息</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h2 id="u66f4u65b0u7528u6237u7ec4u4fe1u606f0a3ca20id3du66f4u65b0u7528u6237u7ec4u4fe1u606f3e203ca3e">更新用户组信息
+<a id=更新用户组信息> </a></h2>
+<p></p>
+<h3 id="-53">基本信息</h3>
+<p><strong>Path：</strong> /rbac/groups/{groupid}</p>
+<p><strong>Method：</strong> PUT</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-54">请求参数</h3>
+<p><strong>Headers</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数值</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>application/x-www-form-urlencoded</td>
+<td>是</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>路径参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>groupid</td>
+<td>5e50b479b3834e3d451a6588</td>
+<td>用户组 groupid</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数类型</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>text</td>
+<td>是</td>
+<td>单身狗们</td>
+<td>新的用户组名称</td>
+</tr>
+<tr>
+<td>permission</td>
+<td>text</td>
+<td>是</td>
+<td>2</td>
+<td>新的用户组权限</td>
+</tr>
+<tr>
+<td>description</td>
+<td>text</td>
+<td>是</td>
+<td>最渺小的我，有大大的梦</td>
+<td>新的用户组描述</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-55">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回消息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回描述</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> group</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">新的用户组JSON信息</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h2 id="u67e5u8be2u5355u4e2au7528u6237u7ec420-20u6839u636e20groupid0a3ca20id3du67e5u8be2u5355u4e2au7528u6237u7ec420-20u6839u636e20groupid3e203ca3e">查询单个用户组 - 根据 groupid
+<a id=查询单个用户组 - 根据 groupid> </a></h2>
+<p></p>
+<h3 id="-56">基本信息</h3>
+<p><strong>Path：</strong> /rbac/groups/{groupid}</p>
+<p><strong>Method：</strong> GET</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-57">请求参数</h3>
+<p><strong>路径参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>groupid</td>
+<td>5dff912877612a4a58a0e6af</td>
+<td>用户组 groupid</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-58">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回信息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回描述</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> group</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">用户组JSON信息</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h2 id="u67e5u8be2u5355u4e2au7528u6237u7ec420-20u6839u636e20name0a3ca20id3du67e5u8be2u5355u4e2au7528u6237u7ec420-20u6839u636e20name3e203ca3e">查询单个用户组 - 根据 name
+<a id=查询单个用户组 - 根据 name> </a></h2>
+<p></p>
+<h3 id="-59">基本信息</h3>
+<p><strong>Path：</strong> /rbac/groups/name/{name}</p>
+<p><strong>Method：</strong> GET</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-60">请求参数</h3>
+<p><strong>路径参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>测试用户组</td>
+<td>用户组名</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-61">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回信息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回描述</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> groups</span></td><td key=1><span>string []</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">用户组列表</span></td><td key=5><p key=3><span style="font-weight: '700'">item 类型: </span><span>string</span></p></td></tr><tr key=array-129><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> </span></td><td key=1><span></span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">用户组JSON字符串</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+
+            <footer class="m-footer">
+              <p>Build by <a href="https://ymfe.org/">YMFE</a>.</p>
+            </footer>
+          </div>
+        </div>
+      </body>
+      </html>
+      

@@ -20,7 +20,7 @@ from ...rbac.functions import user as functions
 
 
 @rbac.route("/users", methods=["GET"])
-@wrapper.require("leaf.views.rbac.user.batch")
+@wrapper.require("leaf.views.rbac.user.get")
 @wrapper.wrap("users")
 def get_batch_users() -> List[User]:
     """批量获取用户信息 - 暂时只能根据ID正向排序"""
@@ -42,7 +42,7 @@ def get_user_byid(userid: str) -> User:
 
 
 @rbac.route("/users/<string:indexid>/<string:index>", methods=["GET"])
-@wrapper.require("leaf.views.rbac.user.query")
+@wrapper.require("leaf.views.rbac.user.get")
 @wrapper.wrap("users")
 def get_user_byindex(indexid: str, index: str) -> User:
     """根据用户 Index 查询用户"""
@@ -92,6 +92,16 @@ def update_user_status(userid: str) -> User:
     return user.save()
 
 
+@rbac.route("/users/<string:userid>/groups/<string:groupid>", methods=["POST"])
+@wrapper.require("leaf.views.rbac.user.update", checkuser=True)
+@wrapper.wrap("user")
+def add_user_to_group(userid: str, groupid: str) -> User:
+    """将用户添加至用户组"""
+    groupid = validator.objectid(groupid)
+    userid = validator.operator(userid)
+    return functions.Create.group(userid, groupid)
+
+
 @rbac.route("/users/<string:userid>/indexs", methods=["POST"])
 @wrapper.require("leaf.views.rbac.user.update", checkuser=True)
 @wrapper.wrap("indexs")
@@ -132,6 +142,17 @@ def delete_user(userid: str) -> bool:
     userid = validator.operator(userid)
     user: User = functions.Retrieve.byid(userid)
     user.delete()
+    return True
+
+
+@rbac.route("/users/<string:userid>/groups/<string:groupid>", methods=["DELETE"])
+@wrapper.require("leaf.views.rbac.user.update", checkuser=True)
+@wrapper.wrap("status")
+def remove_user_from_group(userid: str, groupid: str) -> bool:
+    """将用户从组中移除"""
+    groupid = validator.objectid(groupid)
+    userid = validator.operator(userid)
+    functions.Delete.group(userid, groupid)
     return True
 
 
