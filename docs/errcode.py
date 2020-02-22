@@ -1,122 +1,77 @@
 """
-用来统计 Leaf 系统中使用了哪一些 Errcode
-防止使用冲突, 并且可以计算颁发 Errcode 给模块
+错误代码管理器:
+    管理现有的错误代码与描述
+    为新的请求计算颁发错误代码
+    生成错误代码描述文档
 """
 
-import atexit
-from ast import literal_eval
-from typing import IO, Set, NoReturn, Tuple
+# 将文件路径向上转移
+import argparse as _argparse
+from collections import namedtuple as _namedtuple
+from typing import List as _List
+from typing import Dict as _Dict
 
-from leaf.core import error
-from leaf.core.tools import file
+# pylint: disable=wrong-import-position
+__import__("os").chdir("..")
+from leaf.core import error as _error
 
+# 设定错误信息存储类
+ErrorInfo = _namedtuple("ErrorInfo", ("description", "module"))
 
-# 系统错误码范围
-__CODE_RANGE = range(
-    error.MIN_LEAF_ERRCODE,
-    error.MAX_LEAF_ERRCODE
-)
-
-# 配置文件
-__CONF_FILE = "errcode.ini"
-
-
-class Recorder:
-    """错误码记录器"""
-
-    def __init__(self, filename: str):
-        """
-        记录器构造函数:
-            filename: 配置文件名
-        """
-        self.__filename: str = filename
-        self.__handler: IO = open(filename, 'r+', encoding="utf-8")
-        self.load()
-
-    @property
-    def codecs(self) -> set:
-        """返回已经使用的codecs"""
-        return self.__codes
-
-    @property
-    def config(self) -> dict:
-        """返回当前配置"""
-        return self.__config
-
-    def load(self) -> dict:
-        """
-        读取当前配置:
-            config: 当前的配置
-            codes: 已经被占用的codes
-        """
-        self.__config = file.read_config(self.__handler)
-        self.__codes = set()
-
-        for _holder, setting in self.__config.items():
-            self.__codes.update(literal_eval(setting["codes"]))
-
-        return self.__config
-
-    def add(self, holder: str, codes: Set[int], description: str) -> NoReturn:
-        """
-        增加一条错误代码记录:
-            holder: 错误代码被颁发给谁了
-            codes: 所需要占用的错误代码Set
-            description: 描述
-        """
-        # 当已经有记录需要添加一部分错误码时
-        if holder in self.__config.keys():
-            _codestr = self.__config[holder]["codes"]
-            held: Set[int] = literal_eval(_codestr)
-            held = str(held.union(codes))
-            file.edit_config(self.__handler, (holder, "codes", held))
-            self.load()
-            return
-
-        # 当不存在时新建记录
-        file.write_config(self.__handler, {
-            holder: {
-                "codes": str(codes),
-                "description": description
-            }
-        })
-        self.load()
-
-    def check(self, code: int) -> bool:
-        """检查code是否被占用"""
-        return code in self.__codes
-
-    def issue(self, count: int) -> Tuple[int, int]:
-        """
-        颁发一个错误代码段给程序:
-            count: 需要的错误代码数量
-        """
-        # 如果是空直接返回
-        if not self.__codes:
-            return (error.MIN_LEAF_ERRCODE,
-                    error.MIN_LEAF_ERRCODE + count)
-
-        codes = sorted(self.__codes)
-        for index in range(len(codes) - 1):
-            if (codes[index + 1] - codes[index]) > count:
-                return (codes[index], codes[index + 1])
-
-        # 检查最后一个区段
-        if codes[-1] - codes[-2] > count:
-            return (codes[-2], codes[-1])
-
-        # 无可用
-        return (0, 0)
-
-    def save(self) -> NoReturn:
-        """保存设置文件"""
-        self.close()
-        self.__handler = open(self.__filename, 'r+', encoding="utf-8")
-
-    def close(self) -> NoReturn:
-        """关闭设置文件句柄"""
-        self.__handler.close()
+# 获取 error.Error 的所有子类信息
+__informations: _Dict[int, str] = dict()
 
 
-recorder = Recorder(__CONF_FILE)
-atexit.register(recorder.close)
+def reload():
+    """利用反射导出所有的错误信息"""
+    __subclasses: _List[_error.Error] = _error.Error.__subclasses__()
+    for _error_class in __subclasses:
+        info = ErrorInfo(_error_class.description, _error_class.__module__)
+        __informations[_error_class.code] = info
+
+
+# markdown 表头
+__HEADER = \
+    """
+以下是 _Leaf_ 的现有的所有错误代码及其描述:
+
+| 错误代码 | 错误描述 | 所属模块 |
+| :----: | | :----: | :----: |
+"""
+
+
+# 命令行参数接收
+__parser = _argparse.ArgumentParser()
+__parser.add_argument("--export", "-e", default="errcode.md",
+                      help="export 参数表示导出的文件名, 默认为: errcode.md")
+
+
+def __makeline(key: int, info: ErrorInfo) -> str:
+    """制作新的一行"""
+    return "| " + str(key) + " | " + \
+        info.description + " | " + info.module + " |"
+
+
+def export(filename: str) -> _Dict[int, ErrorInfo]:
+    """导出文件"""
+
+    # 切换到当前目录
+    __import__("os").chdir("docs")
+
+    content_list = list()
+    for key, value in __informations.items():
+        content_list.append(__makeline(key, value))
+
+    with open(filename, 'w') as handler:
+        content = __HEADER + '\n'.join(content_list)
+        handler.write(content)
+
+    print("Exported errcodes to file '" + filename + "'.")
+    __import__("os").chdir("..")
+    return __informations
+
+
+reload()
+if __name__ == "__main__":
+    args = __parser.parse_args()
+    export(args.export)
