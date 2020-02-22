@@ -8,10 +8,10 @@ from flask import request
 from . import rbac
 
 from ...api import wrapper
-from ...rbac.model import User
+from ...core.tools import web
 from ...rbac.model import Group
 from ...rbac.functions import group as funcs
-from ...rbac.functions import user as user_funcs
+from ...rbac.functions import user as userfuncs
 
 
 @rbac.route("/groups/<string:groupid>", methods=["GET"])
@@ -31,7 +31,7 @@ def list_all_groups() -> List[Group]:
     return Group.objects
 
 
-@rbac.route("/groups/<string:name>", methods=["GET"])
+@rbac.route("/groups/name/<string:name>", methods=["GET"])
 @wrapper.require("leaf.views.rbac.group.query")
 @wrapper.wrap("groups")
 def query_group_byname(name: str) -> List[Group]:
@@ -80,20 +80,24 @@ def update_group(groupid: str) -> Group:
 @wrapper.require("leaf.views.rbac.group.edituser")
 @wrapper.wrap("group")
 def add_users_to_group(groupid: str) -> Group:
-    """编辑用户组中的用户"""
+    """
+    编辑用户组中的用户:
+        计算所有增加的用户 - 对所有的增加用户进行加组操作
+        计算所有被移出组的用户 - 对所有的移出用户进行移出操作
+    """
     group: Group = funcs.Retrieve.byid(groupid)
-    users: List[User] = request.form.getlist("users", type=ObjectId)
+    raw: List[str] = [str(user) for user in group.users]
+    new: List[str] = web.JSONparser(request.form.get("users"))
 
-    # 计算多增加的那一部分 - 用集合的差计算
-    # 原有用户列表 {1, 2, 3} - 现有新用户列表 {2, 3, 4}
-    # 需要检查的仅为 {4} = {2, 3, 4} - {1, 2, 3}
-    diff: Set[ObjectId] = set(users) - set(group.users)
+    # 集合计算增加与移除的部分
+    removed: Set[ObjectId] = set(raw) - set(new)
+    added: Set[ObjectId] = set(new) - set(raw)
 
-    # 检查是否所有的用户都存在 - 给用户添加组信息
-    for userid in diff:
-        user: User = user_funcs.Retrieve.byid(userid)
-        user.groups.append(group)
-        user.save()
+    # 给用户添加组信息
+    for userid in added:
+        userfuncs.Create.group(userid, groupid)
+    for userid in removed:
+        userfuncs.Delete.group(userid, groupid)
 
-    group.users = users
-    return group.save()
+    # 返回更新之后的用户组信息
+    return funcs.Retrieve.byid(groupid)
