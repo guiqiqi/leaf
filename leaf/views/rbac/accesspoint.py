@@ -51,12 +51,12 @@ def create_accesspoint() -> AccessPoint:
     """创建一个访问点信息"""
     pointname: str = request.form.get("pointname", type=str, default='')
     required: int = request.form.get("required", type=int, default=0)
-    strict: bool = request.form.get("strict", type=bool, default=False)
+    strict: bool = bool(request.form.get("strict", type=int, default=0))
     description: str = request.form.get("description", type=str, default='')
 
     try:
-        point: AccessPoint = AccessPoint(
-            pointname, required, strict, description)
+        point: AccessPoint = AccessPoint(pointname=pointname, required=required,
+                                         strict=strict, description=description)
         return point.save()
     except NotUniqueError as _error:
         raise error.AccessPointNameConflicting(pointname)
@@ -68,7 +68,7 @@ def create_accesspoint() -> AccessPoint:
 def update_accesspoint(pointname: str) -> AccessPoint:
     """更新某一个访问点信息"""
     required: int = request.form.get("required", type=int, default=0)
-    strict: bool = request.form.get("strict", type=bool, default=False)
+    strict: bool = bool(request.form.get("strict", type=int, default=0))
     description: str = request.form.get("description", type=str, default='')
 
     point: AccessPoint = funcs.Retrieve.byname(pointname)
