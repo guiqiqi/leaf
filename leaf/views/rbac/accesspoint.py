@@ -7,8 +7,9 @@ from bson import ObjectId
 from mongoengine import NotUniqueError
 
 from . import rbac
-
 from ...api import wrapper
+from ...core.tools import web
+
 from ...rbac import error
 from ...rbac.model import AccessPoint
 from ...rbac.functions import user
@@ -25,7 +26,7 @@ def query_accesspoint_byname(pointname: str) -> AccessPoint:
 
 
 @rbac.route("/accesspoints", methods=["GET"])
-@wrapper.require("leaf.views.rbac.accesspoint.getall")
+@wrapper.require("leaf.views.rbac.accesspoint.get")
 @wrapper.wrap("accesspoints")
 def getall_accesspoints() -> List[AccessPoint]:
     """返回所有的访问点信息"""
@@ -80,18 +81,21 @@ def update_accesspoint(pointname: str) -> AccessPoint:
     return point.save()
 
 
-@rbac.route("/accesspoints/<string:pointname>/exception", methods=["PUT"])
-@wrapper.require("leaf.views.rbac.accesspoint.exception")
+@rbac.route("/accesspoints/<string:pointname>/exceptions", methods=["PUT"])
+@wrapper.require("leaf.views.rbac.accesspoint.update")
 @wrapper.wrap("accesspoint")
-def add_exception_user_for_accesspoint(pointname: str) -> AccessPoint:
+def set_exceptions_user_for_accesspoint(pointname: str) -> AccessPoint:
     """为指定的 AccessPoint 管理特权用户"""
     point: AccessPoint = funcs.Retrieve.byname(pointname)
-    exceptions: List[str] = request.form.getlist("exceptions", type=ObjectId)
-    diff: Set[ObjectId] = set(exceptions) - set(point.exception)
+    raw: List[str] = [str(user) for user in point.exceptions]
+    new: List[str] = web.JSONparser(request.form.get("users"))
+    diff: Set[ObjectId] = set(new) - set(raw)
 
     # 检查每一个用户是否都存在
+    exceptions = list()
     for userid in diff:
         user.Retrieve.byid(userid)
+        exceptions.append(ObjectId(userid))
 
-    point.exception = exceptions
+    point.exceptions = exceptions
     return point.save()

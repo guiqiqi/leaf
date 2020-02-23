@@ -366,7 +366,18 @@ body > pre {
         </div>
         <div class="g-doc">
           <div class="table-of-contents"><ul><li><a href="#jwt20tokenu7ba1u7406u63a5u53e3">JWT Token管理接口</a><ul><li><a href="#u8bf7u6c4220jwt-token0a3ca20id3du8bf7u6c4220jwt-token3e203ca3e">请求 JWT-Token
-<a id=请求 JWT-Token> </a></a></li></ul></li><li><a href="#u7528u6237u63a5u53e3">用户接口</a><ul><li><a href="#u6279u91cfu83b7u53d6u7528u62370a3ca20id3du6279u91cfu83b7u53d6u7528u62373e203ca3e">批量获取用户
+<a id=请求 JWT-Token> </a></a></li></ul></li><li><a href="#u8ba4u8bc1u7ba1u7406u63a5u53e3">认证管理接口</a><ul><li><a href="#u521bu5efau8ba4u8bc1u6587u68630a3ca20id3du521bu5efau8ba4u8bc1u6587u68633e203ca3e">创建认证文档
+<a id=创建认证文档> </a></a></li><li><a href="#u5220u9664u7528u6237u67d0u8ba4u8bc1u6587u68630a3ca20id3du5220u9664u7528u6237u67d0u8ba4u8bc1u6587u68633e203ca3e">删除用户某认证文档
+<a id=删除用户某认证文档> </a></a></li><li><a href="#u66f4u6539u5bc6u78010a3ca20id3du66f4u6539u5bc6u78013e203ca3e">更改密码
+<a id=更改密码> </a></a></li><li><a href="#u66f4u65b0u8ba4u8bc1u6587u6863u72b6u60010a3ca20id3du66f4u65b0u8ba4u8bc1u6587u6863u72b6u60013e203ca3e">更新认证文档状态
+<a id=更新认证文档状态> </a></a></li><li><a href="#u67e5u8be2u8ba4u8bc1u4e0eu7d22u5f15u6620u5c040a3ca20id3du67e5u8be2u8ba4u8bc1u4e0eu7d22u5f15u6620u5c043e203ca3e">查询认证与索引映射
+<a id=查询认证与索引映射> </a></a></li></ul></li><li><a href="#u63a5u5165u70b9u7ba1u7406u63a5u53e3">接入点管理接口</a><ul><li><a href="#u521bu5efau63a5u5165u70b90a3ca20id3du521bu5efau63a5u5165u70b93e203ca3e">创建接入点
+<a id=创建接入点> </a></a></li><li><a href="#u5220u9664u63a5u5165u70b90a3ca20id3du5220u9664u63a5u5165u70b93e203ca3e">删除接入点
+<a id=删除接入点> </a></a></li><li><a href="#u66f4u65b0u63a5u5165u70b90a3ca20id3du66f4u65b0u63a5u5165u70b93e203ca3e">更新接入点
+<a id=更新接入点> </a></a></li><li><a href="#u67e5u8be2u63a5u5165u70b90a3ca20id3du67e5u8be2u63a5u5165u70b93e203ca3e">查询接入点
+<a id=查询接入点> </a></a></li><li><a href="#u7ba1u7406u63a5u5165u70b9u7279u6743u7528u62370a3ca20id3du7ba1u7406u63a5u5165u70b9u7279u6743u7528u62373e203ca3e">管理接入点特权用户
+<a id=管理接入点特权用户> </a></a></li><li><a href="#u83b7u53d6u6240u6709u63a5u5165u70b90a3ca20id3du83b7u53d6u6240u6709u63a5u5165u70b93e203ca3e">获取所有接入点
+<a id=获取所有接入点> </a></a></li></ul></li><li><a href="#u7528u6237u63a5u53e3">用户接口</a><ul><li><a href="#u6279u91cfu83b7u53d6u7528u62370a3ca20id3du6279u91cfu83b7u53d6u7528u62373e203ca3e">批量获取用户
 <a id=批量获取用户> </a></a></li><li><a href="#u67e5u8be2u5355u4e2au7528u623720-20u6839u636e20userid0a3ca20id3du67e5u8be2u5355u4e2au7528u623720-20u6839u636e20userid3e203ca3e">查询单个用户 - 根据 userid
 <a id=查询单个用户 - 根据 userid> </a></a></li><li><a href="#u67e5u8be2u7528u623720-20u6839u636eu7528u623720index0a3ca20id3du67e5u8be2u7528u623720-20u6839u636eu7528u623720index3e203ca3e">查询用户 - 根据用户 index
 <a id=查询用户 - 根据用户 index> </a></a></li><li><a href="#u521bu5efau7528u62370a3ca20id3du521bu5efau7528u62373e203ca3e">创建用户
@@ -428,19 +439,13 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
 <p>我们所有的 <code data-backticks="1">API</code> 都是 <code data-backticks="1">RESTful</code> 风格的，而认证则使用了基于 <code data-backticks="1">JWT Token</code> 的认证方案。</p>
 <p>下面是一些<strong>重要的概念</strong>：</p>
 <ul>
-<li>
-<p><code data-backticks="1">ObjectId</code><br>
+<li><code data-backticks="1">ObjectId</code><br>
 我们的文档类都有自己的一个唯一 <code data-backticks="1">id</code>, 一般情况下它是一个长度为 <strong>24</strong> 的十六进制字符串，它们看起来像是这样：<code data-backticks="1">5dfdebd0a2ed28fc8397f723</code><br>
-在前后端的传输过程中可以直接使用这样的字符串指代对应的用户、用户组。</p>
-</li>
-<li>
-<p>角色与用户组<br>
-每一个用户组文档中都包含有一个 <code data-backticks="1">permission</code> 值，用以指代该用户组的权限，而用户组中的用户就拥有这个等级的权限（角色）</p>
-</li>
-<li>
-<p>访问点<br>
-访问点是我们用来对接口进行动态权限管理的工具，每一个访问点 <code data-backticks="1">AccessPoint</code> 文档中都类似这样：</p>
-</li>
+在前后端的传输过程中可以直接使用这样的字符串指代对应的用户、用户组。</li>
+<li>角色与用户组<br>
+每一个用户组文档中都包含有一个 <code data-backticks="1">permission</code> 值，用以指代该用户组的权限，而用户组中的用户就拥有这个等级的权限（角色）</li>
+<li>访问点<br>
+访问点是我们用来对接口进行动态权限管理的工具，每一个访问点 <code data-backticks="1">AccessPoint</code> 文档中都类似这样：</li>
 </ul>
 <pre><code>{
     "_id" : "leaf.plugins.wxtoken.get",
@@ -487,6 +492,10 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
 </code></pre>
 <p>而在提交时请携带索引的 <code data-backticks="1">typeid</code> 与 <code data-backticks="1">value</code> 值。<br>
 而每一个用户都有一个通过 <code data-backticks="1">Id</code> 的索引，此索引<strong>不能被删除/修改</strong>。</p>
+<ul>
+<li>认证文档<br>
+一个认证文档通俗的说就是一种<strong>登陆方式</strong>，在用户创建好对应的索引信息之后可以用索引来创建认证文档</li>
+</ul>
 <p>以上就是四类接口中基础概念的介绍，下面是接口文档 :)</p>
 <h1 id="jwt20tokenu7ba1u7406u63a5u53e3">JWT Token管理接口</h1>
 <p></p>
@@ -566,16 +575,739 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
   </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回消息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回说明</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> token</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回的 JWT-Token</span></td><td key=5></td></tr>
                </tbody>
               </table>
+<h1 id="u8ba4u8bc1u7ba1u7406u63a5u53e3">认证管理接口</h1>
+<p></p>
+<h2 id="u521bu5efau8ba4u8bc1u6587u68630a3ca20id3du521bu5efau8ba4u8bc1u6587u68633e203ca3e">创建认证文档
+<a id=创建认证文档> </a></h2>
+<p></p>
+<h3 id="-5">基本信息</h3>
+<p><strong>Path：</strong> /rbac/auths/{userid}/{typeid}</p>
+<p><strong>Method：</strong> POST</p>
+<p><strong>接口描述：</strong></p>
+<p>在创建身份文档时需要使用用户的口令（也就是密码）来进行验证，不正确时会返回认证错误信息。</p>
+<p>在创建认证文档之后就可以通过给定的索引信息登录了。</p>
+<h3 id="-6">请求参数</h3>
+<p><strong>Headers</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数值</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>application/x-www-form-urlencoded</td>
+<td>是</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>路径参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>userid</td>
+<td>5dfdebd0a2ed28fc8397f723</td>
+<td>用户 userid</td>
+</tr>
+<tr>
+<td>typeid</td>
+<td>0C6B4A2B8AAEDDBC</td>
+<td>用户索引 typeid</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数类型</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>password</td>
+<td>text</td>
+<td>是</td>
+<td>1234567</td>
+<td>用户认证口令 - 需要和之前的认证口令保持一致</td>
+</tr>
+<tr>
+<td>description</td>
+<td>text</td>
+<td>否</td>
+<td>通过用户名认证</td>
+<td>当不给给定时，使用系统内部描述代替</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-7">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回消息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回描述</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> status</span></td><td key=1><span>boolean</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">操作状态</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h2 id="u5220u9664u7528u6237u67d0u8ba4u8bc1u6587u68630a3ca20id3du5220u9664u7528u6237u67d0u8ba4u8bc1u6587u68633e203ca3e">删除用户某认证文档
+<a id=删除用户某认证文档> </a></h2>
+<p></p>
+<h3 id="-8">基本信息</h3>
+<p><strong>Path：</strong> /rbac/auths/{userid}/{index}</p>
+<p><strong>Method：</strong> DELETE</p>
+<p><strong>接口描述：</strong></p>
+<p>不能够删除以用户 <code data-backticks="1">userid</code> 创建的认证文档</p>
+<h3 id="-9">请求参数</h3>
+<p><strong>Headers</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数值</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>application/x-www-form-urlencoded</td>
+<td>是</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>路径参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>userid</td>
+<td>5dfdebd0a2ed28fc8397f723</td>
+<td>用户 userid</td>
+</tr>
+<tr>
+<td>index</td>
+<td>桂小方</td>
+<td>用户用以创建认证文档的索引值</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-10">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回消息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回描述</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> status</span></td><td key=1><span>boolean</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">操作状态</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h2 id="u66f4u6539u5bc6u78010a3ca20id3du66f4u6539u5bc6u78013e203ca3e">更改密码
+<a id=更改密码> </a></h2>
+<p></p>
+<h3 id="-11">基本信息</h3>
+<p><strong>Path：</strong> /rbac/auths/{userid}/password</p>
+<p><strong>Method：</strong> PUT</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-12">请求参数</h3>
+<p><strong>Headers</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数值</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>application/x-www-form-urlencoded</td>
+<td>是</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>路径参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>userid</td>
+<td>5dfdebd0a2ed28fc8397f723</td>
+<td>用户 userid</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数类型</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>current</td>
+<td>text</td>
+<td>是</td>
+<td>12345678</td>
+<td>用户当前密码</td>
+</tr>
+<tr>
+<td>new</td>
+<td>text</td>
+<td>是</td>
+<td>87654321</td>
+<td>用户新密码</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-13">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回信息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回描述</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> status</span></td><td key=1><span>boolean</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">操作状态</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h2 id="u66f4u65b0u8ba4u8bc1u6587u6863u72b6u60010a3ca20id3du66f4u65b0u8ba4u8bc1u6587u6863u72b6u60013e203ca3e">更新认证文档状态
+<a id=更新认证文档状态> </a></h2>
+<p></p>
+<h3 id="-14">基本信息</h3>
+<p><strong>Path：</strong> /rbac/auths/{index}/status</p>
+<p><strong>Method：</strong> PUT</p>
+<p><strong>接口描述：</strong></p>
+<p>认证文档状态即指的是登陆方式是否被禁用，一旦设置为 <code data-backticks="1">false</code> 用户便无法通过这种方式登录</p>
+<h3 id="-15">请求参数</h3>
+<p><strong>Headers</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数值</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>application/x-www-form-urlencoded</td>
+<td>是</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>路径参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>index</td>
+<td>桂小方</td>
+<td>用户用于创建认证文档的索引值</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数类型</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>status</td>
+<td>text</td>
+<td>是</td>
+<td>true</td>
+<td>更新之后认证文档状态</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-16">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回消息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回描述</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> status</span></td><td key=1><span>boolean</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">操作状态</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h2 id="u67e5u8be2u8ba4u8bc1u4e0eu7d22u5f15u6620u5c040a3ca20id3du67e5u8be2u8ba4u8bc1u4e0eu7d22u5f15u6620u5c043e203ca3e">查询认证与索引映射
+<a id=查询认证与索引映射> </a></h2>
+<p></p>
+<h3 id="-17">基本信息</h3>
+<p><strong>Path：</strong> /rbac/auths/{userid}</p>
+<p><strong>Method：</strong> GET</p>
+<p><strong>接口描述：</strong></p>
+<p>返回信息示例：</p>
+<pre><code>{
+  "code": 0,
+  "message": "success",
+  "description": "成功",
+  "auths": [
+    [
+      "{\"typeid\": \"1B4E705F3305F7FB\", \"value\": \"5dfdebd0a2ed28fc8397f723\", \"description\": \"\\u901a\\u8fc7\\u7528\\u6237ID\\u7d22\\u5f15\", \"extension\": {}}",
+      true
+    ],
+    [
+      "{\"typeid\": \"0C6B4A2B8AAEDDBC\", \"value\": \"\\u6842\\u5c0f\\u65b9\", \"description\": \"\\u7528\\u6237\\u540d\\u7d22\\u5f15\", \"extension\": {}}",
+      false
+    ],
+    [
+      "{\"typeid\": \"EAC366AD5FEA1B28\", \"value\": \"guiqiqi187@gmail.com\", \"description\": \"\\u901a\\u8fc7\\u90ae\\u4ef6\\u7d22\\u5f15\", \"extension\": {\"verified\": false}}",
+      false
+    ]
+  ]
+}
+</code></pre>
+<p>这个 <code data-backticks="1">API</code> 用于查询用户的索引是否被用来创建登陆文档</p>
+<h3 id="-18">请求参数</h3>
+<p><strong>路径参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>userid</td>
+<td>5dfdebd0a2ed28fc8397f723</td>
+<td>用户 userid</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-19">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回信息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回描述</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> auths</span></td><td key=1><span>object []</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">认证信息映射表</span></td><td key=5><p key=3><span style="font-weight: '700'">item 类型: </span><span>object</span></p></td></tr><tr key=0-3-0><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> field_5</span></td><td key=1><span>object</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">索引与状态二元组</span></td><td key=5></td></tr><tr key=0-3-0-0><td key=0><span style="padding-left: 40px"><span style="color: #8c8a8a">├─</span> auth</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">认证文档信息</span></td><td key=5></td></tr><tr key=0-3-0-1><td key=0><span style="padding-left: 40px"><span style="color: #8c8a8a">├─</span> status</span></td><td key=1><span>boolean</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">是否被使用</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h1 id="u63a5u5165u70b9u7ba1u7406u63a5u53e3">接入点管理接口</h1>
+<p></p>
+<h2 id="u521bu5efau63a5u5165u70b90a3ca20id3du521bu5efau63a5u5165u70b93e203ca3e">创建接入点
+<a id=创建接入点> </a></h2>
+<p></p>
+<h3 id="-20">基本信息</h3>
+<p><strong>Path：</strong> /rbac/accesspoints</p>
+<p><strong>Method：</strong> POST</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-21">请求参数</h3>
+<p><strong>Headers</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数值</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>application/x-www-form-urlencoded</td>
+<td>是</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数类型</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pointname</td>
+<td>text</td>
+<td>是</td>
+<td>leaf.views.rbac.accesspoint.create</td>
+<td>接入点名称</td>
+</tr>
+<tr>
+<td>required</td>
+<td>text</td>
+<td>是</td>
+<td>1</td>
+<td>接入点所需权限值 - 整型</td>
+</tr>
+<tr>
+<td>strict</td>
+<td>text</td>
+<td>是</td>
+<td>false</td>
+<td>是否启用严格模式 - 布尔型</td>
+</tr>
+<tr>
+<td>description</td>
+<td>text</td>
+<td>是</td>
+<td>创建接入点接口</td>
+<td>接入点描述</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-22">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回消息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回描述</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> accesspoint</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">接入点JSON信息</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h2 id="u5220u9664u63a5u5165u70b90a3ca20id3du5220u9664u63a5u5165u70b93e203ca3e">删除接入点
+<a id=删除接入点> </a></h2>
+<p></p>
+<h3 id="-23">基本信息</h3>
+<p><strong>Path：</strong> /rbac/accesspoints/{pointname}</p>
+<p><strong>Method：</strong> DELETE</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-24">请求参数</h3>
+<p><strong>Headers</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数值</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>application/x-www-form-urlencoded</td>
+<td>是</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>路径参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pointname</td>
+<td>leaf.plugins.wxtoken.get</td>
+<td>接入点 pointname</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-25">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回信息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回描述</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> status</span></td><td key=1><span>boolean</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">操作状态</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h2 id="u66f4u65b0u63a5u5165u70b90a3ca20id3du66f4u65b0u63a5u5165u70b93e203ca3e">更新接入点
+<a id=更新接入点> </a></h2>
+<p></p>
+<h3 id="-26">基本信息</h3>
+<p><strong>Path：</strong> /rbac/accesspoints/{pointname}</p>
+<p><strong>Method：</strong> PUT</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-27">请求参数</h3>
+<p><strong>Headers</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数值</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>application/x-www-form-urlencoded</td>
+<td>是</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>路径参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pointname</td>
+<td>leaf.views.rbac.accesspoint.create</td>
+<td>接入点名称 pointname</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数类型</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>required</td>
+<td>text</td>
+<td>是</td>
+<td>1</td>
+<td>接入点所需权限值 - 整型</td>
+</tr>
+<tr>
+<td>strict</td>
+<td>text</td>
+<td>是</td>
+<td>false</td>
+<td>是否启用严格模式 - 布尔型</td>
+</tr>
+<tr>
+<td>description</td>
+<td>text</td>
+<td>是</td>
+<td>创建接入点接口</td>
+<td>接入点描述</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-28">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回消息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回描述</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> accesspoint</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">接入点JSON信息</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h2 id="u67e5u8be2u63a5u5165u70b90a3ca20id3du67e5u8be2u63a5u5165u70b93e203ca3e">查询接入点
+<a id=查询接入点> </a></h2>
+<p></p>
+<h3 id="-29">基本信息</h3>
+<p><strong>Path：</strong> /rbac/accesspoints/{pointname}</p>
+<p><strong>Method：</strong> GET</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-30">请求参数</h3>
+<p><strong>路径参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pointname</td>
+<td>leaf.plugins.wxtoken.get</td>
+<td>接入点名称</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-31">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回信息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回描述</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> accesspoint</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">接入点JSON信息</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h2 id="u7ba1u7406u63a5u5165u70b9u7279u6743u7528u62370a3ca20id3du7ba1u7406u63a5u5165u70b9u7279u6743u7528u62373e203ca3e">管理接入点特权用户
+<a id=管理接入点特权用户> </a></h2>
+<p></p>
+<h3 id="-32">基本信息</h3>
+<p><strong>Path：</strong> /rbac/accesspoints/{pointname}/exceptions</p>
+<p><strong>Method：</strong> PUT</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-33">请求参数</h3>
+<p><strong>Headers</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数值</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>application/x-www-form-urlencoded</td>
+<td>是</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>路径参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pointname</td>
+<td>leaf.views.rbac.accesspoint.create</td>
+<td>接入点名称 pointname</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数类型</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>users</td>
+<td>text</td>
+<td>是</td>
+<td>[&quot;5dfdebd0a2ed28fc8397f723&quot;]</td>
+<td>特权用户列表</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-34">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回信息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回描述</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> accesspoint</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">接入点JSON信息</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h2 id="u83b7u53d6u6240u6709u63a5u5165u70b90a3ca20id3du83b7u53d6u6240u6709u63a5u5165u70b93e203ca3e">获取所有接入点
+<a id=获取所有接入点> </a></h2>
+<p></p>
+<h3 id="-35">基本信息</h3>
+<p><strong>Path：</strong> /rbac/accesspoints</p>
+<p><strong>Method：</strong> GET</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-36">请求参数</h3>
+<h3 id="-37">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回信息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回描述</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> accesspoints</span></td><td key=1><span>string []</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">接入点列表</span></td><td key=5><p key=3><span style="font-weight: '700'">item 类型: </span><span>string</span></p></td></tr><tr key=array-167><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> </span></td><td key=1><span></span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">接入点JSON信息</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
 <h1 id="u7528u6237u63a5u53e3">用户接口</h1>
 <p></p>
 <h2 id="u6279u91cfu83b7u53d6u7528u62370a3ca20id3du6279u91cfu83b7u53d6u7528u62373e203ca3e">批量获取用户
 <a id=批量获取用户> </a></h2>
 <p></p>
-<h3 id="-5">基本信息</h3>
+<h3 id="-38">基本信息</h3>
 <p><strong>Path：</strong> /rbac/users</p>
 <p><strong>Method：</strong> GET</p>
 <p><strong>接口描述：</strong></p>
-<h3 id="-6">请求参数</h3>
+<h3 id="-39">请求参数</h3>
 <p><strong>Query</strong></p>
 <table>
 <thead>
@@ -601,23 +1333,23 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
 </tr>
 </tbody>
 </table>
-<h3 id="-7">返回数据</h3>
+<h3 id="-40">返回数据</h3>
 <table>
   <thead class="ant-table-thead">
     <tr>
       <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
     </tr>
-  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5><p key=5><span style="font-weight: '700'">mock: </span><span>@natural</span></p></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回消息</span></td><td key=5><p key=5><span style="font-weight: '700'">mock: </span><span>@string</span></p></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回说明</span></td><td key=5><p key=5><span style="font-weight: '700'">mock: </span><span>@string</span></p></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> users</span></td><td key=1><span>string []</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">用户列表</span></td><td key=5><p key=3><span style="font-weight: '700'">item 类型: </span><span>string</span></p></td></tr><tr key=array-123><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> </span></td><td key=1><span></span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">用户JSON信息</span></td><td key=5></td></tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5><p key=5><span style="font-weight: '700'">mock: </span><span>@natural</span></p></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回消息</span></td><td key=5><p key=5><span style="font-weight: '700'">mock: </span><span>@string</span></p></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回说明</span></td><td key=5><p key=5><span style="font-weight: '700'">mock: </span><span>@string</span></p></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> users</span></td><td key=1><span>string []</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">用户列表</span></td><td key=5><p key=3><span style="font-weight: '700'">item 类型: </span><span>string</span></p></td></tr><tr key=array-168><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> </span></td><td key=1><span></span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">用户JSON信息</span></td><td key=5></td></tr>
                </tbody>
               </table>
 <h2 id="u67e5u8be2u5355u4e2au7528u623720-20u6839u636e20userid0a3ca20id3du67e5u8be2u5355u4e2au7528u623720-20u6839u636e20userid3e203ca3e">查询单个用户 - 根据 userid
 <a id=查询单个用户 - 根据 userid> </a></h2>
 <p></p>
-<h3 id="-8">基本信息</h3>
+<h3 id="-41">基本信息</h3>
 <p><strong>Path：</strong> /rbac/users/{userid}</p>
 <p><strong>Method：</strong> GET</p>
 <p><strong>接口描述：</strong></p>
-<h3 id="-9">请求参数</h3>
+<h3 id="-42">请求参数</h3>
 <p><strong>路径参数</strong></p>
 <table>
 <thead>
@@ -635,7 +1367,7 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
 </tr>
 </tbody>
 </table>
-<h3 id="-10">返回数据</h3>
+<h3 id="-43">返回数据</h3>
 <table>
   <thead class="ant-table-thead">
     <tr>
@@ -647,7 +1379,7 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
 <h2 id="u67e5u8be2u7528u623720-20u6839u636eu7528u623720index0a3ca20id3du67e5u8be2u7528u623720-20u6839u636eu7528u623720index3e203ca3e">查询用户 - 根据用户 index
 <a id=查询用户 - 根据用户 index> </a></h2>
 <p></p>
-<h3 id="-11">基本信息</h3>
+<h3 id="-44">基本信息</h3>
 <p><strong>Path：</strong> /rbac/users/{typeid}/{index}</p>
 <p><strong>Method：</strong> GET</p>
 <p><strong>接口描述：</strong></p>
@@ -657,7 +1389,7 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
 <li>index.value - 索引值，例如用户名之类的索引</li>
 </ul>
 <p>具体的介绍请参照说明文档的 <code data-backticks="1">RBAC</code> 部分，开发者可以通过调用 <code data-backticks="1">api.rbac.other.indexs</code> 来获取所有的用户索引介绍。</p>
-<h3 id="-12">请求参数</h3>
+<h3 id="-45">请求参数</h3>
 <p><strong>路径参数</strong></p>
 <table>
 <thead>
@@ -680,23 +1412,23 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
 </tr>
 </tbody>
 </table>
-<h3 id="-13">返回数据</h3>
+<h3 id="-46">返回数据</h3>
 <table>
   <thead class="ant-table-thead">
     <tr>
       <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
     </tr>
-  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5><p key=5><span style="font-weight: '700'">mock: </span><span>@natural</span></p></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回信息</span></td><td key=5><p key=5><span style="font-weight: '700'">mock: </span><span>@string</span></p></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回描述</span></td><td key=5><p key=5><span style="font-weight: '700'">mock: </span><span>@string</span></p></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> users</span></td><td key=1><span>string []</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">用户信息组</span></td><td key=5><p key=3><span style="font-weight: '700'">item 类型: </span><span>string</span></p></td></tr><tr key=array-124><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> </span></td><td key=1><span></span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">用户JSON信息</span></td><td key=5></td></tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5><p key=5><span style="font-weight: '700'">mock: </span><span>@natural</span></p></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回信息</span></td><td key=5><p key=5><span style="font-weight: '700'">mock: </span><span>@string</span></p></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回描述</span></td><td key=5><p key=5><span style="font-weight: '700'">mock: </span><span>@string</span></p></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> users</span></td><td key=1><span>string []</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">用户信息组</span></td><td key=5><p key=3><span style="font-weight: '700'">item 类型: </span><span>string</span></p></td></tr><tr key=array-169><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> </span></td><td key=1><span></span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">用户JSON信息</span></td><td key=5></td></tr>
                </tbody>
               </table>
 <h2 id="u521bu5efau7528u62370a3ca20id3du521bu5efau7528u62373e203ca3e">创建用户
 <a id=创建用户> </a></h2>
 <p></p>
-<h3 id="-14">基本信息</h3>
+<h3 id="-47">基本信息</h3>
 <p><strong>Path：</strong> /rbac/users</p>
 <p><strong>Method：</strong> POST</p>
 <p><strong>接口描述：</strong></p>
-<h3 id="-15">请求参数</h3>
+<h3 id="-48">请求参数</h3>
 <p><strong>Headers</strong></p>
 <table>
 <thead>
@@ -739,7 +1471,7 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
 </tr>
 </tbody>
 </table>
-<h3 id="-16">返回数据</h3>
+<h3 id="-49">返回数据</h3>
 <table>
   <thead class="ant-table-thead">
     <tr>
@@ -751,11 +1483,11 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
 <h2 id="u52a0u5165u7528u6237u7ec40a3ca20id3du52a0u5165u7528u6237u7ec43e203ca3e">加入用户组
 <a id=加入用户组> </a></h2>
 <p></p>
-<h3 id="-17">基本信息</h3>
+<h3 id="-50">基本信息</h3>
 <p><strong>Path：</strong> /rbac/users/{userid}/groups/{groupid}</p>
 <p><strong>Method：</strong> POST</p>
 <p><strong>接口描述：</strong></p>
-<h3 id="-18">请求参数</h3>
+<h3 id="-51">请求参数</h3>
 <p><strong>Headers</strong></p>
 <table>
 <thead>
@@ -799,7 +1531,7 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
 </tr>
 </tbody>
 </table>
-<h3 id="-19">返回数据</h3>
+<h3 id="-52">返回数据</h3>
 <table>
   <thead class="ant-table-thead">
     <tr>
@@ -811,7 +1543,7 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
 <h2 id="u4e3au7528u6237u65b0u589eu7d22u5f150a3ca20id3du4e3au7528u6237u65b0u589eu7d22u5f153e203ca3e">为用户新增索引
 <a id=为用户新增索引> </a></h2>
 <p></p>
-<h3 id="-20">基本信息</h3>
+<h3 id="-53">基本信息</h3>
 <p><strong>Path：</strong> /rbac/users/{userid}/indexs</p>
 <p><strong>Method：</strong> POST</p>
 <p><strong>接口描述：</strong></p>
@@ -827,7 +1559,7 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
   ]
 }
 </code></pre>
-<h3 id="-21">请求参数</h3>
+<h3 id="-54">请求参数</h3>
 <p><strong>Headers</strong></p>
 <table>
 <thead>
@@ -901,24 +1633,24 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
 </tr>
 </tbody>
 </table>
-<h3 id="-22">返回数据</h3>
+<h3 id="-55">返回数据</h3>
 <table>
   <thead class="ant-table-thead">
     <tr>
       <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
     </tr>
-  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回信息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回说明</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> indexs</span></td><td key=1><span>string []</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">增加之后的索引列表</span></td><td key=5><p key=3><span style="font-weight: '700'">item 类型: </span><span>string</span></p></td></tr><tr key=array-125><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> </span></td><td key=1><span></span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap"></span></td><td key=5></td></tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回信息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回说明</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> indexs</span></td><td key=1><span>string []</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">增加之后的索引列表</span></td><td key=5><p key=3><span style="font-weight: '700'">item 类型: </span><span>string</span></p></td></tr><tr key=array-170><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> </span></td><td key=1><span></span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap"></span></td><td key=5></td></tr>
                </tbody>
               </table>
 <h2 id="u66f4u65b0u7528u6237u4e2au4ebau4fe1u606f0a3ca20id3du66f4u65b0u7528u6237u4e2au4ebau4fe1u606f3e203ca3e">更新用户个人信息
 <a id=更新用户个人信息> </a></h2>
 <p></p>
-<h3 id="-23">基本信息</h3>
+<h3 id="-56">基本信息</h3>
 <p><strong>Path：</strong> /rbac/users/{userid}/informations</p>
 <p><strong>Method：</strong> PUT</p>
 <p><strong>接口描述：</strong></p>
 <p>调用此API时请直接将所有的信息以键值对的形式保存在 `form` 中即可</p>
-<h3 id="-24">请求参数</h3>
+<h3 id="-57">请求参数</h3>
 <p><strong>Headers</strong></p>
 <table>
 <thead>
@@ -992,7 +1724,7 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
 </tr>
 </tbody>
 </table>
-<h3 id="-25">返回数据</h3>
+<h3 id="-58">返回数据</h3>
 <table>
   <thead class="ant-table-thead">
     <tr>
@@ -1004,11 +1736,11 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
 <h2 id="u66f4u65b0u7528u6237u72b6u60010a3ca20id3du66f4u65b0u7528u6237u72b6u60013e203ca3e">更新用户状态
 <a id=更新用户状态> </a></h2>
 <p></p>
-<h3 id="-26">基本信息</h3>
+<h3 id="-59">基本信息</h3>
 <p><strong>Path：</strong> /rbac/users/{userid}/status</p>
 <p><strong>Method：</strong> PUT</p>
 <p><strong>接口描述：</strong></p>
-<h3 id="-27">请求参数</h3>
+<h3 id="-60">请求参数</h3>
 <p><strong>Headers</strong></p>
 <table>
 <thead>
@@ -1068,7 +1800,7 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
 </tr>
 </tbody>
 </table>
-<h3 id="-28">返回数据</h3>
+<h3 id="-61">返回数据</h3>
 <table>
   <thead class="ant-table-thead">
     <tr>
@@ -1080,11 +1812,11 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
 <h2 id="u5220u9664u7528u62370a3ca20id3du5220u9664u7528u62373e203ca3e">删除用户
 <a id=删除用户> </a></h2>
 <p></p>
-<h3 id="-29">基本信息</h3>
+<h3 id="-62">基本信息</h3>
 <p><strong>Path：</strong> /rbac/users/{userid}</p>
 <p><strong>Method：</strong> DELETE</p>
 <p><strong>接口描述：</strong></p>
-<h3 id="-30">请求参数</h3>
+<h3 id="-63">请求参数</h3>
 <p><strong>Headers</strong></p>
 <table>
 <thead>
@@ -1123,7 +1855,7 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
 </tr>
 </tbody>
 </table>
-<h3 id="-31">返回数据</h3>
+<h3 id="-64">返回数据</h3>
 <table>
   <thead class="ant-table-thead">
     <tr>
@@ -1135,11 +1867,11 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
 <h2 id="u5220u9664u7528u6237u7279u5b9au7d22u5f150a3ca20id3du5220u9664u7528u6237u7279u5b9au7d22u5f153e203ca3e">删除用户特定索引
 <a id=删除用户特定索引> </a></h2>
 <p></p>
-<h3 id="-32">基本信息</h3>
+<h3 id="-65">基本信息</h3>
 <p><strong>Path：</strong> /rbac/users/{userid}/indexs/{typeid}</p>
 <p><strong>Method：</strong> DELETE</p>
 <p><strong>接口描述：</strong></p>
-<h3 id="-33">请求参数</h3>
+<h3 id="-66">请求参数</h3>
 <p><strong>Headers</strong></p>
 <table>
 <thead>
@@ -1183,23 +1915,23 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
 </tr>
 </tbody>
 </table>
-<h3 id="-34">返回数据</h3>
+<h3 id="-67">返回数据</h3>
 <table>
   <thead class="ant-table-thead">
     <tr>
       <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
     </tr>
-  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回消息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回值</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> indexs</span></td><td key=1><span>string []</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">删除过后的索引列表</span></td><td key=5><p key=3><span style="font-weight: '700'">item 类型: </span><span>string</span></p></td></tr><tr key=array-126><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> </span></td><td key=1><span></span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap"></span></td><td key=5></td></tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回消息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回值</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> indexs</span></td><td key=1><span>string []</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">删除过后的索引列表</span></td><td key=5><p key=3><span style="font-weight: '700'">item 类型: </span><span>string</span></p></td></tr><tr key=array-171><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> </span></td><td key=1><span></span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap"></span></td><td key=5></td></tr>
                </tbody>
               </table>
 <h2 id="u79fbu51fau7528u6237u7ec40a3ca20id3du79fbu51fau7528u6237u7ec43e203ca3e">移出用户组
 <a id=移出用户组> </a></h2>
 <p></p>
-<h3 id="-35">基本信息</h3>
+<h3 id="-68">基本信息</h3>
 <p><strong>Path：</strong> /rbac/users/{userid}/groups/{groupid}</p>
 <p><strong>Method：</strong> DELETE</p>
 <p><strong>接口描述：</strong></p>
-<h3 id="-36">请求参数</h3>
+<h3 id="-69">请求参数</h3>
 <p><strong>Headers</strong></p>
 <table>
 <thead>
@@ -1243,7 +1975,7 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
 </tr>
 </tbody>
 </table>
-<h3 id="-37">返回数据</h3>
+<h3 id="-70">返回数据</h3>
 <table>
   <thead class="ant-table-thead">
     <tr>
@@ -1255,7 +1987,7 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
 <h2 id="u67e5u8be2u7d22u5f15u7c7bu578bu4fe1u606f0a3ca20id3du67e5u8be2u7d22u5f15u7c7bu578bu4fe1u606f3e203ca3e">查询索引类型信息
 <a id=查询索引类型信息> </a></h2>
 <p></p>
-<h3 id="-38">基本信息</h3>
+<h3 id="-71">基本信息</h3>
 <p><strong>Path：</strong> /rbac/users/indexs</p>
 <p><strong>Method：</strong> GET</p>
 <p><strong>接口描述：</strong></p>
@@ -1284,14 +2016,14 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
   }
 }
 </code></pre>
-<h3 id="-39">请求参数</h3>
-<h3 id="-40">返回数据</h3>
+<h3 id="-72">请求参数</h3>
+<h3 id="-73">返回数据</h3>
 <table>
   <thead class="ant-table-thead">
     <tr>
       <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
     </tr>
-  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回信息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回描述</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> indexs</span></td><td key=1><span>object</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap"></span></td><td key=5></td></tr><tr key=0-3-0><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> Id</span></td><td key=1><span>string []</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">索引名称</span></td><td key=5><p key=3><span style="font-weight: '700'">item 类型: </span><span>string</span></p></td></tr><tr key=array-127><td key=0><span style="padding-left: 40px"><span style="color: #8c8a8a">├─</span> </span></td><td key=1><span></span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap"></span></td><td key=5></td></tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回信息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回描述</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> indexs</span></td><td key=1><span>object</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap"></span></td><td key=5></td></tr><tr key=0-3-0><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> Id</span></td><td key=1><span>string []</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">索引名称</span></td><td key=5><p key=3><span style="font-weight: '700'">item 类型: </span><span>string</span></p></td></tr><tr key=array-172><td key=0><span style="padding-left: 40px"><span style="color: #8c8a8a">├─</span> </span></td><td key=1><span></span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap"></span></td><td key=5></td></tr>
                </tbody>
               </table>
 <h1 id="u7528u6237u7ec4u63a5u53e3">用户组接口</h1>
@@ -1299,11 +2031,11 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
 <h2 id="u521bu5efau7528u6237u7ec40a3ca20id3du521bu5efau7528u6237u7ec43e203ca3e">创建用户组
 <a id=创建用户组> </a></h2>
 <p></p>
-<h3 id="-41">基本信息</h3>
+<h3 id="-74">基本信息</h3>
 <p><strong>Path：</strong> /rbac/groups</p>
 <p><strong>Method：</strong> POST</p>
 <p><strong>接口描述：</strong></p>
-<h3 id="-42">请求参数</h3>
+<h3 id="-75">请求参数</h3>
 <p><strong>Headers</strong></p>
 <table>
 <thead>
@@ -1360,7 +2092,7 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
 </tr>
 </tbody>
 </table>
-<h3 id="-43">返回数据</h3>
+<h3 id="-76">返回数据</h3>
 <table>
   <thead class="ant-table-thead">
     <tr>
@@ -1372,11 +2104,11 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
 <h2 id="u5220u9664u7528u6237u7ec40a3ca20id3du5220u9664u7528u6237u7ec43e203ca3e">删除用户组
 <a id=删除用户组> </a></h2>
 <p></p>
-<h3 id="-44">基本信息</h3>
+<h3 id="-77">基本信息</h3>
 <p><strong>Path：</strong> /rbac/groups/{groupid}</p>
 <p><strong>Method：</strong> DELETE</p>
 <p><strong>接口描述：</strong></p>
-<h3 id="-45">请求参数</h3>
+<h3 id="-78">请求参数</h3>
 <p><strong>Headers</strong></p>
 <table>
 <thead>
@@ -1415,7 +2147,7 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
 </tr>
 </tbody>
 </table>
-<h3 id="-46">返回数据</h3>
+<h3 id="-79">返回数据</h3>
 <table>
   <thead class="ant-table-thead">
     <tr>
@@ -1427,28 +2159,28 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
 <h2 id="u6279u91cfu83b7u53d6u7528u6237u7ec40a3ca20id3du6279u91cfu83b7u53d6u7528u6237u7ec43e203ca3e">批量获取用户组
 <a id=批量获取用户组> </a></h2>
 <p></p>
-<h3 id="-47">基本信息</h3>
+<h3 id="-80">基本信息</h3>
 <p><strong>Path：</strong> /rbac/groups</p>
 <p><strong>Method：</strong> GET</p>
 <p><strong>接口描述：</strong></p>
-<h3 id="-48">请求参数</h3>
-<h3 id="-49">返回数据</h3>
+<h3 id="-81">请求参数</h3>
+<h3 id="-82">返回数据</h3>
 <table>
   <thead class="ant-table-thead">
     <tr>
       <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
     </tr>
-  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回消息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回描述</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> groups</span></td><td key=1><span>string []</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">用户组信息</span></td><td key=5><p key=3><span style="font-weight: '700'">item 类型: </span><span>string</span></p></td></tr><tr key=array-128><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> </span></td><td key=1><span></span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">用户组JSON字符串</span></td><td key=5></td></tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回消息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回描述</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> groups</span></td><td key=1><span>string []</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">用户组信息</span></td><td key=5><p key=3><span style="font-weight: '700'">item 类型: </span><span>string</span></p></td></tr><tr key=array-173><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> </span></td><td key=1><span></span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">用户组JSON字符串</span></td><td key=5></td></tr>
                </tbody>
               </table>
 <h2 id="u66f4u65b0u7528u6237u5217u88680a3ca20id3du66f4u65b0u7528u6237u5217u88683e203ca3e">更新用户列表
 <a id=更新用户列表> </a></h2>
 <p></p>
-<h3 id="-50">基本信息</h3>
+<h3 id="-83">基本信息</h3>
 <p><strong>Path：</strong> /rbac/groups/{groupid}/users</p>
 <p><strong>Method：</strong> PUT</p>
 <p><strong>接口描述：</strong></p>
-<h3 id="-51">请求参数</h3>
+<h3 id="-84">请求参数</h3>
 <p><strong>Headers</strong></p>
 <table>
 <thead>
@@ -1508,7 +2240,7 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
 </tr>
 </tbody>
 </table>
-<h3 id="-52">返回数据</h3>
+<h3 id="-85">返回数据</h3>
 <table>
   <thead class="ant-table-thead">
     <tr>
@@ -1520,11 +2252,11 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
 <h2 id="u66f4u65b0u7528u6237u7ec4u4fe1u606f0a3ca20id3du66f4u65b0u7528u6237u7ec4u4fe1u606f3e203ca3e">更新用户组信息
 <a id=更新用户组信息> </a></h2>
 <p></p>
-<h3 id="-53">基本信息</h3>
+<h3 id="-86">基本信息</h3>
 <p><strong>Path：</strong> /rbac/groups/{groupid}</p>
 <p><strong>Method：</strong> PUT</p>
 <p><strong>接口描述：</strong></p>
-<h3 id="-54">请求参数</h3>
+<h3 id="-87">请求参数</h3>
 <p><strong>Headers</strong></p>
 <table>
 <thead>
@@ -1598,7 +2330,7 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
 </tr>
 </tbody>
 </table>
-<h3 id="-55">返回数据</h3>
+<h3 id="-88">返回数据</h3>
 <table>
   <thead class="ant-table-thead">
     <tr>
@@ -1610,11 +2342,11 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
 <h2 id="u67e5u8be2u5355u4e2au7528u6237u7ec420-20u6839u636e20groupid0a3ca20id3du67e5u8be2u5355u4e2au7528u6237u7ec420-20u6839u636e20groupid3e203ca3e">查询单个用户组 - 根据 groupid
 <a id=查询单个用户组 - 根据 groupid> </a></h2>
 <p></p>
-<h3 id="-56">基本信息</h3>
+<h3 id="-89">基本信息</h3>
 <p><strong>Path：</strong> /rbac/groups/{groupid}</p>
 <p><strong>Method：</strong> GET</p>
 <p><strong>接口描述：</strong></p>
-<h3 id="-57">请求参数</h3>
+<h3 id="-90">请求参数</h3>
 <p><strong>路径参数</strong></p>
 <table>
 <thead>
@@ -1632,7 +2364,7 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
 </tr>
 </tbody>
 </table>
-<h3 id="-58">返回数据</h3>
+<h3 id="-91">返回数据</h3>
 <table>
   <thead class="ant-table-thead">
     <tr>
@@ -1644,11 +2376,11 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
 <h2 id="u67e5u8be2u5355u4e2au7528u6237u7ec420-20u6839u636e20name0a3ca20id3du67e5u8be2u5355u4e2au7528u6237u7ec420-20u6839u636e20name3e203ca3e">查询单个用户组 - 根据 name
 <a id=查询单个用户组 - 根据 name> </a></h2>
 <p></p>
-<h3 id="-59">基本信息</h3>
+<h3 id="-92">基本信息</h3>
 <p><strong>Path：</strong> /rbac/groups/name/{name}</p>
 <p><strong>Method：</strong> GET</p>
 <p><strong>接口描述：</strong></p>
-<h3 id="-60">请求参数</h3>
+<h3 id="-93">请求参数</h3>
 <p><strong>路径参数</strong></p>
 <table>
 <thead>
@@ -1666,13 +2398,13 @@ Leaf 支持动态的更改接口所需要的权限，并提供了相应的接口
 </tr>
 </tbody>
 </table>
-<h3 id="-61">返回数据</h3>
+<h3 id="-94">返回数据</h3>
 <table>
   <thead class="ant-table-thead">
     <tr>
       <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
     </tr>
-  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回信息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回描述</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> groups</span></td><td key=1><span>string []</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">用户组列表</span></td><td key=5><p key=3><span style="font-weight: '700'">item 类型: </span><span>string</span></p></td></tr><tr key=array-129><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> </span></td><td key=1><span></span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">用户组JSON字符串</span></td><td key=5></td></tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> code</span></td><td key=1><span>number</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> message</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回信息</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> description</span></td><td key=1><span>string</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">返回描述</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> groups</span></td><td key=1><span>string []</span></td><td key=2>必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">用户组列表</span></td><td key=5><p key=3><span style="font-weight: '700'">item 类型: </span><span>string</span></p></td></tr><tr key=array-174><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> </span></td><td key=1><span></span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">用户组JSON字符串</span></td><td key=5></td></tr>
                </tbody>
               </table>
 

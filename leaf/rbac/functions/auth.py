@@ -94,8 +94,8 @@ class Create:
         Generator.validbyid(userid, password)
 
         # 创建文档
-        salt = encrypt.random(settings.Security.SaltLength / 8)
-        index = encrypt.base64encode(index)
+        salt = encrypt.random(int(settings.Security.SaltLength / 8))
+        index = encrypt.base64encode(str(index).encode()).decode()
         auth = Authentication(
             index=index, user=userid,
             salt=salt, token=Generator.calc(password, salt),

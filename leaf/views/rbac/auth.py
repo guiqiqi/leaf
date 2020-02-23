@@ -6,6 +6,7 @@ from flask import request
 from . import rbac
 
 from ...api import wrapper
+from ...api import validator
 
 from ...rbac import error
 from ...rbac.model import UserIndex
@@ -14,13 +15,14 @@ from ...rbac.functions import user as userfuncs
 
 
 @rbac.route("/auths/<string:userid>/<string:typeid>", methods=["POST"])
-@wrapper.require("leaf.views.rbac.auth.create")
+@wrapper.require("leaf.views.rbac.auth.create", checkuser=True)
 @wrapper.wrap("status")
 def create_auth_with_user_index(userid: str, typeid: str) -> bool:
     """根据用户的某一个 index 创建 Auth 文档"""
+    userid = validator.operator(userid)
     user = userfuncs.Retrieve.byid(userid)
     index: UserIndex = user.indexs.get(typeid=typeid)
-    password: str = request.form.get("password", type=str, default='')
+    password: str = request.form.get("password", type=str)
     description: str = request.form.get("description", type=str,
                                         default=index.description)
     authfuncs.Create.withother(index.value, userid,
@@ -40,18 +42,18 @@ def update_status_for_authdoc(index: str) -> bool:
     return True
 
 
-@rbac.route("/auths/<string:index>", methods=["DELETE"])
+@rbac.route("/auths/<string:userid>/<string:index>", methods=["DELETE"])
 @wrapper.require("leaf.views.rbac.auth.delete", checkuser=True)
 @wrapper.wrap("status")
-def delete_authdoc(index: str) -> bool:
+def delete_authdoc(userid: str, index: str) -> bool:
     """删除用户的某一种认证方式"""
-    userid: str = request.form.get("userid", type=str)
+    userid = validator.operator(userid)
     authfuncs.Delete.byindex(userid, index)
     return True
 
 
 @rbac.route("/auths/<string:userid>", methods=["GET"])
-@wrapper.require("leaf.views.rbac.auth.get")
+@wrapper.require("leaf.views.rbac.auth.get", checkuser=True)
 @wrapper.wrap("auths")
 def query_auth_map_with_userid(userid: str) -> List[Tuple[UserIndex, bool]]:
     """
@@ -59,6 +61,7 @@ def query_auth_map_with_userid(userid: str) -> List[Tuple[UserIndex, bool]]:
     返回类似下面的返回值:
         [(UserIndex1, True), (UserIndex2, False), ...]
     """
+    userid = validator.operator(userid)
     user = userfuncs.Retrieve.byid(userid)
     indexs: List[UserIndex] = user.indexs
     mapping: List[Tuple[UserIndex, bool]] = list()
@@ -67,6 +70,7 @@ def query_auth_map_with_userid(userid: str) -> List[Tuple[UserIndex, bool]]:
         try:
             authfuncs.Retrieve.byindex(index.value)
         except error.AuthenticationNotFound as _error:
+            mapping.append((index, False))
             continue
         else:
             mapping.append((index, True))
@@ -79,6 +83,7 @@ def query_auth_map_with_userid(userid: str) -> List[Tuple[UserIndex, bool]]:
 @wrapper.wrap("status")
 def update_password(userid: str) -> bool:
     """更新用户密码"""
+    userid = validator.operator(userid)
     current: str = request.form.get("current", type=str)
     new: str = request.form.get("new", type=str)
     authfuncs.Update.password(userid, current, new)

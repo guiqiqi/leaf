@@ -1,11 +1,11 @@
 """
 错误代码管理器:
     管理现有的错误代码与描述
-    为新的请求计算颁发错误代码
     生成错误代码描述文档
 """
 
 # 将文件路径向上转移
+import json as _json
 import argparse as _argparse
 from collections import namedtuple as _namedtuple
 from typing import List as _List
@@ -41,9 +41,10 @@ __HEADER = \
 
 
 # 命令行参数接收
-__parser = _argparse.ArgumentParser()
-__parser.add_argument("--export", "-e", default="errcode.md",
-                      help="export 参数表示导出的文件名, 默认为: errcode.md")
+__parser = _argparse.ArgumentParser(description="错误代码导出")
+__parser.add_argument("--type", "-t", default="markdown",
+                      help="type 表示导出文件类型, 支持 json, markdown. 默认为: markdown")
+__parser.add_argument("--export", "-e", help="export 参数表示导出的文件名", required=True)
 
 
 def __makeline(key: int, info: ErrorInfo) -> str:
@@ -52,21 +53,40 @@ def __makeline(key: int, info: ErrorInfo) -> str:
         info.description + " | " + info.module + " |"
 
 
-def export(filename: str) -> _Dict[int, ErrorInfo]:
+def __markdown(informations: _Dict[int, ErrorInfo]) -> str:
+    """制作 markdown 格式的表格"""
+    content_list = list()
+    for key, value in informations.items():
+        content_list.append(__makeline(key, value))
+    return '\n'.join(content_list)
+
+
+def __json(informations: _Dict[int, ErrorInfo]) -> str:
+    """制作 json 格式的数据"""
+    errcodes: _Dict[int, _Dict[str, str]] = dict()
+    for code, info in informations.items():
+        errcodes[code] = dict(info._asdict())
+
+    return _json.dumps(errcodes, indent=4, sort_keys=True, ensure_ascii=False)
+
+
+def export(filename: str, _type: str) -> _Dict[int, ErrorInfo]:
     """导出文件"""
 
     # 切换到当前目录
     __import__("os").chdir("docs")
 
-    content_list = list()
-    for key, value in __informations.items():
-        content_list.append(__makeline(key, value))
+    content = ''
+    if _type == "markdown":
+        content = __HEADER + __markdown(__informations)
+    if _type == "json":
+        content = __json(__informations)
 
-    with open(filename, 'w') as handler:
-        content = __HEADER + '\n'.join(content_list)
+    with open(filename, 'w', encoding="utf-8") as handler:
         handler.write(content)
 
-    print("Exported errcodes to file '" + filename + "'.")
+    # 完成导出, 切换出当前目录
+    print("错误代码已导出到文件 '" + filename + "'")
     __import__("os").chdir("..")
     return __informations
 
@@ -74,4 +94,4 @@ def export(filename: str) -> _Dict[int, ErrorInfo]:
 reload()
 if __name__ == "__main__":
     args = __parser.parse_args()
-    export(args.export)
+    export(args.export, args.type)

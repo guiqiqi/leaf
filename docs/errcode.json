@@ -1,0 +1,146 @@
+{
+    "10010": {
+        "description": "非法的 ObjectId 字符串",
+        "module": "leaf.api.error"
+    },
+    "10011": {
+        "description": "项目达到最大注册数量限制",
+        "module": "leaf.core.events"
+    },
+    "10012": {
+        "description": "非法根节点名称",
+        "module": "leaf.core.events"
+    },
+    "10013": {
+        "description": "非法事件名称",
+        "module": "leaf.core.events"
+    },
+    "10014": {
+        "description": "未找到对应的事件",
+        "module": "leaf.core.events"
+    },
+    "10015": {
+        "description": "无法找到该用户的Id验证文档",
+        "module": "leaf.rbac.error"
+    },
+    "10016": {
+        "description": "创建/更新身份验证-密码验证失败",
+        "module": "leaf.rbac.error"
+    },
+    "10017": {
+        "description": "根据给定的文档索引无法查找到身份验证文档",
+        "module": "leaf.rbac.error"
+    },
+    "10018": {
+        "description": "根据给定信息找不到用户",
+        "module": "leaf.rbac.error"
+    },
+    "10019": {
+        "description": "用户初始化已经完成",
+        "module": "leaf.rbac.error"
+    },
+    "10020": {
+        "description": "根据给定的信息找不到访问点文档",
+        "module": "leaf.rbac.error"
+    },
+    "10021": {
+        "description": "根据给定的信息找不到用户组文档",
+        "module": "leaf.rbac.error"
+    },
+    "10022": {
+        "description": "您所给定的用户索引信息已经被绑定",
+        "module": "leaf.rbac.error"
+    },
+    "10023": {
+        "description": "您所给定的用户索引类型已经被绑定 - 且当前策略不允许多绑定",
+        "module": "leaf.rbac.error"
+    },
+    "10024": {
+        "description": "不能删除根据 用户Id 创建的认证文档",
+        "module": "leaf.rbac.error"
+    },
+    "10101": {
+        "description": "插件载入时出错",
+        "module": "leaf.plugins.error"
+    },
+    "10102": {
+        "description": "没有找到对应的插件",
+        "module": "leaf.plugins.error"
+    },
+    "10103": {
+        "description": "插件 init 函数错误",
+        "module": "leaf.plugins.error"
+    },
+    "10104": {
+        "description": "插件运行期间出现错误",
+        "module": "leaf.plugins.error"
+    },
+    "11001": {
+        "description": "该状态码已经被使用, 请更换状态码",
+        "module": "leaf.core.algorithm.fsm"
+    },
+    "11002": {
+        "description": "当前状态不接受发生的指定事件",
+        "module": "leaf.core.algorithm.fsm"
+    },
+    "11003": {
+        "description": "根据当前状态和事件不能确定转移的目标状态",
+        "module": "leaf.core.algorithm.fsm"
+    },
+    "12001": {
+        "description": "对消息体的签名验证出现错误",
+        "module": "leaf.weixin.error"
+    },
+    "12002": {
+        "description": "在消息体加密过程中出现错误",
+        "module": "leaf.weixin.error"
+    },
+    "12003": {
+        "description": "在消息体解密过程中发生错误",
+        "module": "leaf.weixin.error"
+    },
+    "12004": {
+        "description": "消息体不正确(键缺少/数据类型非法)",
+        "module": "leaf.weixin.error"
+    },
+    "12111": {
+        "description": "JWT Token 头部格式错误/不支持",
+        "module": "leaf.rbac.error"
+    },
+    "12112": {
+        "description": "JWT Token 格式错误",
+        "module": "leaf.rbac.error"
+    },
+    "12113": {
+        "description": "JWT Token 的签名计算错误 - 检查secret是否与算法匹配",
+        "module": "leaf.rbac.error"
+    },
+    "12114": {
+        "description": "JWT Token 签名验证错误",
+        "module": "leaf.rbac.error"
+    },
+    "12115": {
+        "description": "JWT Token 过期",
+        "module": "leaf.rbac.error"
+    },
+    "12116": {
+        "description": "在 HTTP Header 信息中没有发现 JWT Token 信息",
+        "module": "leaf.rbac.error"
+    },
+    "13001": {
+        "description": "身份验证错误",
+        "module": "leaf.rbac.error"
+    },
+    "13003": {
+        "description": "传入的例外用户组无法被识别/用户ID错误",
+        "module": "leaf.rbac.error"
+    },
+    "13004": {
+        "description": "访问点名称冲突",
+        "module": "leaf.rbac.error"
+    },
+    "13005": {
+        "description": "未定义的用户索引类型",
+        "module": "leaf.rbac.error"
+    }
+}
