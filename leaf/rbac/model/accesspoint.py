@@ -12,12 +12,12 @@ class AccessPoint(mongoengine.Document):
         required: 需求的最小权限值
         strict: 是否要求仅仅指定权限值的用户可访问
         description: 当前权限点的描述
-        exception: 针对某些用户的特例
+        exceptions: 针对某些用户的特例
     """
 
     pointname = mongoengine.StringField(primary_key=True)
     required = mongoengine.IntField(required=True)
     strict = mongoengine.BooleanField(default=False)
     description = mongoengine.StringField(default=str)
-    exception = mongoengine.ListField(
+    exceptions = mongoengine.ListField(
         field=mongoengine.LazyReferenceField(User), default=list)

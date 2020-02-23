@@ -94,7 +94,7 @@ def permission(pointname: str, payload: dict) -> int:
     userid = objectid(payload.get(rbac.jwt.const.Payload.Audience))
 
     # 验证是否是特权用户
-    if userid in accesspoint.exception:
+    if userid in accesspoint.exceptions:
         return 0
 
     # 检查是否需要指定用户组
