@@ -73,7 +73,7 @@ def create_user() -> User:
         3. 为用户设置文档ID索引 - user.Update.inituser
     这里密码应该通过 post 参数传入
     """
-    password: str = request.form.get("password", type=str)
+    password: str = request.form.get("password", type=str, default='')
     user: User = User()
     user.save()
     # pylint: disable=no-member
@@ -86,6 +86,7 @@ def create_user() -> User:
 @wrapper.wrap("user")
 def update_user_status(userid: str) -> User:
     """更新一个用户的状态"""
+    userid = validator.objectid(userid)
     status: bool = request.form.get("status", default=True, type=bool)
     user: User = functions.Retrieve.byid(userid)
     user.disabled = not status

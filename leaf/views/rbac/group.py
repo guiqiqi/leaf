@@ -8,6 +8,7 @@ from flask import request
 from . import rbac
 
 from ...api import wrapper
+from ...api import validator
 from ...core.tools import web
 from ...rbac.model import Group
 from ...rbac.functions import group as funcs
@@ -19,6 +20,7 @@ from ...rbac.functions import user as userfuncs
 @wrapper.wrap("group")
 def query_group_byid(groupid: str) -> Group:
     """根据给定的 id 查找用户组"""
+    groupid = validator.objectid(groupid)
     return funcs.Retrieve.byid(groupid)
 
 
@@ -45,6 +47,7 @@ def query_group_byname(name: str) -> List[Group]:
 @wrapper.wrap("status")
 def delete_group(groupid: str) -> bool:
     """删除某一个特定的用户组"""
+    groupid = validator.objectid(groupid)
     group: Group = funcs.Retrieve.byid(groupid)
     return group.delete()
 
@@ -66,6 +69,7 @@ def add_group() -> Group:
 @wrapper.wrap("group")
 def update_group(groupid: str) -> Group:
     """更新某一个用户组的信息"""
+    groupid = validator.objectid(groupid)
     group: Group = funcs.Retrieve.byid(groupid)
     name: str = request.form.get("name", type=str, default='')
     description: str = request.form.get("description", type=str, default='')
@@ -85,6 +89,7 @@ def add_users_to_group(groupid: str) -> Group:
         计算所有增加的用户 - 对所有的增加用户进行加组操作
         计算所有被移出组的用户 - 对所有的移出用户进行移出操作
     """
+    groupid = validator.objectid(groupid)
     group: Group = funcs.Retrieve.byid(groupid)
     raw: List[str] = [str(user) for user in group.users]
     new: List[str] = web.JSONparser(request.form.get("users"))
