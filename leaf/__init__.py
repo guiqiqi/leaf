@@ -9,12 +9,13 @@ Leaf 框架初始化文件:
     init - 框架初始化函数
 """
 
+import os as _os
 import atexit as _atexit
 from typing import Optional as _Optional
 from typing import NoReturn as _NoReturn
 
-import pymongo
-import mongoengine
+import pymongo as _pymongo
+import mongoengine as _mongoengine
 from flask import Flask as _Flask
 
 from . import api
@@ -42,10 +43,7 @@ class Init:
     """
 
     def __init__(self, _modules: _Optional[core.algorithm.AttrDict] = None):
-        """
-        初始化模块初始化函数:
-            首先运行核心初始化
-        """
+        """初始化模块初始化函数"""
         if _modules is None:
             _modules = modules
 
@@ -56,6 +54,29 @@ class Init:
         self.__modules = _modules
         self.__kernel_initialized = False
 
+        # 检查是否有其他的 leaf 进程正在运行
+        self.__modules.primary = True  # 当前进程是否为主进程
+
+        try:
+            import fcntl as _locker
+        except ImportError as _error:
+            import warnings as _w
+            _w.warn("Detection other leaf process failed.")
+        else:
+
+            # 用文件锁保证进程读取唯一性
+            if not core.tools.file.isfile("leaf.pid.lock"):
+                open("leaf.pid.lock", 'w').close()
+            with open("leaf.pid.lock", "r+") as handler:
+                _locker.flock(handler, _locker.LOCK_EX)
+                _other_leaf_pid = handler.read()
+                if not _other_leaf_pid:
+                    pid: str = str(_os.getpid())
+                    handler.write(pid)
+                else:
+                    self.__modules.primary = False
+                _locker.flock(handler, _locker.LOCK_UN)
+
     def kernel(self) -> _NoReturn:
         """
         初始化:
@@ -64,7 +85,6 @@ class Init:
             注册核心模块 Events 中的错误信息
             添加退出 atexit 事件项目
         """
-
         if self.__kernel_initialized:
             return
 
@@ -74,7 +94,8 @@ class Init:
 
         # 生成事件管理器与任务计划调度
         self.__modules.events = core.events.Manager()
-        self.__modules.schedules = core.schedule.Manager()
+        self.__modules.schedules = core.schedule.Manager(
+            not self.__modules.primary)
 
         # 注册 Events 中的错误信息
         messenger: core.error.Messenger = self.__modules.error.messenger
@@ -86,10 +107,11 @@ class Init:
         # 添加 leaf.exit 事件项目
         atexit = core.events.Event("leaf.exit", ((), {}), "在 Leaf 框架退出时执行")
         self.__modules.events.add(atexit)
+        if self.__modules.primary:
+            atexit.hook(lambda: _os.remove("leaf.pid.lock"))
 
         # 在 atexit 中注册退出函数
-        _atexit.register(
-            lambda: self.__modules.events.event("leaf.exit").notify())
+        _atexit.register(self.__modules.events.event("leaf.exit").notify)
         self.__kernel_initialized = True
 
     def plugins(self, conf: core.algorithm.StaticDict) -> plugins.Manager:
@@ -212,7 +234,7 @@ class Init:
 
         return self.__modules.server
 
-    def database(self, conf: core.algorithm.StaticDict) -> pymongo.MongoClient:
+    def database(self, conf: core.algorithm.StaticDict) -> _pymongo.MongoClient:
         """
         数据库连接池初始化函数
             初始化数据库连接池
@@ -225,12 +247,12 @@ class Init:
         #     conf.username, conf.password, conf.timeout)
         # self.__modules.database = pool
 
-        client = mongoengine.connect(db=conf.database, host=conf.host, port=conf.port,
-                                     username=conf.username, password=conf.password,
-                                     connectTimeoutMS=conf.timeout * 1000)
+        client = _mongoengine.connect(db=conf.database, host=conf.host, port=conf.port,
+                                      username=conf.username, password=conf.password,
+                                      connectTimeoutMS=conf.timeout * 1000)
 
         exiting: core.events.Event = self.__modules.events.event("leaf.exit")
-        exiting.hook(mongoengine.disconnect)
+        exiting.hook(_mongoengine.disconnect)
 
         return client
 
@@ -239,7 +261,7 @@ class Init:
         当提供了配置信息时 - 重写错误日志的部分信息:
             logging.logger.formatter
             logging.file_handler
-            loggnig.file_handler.level
+            logging.file_handler.level
             logging.console_handler.level
         """
         # 重新生成 Logger 实例

@@ -2,7 +2,6 @@
 
 import uuid
 import time
-import queue
 import threading
 
 from typing import Dict, Callable, Optional, Generator, NoReturn
@@ -41,7 +40,7 @@ class Worker:
         # 初始化任务变量
         self.__status = False  # 任务是否在运行
         self.__runtimes = runtimes  # 已经运行过的次数
-        self.__results = queue.Queue()  # 任务返回值存储
+        # self.__results = queue.Queue()  # 任务返回值存储
         if id_ is None:
             self.__id = uuid.uuid1().hex
         else:
@@ -89,8 +88,9 @@ class Worker:
             if runtimes == 0:
                 self.stop()
 
-            # 执行任务并回收数据
-            self.__results.put(self.__task())
+            # 执行任务
+            # self.__results.put(self.__task())
+            self.__task()
 
             # 进行任务休眠 - 休眠失败则退出执行
             try:
@@ -139,8 +139,12 @@ class Manager:
         """返回 repr 信息"""
         return "<Leaf ScheduleManager>"
 
-    def __init__(self):
-        """通过保存一个字典来记录任务类"""
+    def __init__(self, disable: Optional[bool] = False):
+        """
+        通过保存一个字典来记录任务类
+        disable 变量设置为 True 时不允许任何计划任务运行
+        """
+        self.__disable = disable
         self.__tasks: Dict[str, Worker] = dict()
 
     def get(self, id_: str) -> Worker:
@@ -150,4 +154,7 @@ class Manager:
     def start(self, worker: Worker) -> NoReturn:
         """新增一个工作类实例并启动该任务"""
         self.__tasks[worker.id] = worker
-        worker.start()
+
+        # 检测到有其他进程运行任务时不运行任务
+        if not self.__disable:
+            worker.start()
