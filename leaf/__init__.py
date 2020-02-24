@@ -28,7 +28,7 @@ from . import payments
 
 
 modules = core.modules
-
+LOCKER_FILE = ".leaf.lock"  # 进程锁文件名
 
 class Init:
     """
@@ -43,7 +43,12 @@ class Init:
     """
 
     def __init__(self, _modules: _Optional[core.algorithm.AttrDict] = None):
-        """初始化模块初始化函数"""
+        """
+        初始化模块初始化函数:
+            self.__modules - core.modules 核心动态模块
+            self.__kernel_initialized - 核心是否被初始化过
+            self.__modules.is_master - 进程是否为主进程
+        """
         if _modules is None:
             _modules = modules
 
@@ -55,27 +60,34 @@ class Init:
         self.__kernel_initialized = False
 
         # 检查是否有其他的 leaf 进程正在运行
-        self.__modules.primary = True  # 当前进程是否为主进程
+        self.__modules.is_master = True
 
+        # 初始化进程 pid 文件 handler
+        handler = open(LOCKER_FILE, 'w+')
+        self.__locker_handler = handler
+        _atexit.register(self.__locker_handler.close)
+
+        # 首先检查是否可以调用 fcntl 库
         try:
             import fcntl as _locker
         except ImportError as _error:
             import warnings as _w
             _w.warn("Detection other leaf process failed.")
-        else:
+            return
 
-            # 用文件锁保证进程读取唯一性
-            if not core.tools.file.isfile("leaf.pid.lock"):
-                open("leaf.pid.lock", 'w').close()
-            with open("leaf.pid.lock", "r+") as handler:
-                _locker.flock(handler, _locker.LOCK_EX)
-                _other_leaf_pid = handler.read()
-                if not _other_leaf_pid:
-                    pid: str = str(_os.getpid())
-                    handler.write(pid)
-                else:
-                    self.__modules.primary = False
-                _locker.flock(handler, _locker.LOCK_UN)
+        # 通过尝试获取独占锁进行测试
+        try:
+            mode: int = _locker.LOCK_EX | _locker.LOCK_NB
+            _locker.flock(handler, mode)
+        except IOError as _error:
+            self.__modules.is_master = False
+            return
+
+        # 当为主进程模式时在退出时释放独占锁
+        handler.write(str(_os.getpid()))
+        handler.flush()
+        mode: int = _locker.LOCK_UN
+        _atexit.register(lambda: _locker.flock(handler, mode))
 
     def kernel(self) -> _NoReturn:
         """
@@ -95,7 +107,7 @@ class Init:
         # 生成事件管理器与任务计划调度
         self.__modules.events = core.events.Manager()
         self.__modules.schedules = core.schedule.Manager(
-            not self.__modules.primary)
+            not self.__modules.is_master)
 
         # 注册 Events 中的错误信息
         messenger: core.error.Messenger = self.__modules.error.messenger
@@ -107,8 +119,6 @@ class Init:
         # 添加 leaf.exit 事件项目
         atexit = core.events.Event("leaf.exit", ((), {}), "在 Leaf 框架退出时执行")
         self.__modules.events.add(atexit)
-        if self.__modules.primary:
-            atexit.hook(lambda: _os.remove("leaf.pid.lock"))
 
         # 在 atexit 中注册退出函数
         _atexit.register(self.__modules.events.event("leaf.exit").notify)
