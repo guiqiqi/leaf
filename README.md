@@ -1,6 +1,6 @@
 # Leaf - 开源微信商城系统框架
 
-![Python](https://img.shields.io/badge/Python-3.5%2B-blue) ![Pylint](https://img.shields.io/badge/Pylint-9+%2F10-brightgreen) ![TypeHints](https://img.shields.io/badge/TypeHints-support-green) ![License](https://img.shields.io/badge/license-Apache2-yellow) ![pypi](https://img.shields.io/badge/Pypi-v1.0.6-orange)
+![Python](https://img.shields.io/badge/Python-3.5%2B-blue?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAAD8UlEQVRoge2YTWhcVRSAv3MnaSY/SqlSNEVTartppBZN8Ye2aYwTNUh3jQqCKEoWbqKWtO6yakmoNOBWFF0EaSsFu3CKiROjRUu7aaOpolQ0hEhpQQ1pJpP37nExVUnnzcx7uS9DC/NtZjj3/N775t1zBqpUqXJbI/G4UeHg6HaD6VLlMYEtQDPQCPjANYEZFc4ZOOklvx5nYMDGEdm9gP2j20xCRoDWsCaKnlYv8RLvdlx1DZ9wsh441WD8Nd8BD0QxE2SzEd2lqU0fMj6uLikYF+OahcZdwIaV2KrweE12Z5dLfHAsQOW/5Ges0VaLbQEmw9pbeMIlPrgWYPXO/DdJc/ipKQZTv6NyPLwDucMlPkCNq4M8+gzvjG4lJ/OI7ovHZzhiKoANxsoPsXmLgNMjdCvgtGd2qHMYGC6lY/rH+hCOltLRibo+dJlOFmQStYdlT+5kSf/h060oSdAdiHyqE8nXSimWPoGDmc1GdT/oTmAj+dagkgiqR3Us+YV0Zn8LUih6Aon+L/catRdAe8m3CZVO/l+aSNBbbDG4gLfHWlR0BGhYrazySLiGTvT5YkuBBZhafYtK7Ljqrzc+y8XapJnGe4IWgk9ApdspsXD8aa137EYa28pqG+/hQHGBpC+zlojd5QqYN8gLHHn6ip5pWg8aZsO2BAkLC0h624lt0FmGRWUa5X1recgbfPI0AL43DDSVtRZZFyQueI0mMPdGbNB/EuSQr94oQ6lZkFDmqhi+qjuC6ouholitDxIXFKCq6yIcwIi9vvgq73UvhjXQM03r8XJ7mDD9iD4S1g7Ra0HiggJEyWqI/BUyWm9eZrDb028amvH9A8Be4D5KTXreEvkNijqImdkgadBNHFjpTVhV+wYDnZ5matvwvTTIXREziobxLwSKbxb4Yn4u50uUswylLmmGJAlzYtWThwXql6aCFgrfQpev/gjMl/Kmwvd567oulJYYEixHWtpYClooLOB4j69wtozDfIHKRtfMQuBh7aFii4E3saDHQrk2q96OeyC90rF0vngKAVj0E2Bm1dIqTRa4BPoRxrZJe/aDUsrB88Bg6i85MPa6wmdFdcozLO2Lb67QNjRFHwF/sPNzC50KGeD6aieyUpx6noBZNirOp3SrzsShqWQBM4i2grkfuBiX00oWkJbduSlpX5hG9ERcTt3+S1OZi9CUPauZNQ9Sm/gb3/b8b++GWwFivyVM65qnGSOT+Mvm+Gmn+Dg+QrI7NwUS7tYuZA5NnHKJD3H8Bhqzr4B+HNHqMshz0jH/h2v42GZfHa/dAWYfwqMILSh3A3Ugc6heQfgF9BwmkWZ24bz04McVu0qVKrcx/wCMzkVJcJCK+gAAAABJRU5ErkJggg==) ![License](https://img.shields.io/badge/License-Apache2-yellow?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAADYElEQVRIidWVTWjcVRTFf+dNEqRYaGJodJoUMnFlkGhcuomoUbHCVKkLKWJbcKMLoVYr9WOYCoIxiAtdVKi2VBdF2xQVtKFIbEEKLaSLoEKmTaqNaWqjFgnY5v+Oi5lJ5iMJxp0H3ua9e8+597777oP/O7TS4Viuu6klmctaygK9QHvpaBpx2lFfpC+v+1z7zt5YtcBULvM40QNIGVzcc8nBhhAgGgQTJrywIT9+7F8JOEf4NXZ+DXqwtDUJPm4454QZhKW43iH0yHo4wEZLYAZvyxd2iXI4ywhceq1zWOIBkIk+6AaOEKudFhCQzaMph23GjaDBdL7wYrVJTVkkFclBDro/JKxbpooQscyXCXGv0DywczqX2bSkwFiuu4nogaKjDwKTgnZLefCaZUWKZRiNxI+EidHveQupOoGWZC4LygCTDj5K8KvAZJRPguZWEijCX0XzMygz3d25uU6AoM0CjI+DoiN/mviyzOEY1Shpu9EBoQ9x2BoJDTV5RIjDADaP1QnY9BoIQaMVTnMAIbAVkw3QLGiT/KTsp4oEiqkQLsxfT06l75x4NgS1hah3ygyVUaQBiL5Slzz0BSAG3QsORE4G+T7DvqYQTt+SG7+2aF2YAWaWEgAgMVJN8wYcQZAgsJAA6aYS+aU9XR1K+V2gvxTRCdu7N7x54afKNp0CSKXUWisarW8NBPkU0ncAMkMV5KOIJwRrBWsRWQV9f2lPV8eigDgD4MR315VI+tTW4Qizhj8wR5TSKwClyFtsziTWthuw3XAWaFaKwQUBRR9zkawfXPUAA3EexUPgZ8BPW/74BzpmS8f9AhL4QIpXU/g34P3i2/dDC0SzqTVDgkKAjSI8UpvFqlG8x8VIu3Nj10G7XLzAHTY9K/nfxcTNRQpOGEjBcwlqBbUCzwNY+qaqFOl84ajw2xAbgsIbFptqy1XG36TaAWzvBn4X3NMI+wPsF/SCr1raueS4nnbmLVsvYWNxETyMGQ3iMkA0bQqhJ4k61LF3fKTUSRcreWIIHe258V9W+HC6sooeMNwuIFI528tfD1fS+fPrAaZez1SN9HT+vKBmXFcZ5ApDt04336HgLYZPBD8CfwHXQGPgA8Y7lvMvo+4lV6L0135WWv8Jy2awemhEjn1y7AONlHf/ASAydLsGpZYoAAAAAElFTkSuQmCC) ![Pylint](https://img.shields.io/badge/Pylint-9+%2F10-brightgreen) ![TypeHints](https://img.shields.io/badge/TypeHints-support-green) ![pypi](https://img.shields.io/badge/Pypi-v1.0.6-orange)
 
 ![Logo](https://github.com/guiqiqi/leaf/blob/dev/docs/logo-bar.png?raw=true)
 
@@ -28,61 +28,20 @@
 
 ### 使用
 
-下面是一个简单的使用示例，在项目的 `demo` 文件夹内会不断更新更多的实例演示。
+`Leaf` 的安装及部署很简单，只需要四个个步骤：
 
-**示例配置文件请参考 `config.py`**
+1. 创建一个您的项目文件夹，用于保存您项目相关的文件
+2. 编写配置文件 - 可以直接参考项目 `config.py` 进行修改即可
+3. 编写运行文件 - 参考 `run.py` 内的注释，选择自己需要加载的模块即可
+4. 使用 `Gunicorn ` 进行部署，示例命令：
 
-```python
-import logging
-
-import leaf
-import config
-
-init = leaf.Init()
-init.kernel()
-init.logging(config.logging)
-logger = logging.getLogger("leaf.demo")
-
-# 可选项 - 下面的模块请根据自己需要加载
-# 请注意：非稳定版本的模块可能会有变动
-# 关于模块之间的相互依赖，请参阅文档
-init.server()
-init.database(config.database)
-init.plugins(config.plugins)
-init.weixin(config.weixin)
-init.wxpay(config.wxpay)
-
-# 插件管理器
-plugins_manager = leaf.modules.plugins
-
-# 获取事件管理器并绑定两个函数到退出事件上
-events_manager = leaf.modules.events
-whatever_exit = events_manager.event("leaf.exit")
-whatever_exit.hook(lambda: print("Goodbye~"))
-whatever_exit.hook(plugins_manager.stopall)
-
-# 运行服务器
-server = leaf.modules.server
-
-@server.route("/hello/<string:name>")
-def greeting(name: str) -> str:
-    """来自 Leaf 的问候"""
-    logger.log("Visit from client named " + name)
-    return "Here's a greeting from Leaf to " + name
-    
-@leaf.api.wrapper.require("leaf.exit")
-@server.route("/goodbye")
-def exiting():
-    """主动关闭退出"""
-    # 手动触发退出事件:
-    # 	1. 关闭数据库连接池
-    #	2. print("Goodbye~")
-    #	3. 关闭所有插件
-    whatever_exit.notify()
-    return "Goodbye~"
-   
-leaf.modules.server.run()
+```shell
+gunicorn -w 4 -b 0.0.0.0:80 run:server --daemon
 ```
+
+更多的参数配置请参考 `Gunicorn` 的[官方使用文档](https://docs.gunicorn.org/en/stable/)。
+
+同时，我们也建议您在生产环境中使用 `Nginx` 作为代理转发，提升静态资源的访问性能。
 
 ---
 
@@ -138,7 +97,8 @@ leaf.modules.server.run()
 >古人说： 纸上得来终觉浅，绝知此事要躬行。
 
 我们会编写一些示例代码助于开发者的理解。
-例如您可以在 `Leaf` 的任意版本中找到示例插件的代码，相信会更有助您的二次开发。
+
+**示例代码将会在 `demo` 文件夹中不断更新**，您也可以在 `Leaf` 的任意版本中找到示例插件（`Access Token` 中控插件）的代码，相信会更有助您的二次开发。
 
 ---
 
