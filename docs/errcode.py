@@ -8,6 +8,7 @@
 import json as _json
 import argparse as _argparse
 from collections import namedtuple as _namedtuple
+from collections import OrderedDict as _ODict
 from typing import List as _List
 from typing import Dict as _Dict
 
@@ -56,6 +57,7 @@ def __makeline(key: int, info: ErrorInfo) -> str:
 def __markdown(informations: _Dict[int, ErrorInfo]) -> str:
     """制作 markdown 格式的表格"""
     content_list = list()
+    informations = _ODict(sorted(informations.items()))
     for key, value in informations.items():
         content_list.append(__makeline(key, value))
     return '\n'.join(content_list)
