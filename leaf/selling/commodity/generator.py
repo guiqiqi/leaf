@@ -7,7 +7,7 @@ from typing import NoReturn
 
 from .stock import Stock
 from .product import Product
-from .product import ProductParameters
+from .product import ProductParameter
 
 from ...core.algorithm import tree
 
@@ -58,7 +58,7 @@ class StocksGenerator:
         # 开始 BFS 的主循环
         while tasks.qsize():
             node, index = tasks.get()
-            option: ProductParameters = product.parameters[index]
+            option: ProductParameter = product.parameters[index]
             children = [tree.Node(option.name, selection)
                         for selection in option.options]
             node.adds(children)
@@ -115,7 +115,7 @@ class StocksGenerator:
                          product=self.__product,
                          name=self.__product.name,
                          attributes=attribute,
-                         describe=self.__product.describe,
+                         description=self.__product.description,
                          addition=self.__product.addition,
                          tags=self.__product.tags)
             self.__stocks.append(good)

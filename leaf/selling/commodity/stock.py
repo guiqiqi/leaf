@@ -12,7 +12,7 @@ class Stock(mongoengine.Document):
         attributes: 由产品生成时记录该商品的选项信息
         product: 父级产品类(当individual为False时)
         name: 商品名称(当individual为True时)
-        describe: 商品描述(当individual为True时)
+        description: 商品描述(当individual为True时)
         addition: 商品附加信息(当individual为True时)
         tags: 商品标签列表(当individual为True时)
         price: 商品价格
@@ -27,7 +27,7 @@ class Stock(mongoengine.Document):
         Product, reverse_delete_rule=mongoengine.CASCADE)
     name = mongoengine.StringField()
     attributes = mongoengine.DictField()
-    describe = mongoengine.StringField()
+    description = mongoengine.StringField()
     addition = mongoengine.StringField()
     tags = mongoengine.ListField(mongoengine.StringField())
     price = mongoengine.FloatField()
