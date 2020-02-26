@@ -240,7 +240,9 @@ class Init:
         # 引用其他的 views 视图函数并注册 Blueprints 蓝图
         server: _Flask = self.__modules.server
         from .views.rbac import rbac as _rbac
+        from .views.commodity import commodity as _commodity
         server.register_blueprint(_rbac, url_prefix="/rbac")
+        server.register_blueprint(_commodity, url_prefix="/commodity")
 
         return self.__modules.server
 
