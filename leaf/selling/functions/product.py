@@ -30,7 +30,8 @@ class Create:
         else:
             raise error.ProductParameterConflicting(name)
 
-        return product.parameters.save()
+        product.parameters.save()
+        return product.parameters
 
 
 class Update:
@@ -102,4 +103,5 @@ class Delete:
             raise error.ProductParameterNotFound(name)
 
         product.parameters.remove(parameter)
-        return product.parameters.save()
+        product.parameters.save()
+        return product.parameters
