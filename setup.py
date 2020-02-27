@@ -2,7 +2,7 @@
 
 import setuptools
 
-VERSION = "1.0.6.4.dev1"
+VERSION = "1.0.6.4.dev2"
 
 # 读取项目说明
 with open("README.md", "r", encoding="utf-8") as handler:
@@ -28,7 +28,6 @@ setuptools.setup(
     url="https://github.com/guiqiqi/leaf",
     packages=setuptools.find_packages(),
     classifiers=[
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
@@ -40,5 +39,5 @@ setuptools.setup(
         "Natural Language :: Chinese (Simplified)",
         "Operating System :: OS Independent"
     ],
-    python_requires=">=3.5"
+    python_requires=">=3.6"
 )
