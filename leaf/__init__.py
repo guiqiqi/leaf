@@ -11,6 +11,8 @@ Leaf 框架初始化文件:
 
 import os as _os
 import atexit as _atexit
+from typing import Tuple as _Tuple
+from typing import Union as _Union
 from typing import Optional as _Optional
 from typing import NoReturn as _NoReturn
 
@@ -28,7 +30,7 @@ from . import payments
 
 
 modules = core.modules
-LOCKER_FILE = ".leaf.lock"  # 进程锁文件名
+
 
 class Init:
     """
@@ -45,6 +47,10 @@ class Init:
     def __init__(self, _modules: _Optional[core.algorithm.AttrDict] = None):
         """
         初始化模块初始化函数:
+            locker: 进程锁文件名
+            address: 管理器地址
+            authkey: 管理器连接密钥
+
             self.__modules - core.modules 核心动态模块
             self.__kernel_initialized - 核心是否被初始化过
             self.__modules.is_master - 进程是否为主进程
@@ -59,37 +65,10 @@ class Init:
         self.__modules = _modules
         self.__kernel_initialized = False
 
-        # 检查是否有其他的 leaf 进程正在运行
+        # 是否有其他的 leaf 进程正在运行
         self.__modules.is_master = True
 
-        # 初始化进程 pid 文件 handler
-        handler = open(LOCKER_FILE, 'w+')
-        self.__locker_handler = handler
-        _atexit.register(self.__locker_handler.close)
-
-        # 首先检查是否可以调用 fcntl 库
-        try:
-            import fcntl as _locker
-        except ImportError as _error:
-            import warnings as _w
-            _w.warn("Detection other leaf process failed.")
-            return
-
-        # 通过尝试获取独占锁进行测试
-        try:
-            mode: int = _locker.LOCK_EX | _locker.LOCK_NB
-            _locker.flock(handler, mode)
-        except IOError as _error:
-            self.__modules.is_master = False
-            return
-
-        # 当为主进程模式时在退出时释放独占锁
-        handler.write(str(_os.getpid()))
-        handler.flush()
-        mode: int = _locker.LOCK_UN
-        _atexit.register(lambda: _locker.flock(handler, mode))
-
-    def kernel(self) -> _NoReturn:
+    def kernel(self, conf: core.algorithm.StaticDict) -> _NoReturn:
         """
         初始化:
             生成事件管理器
@@ -100,12 +79,40 @@ class Init:
         if self.__kernel_initialized:
             return
 
+        # 并行检测支持
+        async_events = None  # 默认的事件同步队列为 None
+        try:
+            detector = core.parallel.Detector(conf.locker)
+            self.__modules.is_master = detector.master
+            handler = detector.locker
+        except EnvironmentError as _error:
+            import warnings as _w
+            _w.warn("Communication with other Leaf processes failed.")
+        else:
+
+            # 如果工作在主模式 - 启用调度服务
+            if detector.master:
+                controller = core.parallel.Controller(
+                    conf.manager, conf.authkey)
+                address = controller.start()
+                handler.write(str(address))
+                handler.flush()
+
+            # 连接到调度服务
+            handler = open(conf.locker, 'r')
+            address = handler.read().strip()
+            handler.close()
+            manager = core.parallel.Controller.connect(address, conf.authkey)
+            # # pylint: disable=no-member
+            async_events = manager.bind(_os.getpid())
+            self.__modules.manager = manager
+
         # 保存错误日志的基础信息 - 默认配置
         self.__modules.error = core.algorithm.AttrDict()
         self.__modules.error.messenger = core.error.Messenger()
 
         # 生成事件管理器与任务计划调度
-        self.__modules.events = core.events.Manager()
+        self.__modules.events = core.events.Manager(asyncs=async_events)
         self.__modules.schedules = core.schedule.Manager(
             not self.__modules.is_master)
 
