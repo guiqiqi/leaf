@@ -5,6 +5,8 @@
 ###############################################################
 
 # 静态字典类
+
+
 class Static(dict):
     """静态 Dict 类"""
 
@@ -29,10 +31,16 @@ WARNING, INFO, DEBUG, NOTSET = 30, 20, 10, 0
 
 # 配置文件开始, 您可以开始您的配置
 
-# 服务相关配置
+# 基础相关配置
 # domain - 您部署 Leaf 的域名
-server = Static({
-    "domain": "xx.xxx.com"
+# locker - 进程锁文件名 - 一般无需更改
+# manager - 管理器连接地址 - 一般无需更改
+# autkey - 管理器验证密钥 - 请更换成您喜欢的英文单词
+basic = Static({
+    "domain": "wxleaf.dev",
+    "locker": ".leaf.lock",
+    "manager": None,
+    "authkey": "password"
 })
 
 
@@ -48,7 +56,7 @@ logging = Static({
 
     # 日志格式 - None 表示使用默认; 更多配置请参考
     # https://docs.python.org/3/library/logging.html
-    "format": None,  
+    "format": None,
 
     # 控制台日志输出配置
     # level - 单独设置控制台的输出等级
@@ -93,8 +101,8 @@ wxpay = Static({
     # refund - 表示退款成功的回调地址
     # 除非您有其余服务部署在以下地址, 否则请不要修改
     "callbacks": {
-        "pay": "https://" + server.domain +"/wxpay/notify",
-        "refund": "https://" + server.domain + "/wxpay/notify_refund"
+        "pay": "https://" + basic.domain + "/wxpay/notify",
+        "refund": "https://" + basic.domain + "/wxpay/notify_refund"
     },
 
     # 退款操作证书位置

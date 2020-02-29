@@ -59,6 +59,18 @@
         "description": "不能删除根据 用户Id 创建的认证文档",
         "module": "leaf.rbac.error"
     },
+    "10025": {
+        "description": "根据给定信息找不到对应的产品",
+        "module": "leaf.selling.error"
+    },
+    "10026": {
+        "description": "找不到对应的产品参数信息",
+        "module": "leaf.selling.error"
+    },
+    "10027": {
+        "description": "产品参数信息发现重复",
+        "module": "leaf.selling.error"
+    },
     "10101": {
         "description": "插件载入时出错",
         "module": "leaf.plugins.error"

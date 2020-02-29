@@ -16,6 +16,7 @@ from ...core.tools import time
 
 logger = logging.getLogger("leaf.plugins.accesstoken")
 
+
 class Patcher:
     """
     Leaf 微信公众平台 AccessToken 获取插件:
@@ -106,7 +107,7 @@ class Patcher:
 
         # 发送事件通知
         updated = modules.events.event("leaf.plugins.accesstoken.updated")
-        updated.notify(self.__cache, self.__expire)
+        updated.boardcast(self.__cache, self.__expire)
 
         return self.__cache
 
@@ -122,7 +123,7 @@ class Patcher:
         self.__status = False
 
         stopped = modules.events.event("leaf.plugins.accesstoken.stopped")
-        stopped.notify()
+        stopped.boardcast()
 
     def restart(self) -> NoReturn:
         """

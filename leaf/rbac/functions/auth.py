@@ -1,8 +1,8 @@
 """有关权限验证使用到的函数集合"""
 
-from functools import lru_cache
 from typing import List, Optional, NoReturn
 
+import cacheout
 from bson import ObjectId
 
 from .. import error
@@ -105,9 +105,10 @@ class Create:
 
 class Retrieve:
     """查找静态函数集合"""
+    salt_query = cacheout.Cache(maxsize=settings.Security.SaltCahce)
 
     @staticmethod
-    @lru_cache(maxsize=settings.Security.SaltCahce)
+    @salt_query.memoize()
     def saltbyindex(index: str) -> str:
         """根据认证索引查询 - LRU缓存"""
         auth = Retrieve.byindex(index)

@@ -16,12 +16,13 @@ from . import tools
 from . import abstract
 from . import algorithm
 
+# modules 保存 Leaf 框架运行时实例
+modules = algorithm.AttrDict()
+
+# pylint: disable=wrong-import-position
 from . import error
 from . import events
 from . import wrapper
 from . import database
 from . import schedule
-
-
-# modules 保存 Leaf 框架运行时实例
-modules = algorithm.AttrDict()
+from . import parallel

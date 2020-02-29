@@ -1,9 +1,11 @@
 """微信支付模块主文件"""
 
 from socket import gethostname
-from functools import lru_cache
 from typing import Tuple, Dict, Callable, Optional, NoReturn
 
+import cacheout
+
+from ...core.schedule import DAY
 from ...core.tools import web, time
 from ...core.abstract import payment
 
@@ -15,6 +17,7 @@ from . import signature
 class WXPayment(payment.AbstractPayment):
     """微信支付类"""
     description = settings.Order.PaymentDescription
+    IP_cache = cacheout.Cache(ttl=DAY)
 
     @staticmethod
     def _productid_selector(details: dict) -> str:
@@ -78,7 +81,7 @@ class WXPayment(payment.AbstractPayment):
         return float(amount) / 100
 
     @staticmethod
-    @lru_cache()
+    @IP_cache.memoize()
     def _external_ip() -> str:
         """返回的值确定机器外部IP地址"""
         httpresult = web.get(settings.NetworkAndEncrypt.ExternalIPProvider)
