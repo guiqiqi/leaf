@@ -1,8 +1,11 @@
 """Leaf 事件机制实现"""
 
+import threading
+import multiprocessing as mp
 from collections import namedtuple
 from typing import Optional, List, Callable, NoReturn
 
+from . import modules
 from .error import Error
 from .wrapper import thread
 from .algorithm import Node, Tree
@@ -88,7 +91,8 @@ class Event:
         if (self.__maximum == 0) or (len(self.__callbacks) < self.__maximum):
             self.__callbacks.append(function)
         else:
-            raise ReachedMaxReg("Reached max registery of event: " + str(self.__maximum))
+            raise ReachedMaxReg(
+                "Reached max registery of event: " + str(self.__maximum))
 
     def unhook(self, function: Callable) -> NoReturn:
         """
@@ -99,20 +103,23 @@ class Event:
         if function in self.__callbacks:
             self.__callbacks.remove(function)
 
+    def boardcast(self, *args, **kwargs) -> NoReturn:
+        """
+        向所有的进程广播触发该事件
+        经过广播的事件请不要再次在本地 notify
+        """
+        manager: Manager = modules.events
+        manager.boardcast(self.__name, *args, **kwargs)
+
     @thread
-    def notify(self, *args, **kwargs):
+    def notify(self, *args, **kwargs) -> NoReturn:
         """
         向所有绑定了当前事件的函数发送通知:
             传入的所有参数会原封不动的传入被调用函数
-            请确认被调用函数支持参数形式
-        *注意: 函数的返回值将会被丢弃
+            函数的返回值将会被丢弃
         """
         for function in self.__callbacks:
-            try:
-                function(*args, **kwargs)
-            # pylint: disable=broad-except
-            except Exception as _error:
-                continue
+            function(*args, **kwargs)
 
 
 class Manager:
@@ -134,11 +141,23 @@ class Manager:
         """返回 repr 信息"""
         return "<Leaf EventManager '%s'>" % self.__rootname
 
-    def __init__(self, rootname: Optional[str] = "leaf"):
-        """初始化事件管理器"""
+    def __init__(self, rootname: Optional[str] = "leaf",
+                 asyncs: Optional[mp.Queue] = None):
+        """
+        初始化事件管理器:
+            rootname: 根管理器名称
+            asyncs: 调度服务器远程事件同步队列
+        """
+        self.__asyncs: mp.Queue = asyncs
         self.__rootname: str = rootname
         self.__rootnode: Node = Node(rootname)
         self.__events_tree: Tree = Tree(self.__rootnode)
+
+        # 初始化侦听事件线程
+        if self.__asyncs:
+            listener = threading.Thread(target=self.__listen_boardcast)
+            listener.setDaemon(True)
+            listener.start()
 
     def __split(self, name: str, splitor: str) -> list:
         """根据指定的分隔符进行分割"""
@@ -158,6 +177,31 @@ class Manager:
             raise InvalidRootName("Event root must be " + self.__rootname)
 
         return joint
+
+    def __listen_boardcast(self):
+        """
+        不断地尝试从广播的事件同步队列中获取消息
+        并寻找, 执行对应的事件
+        """
+        while True:
+            try:
+                eventname, args, kwargs = self.__asyncs.get()
+            except EOFError as _error:
+                break
+            event = self.event(eventname)
+            event.notify(*args, **kwargs)
+
+    def boardcast(self, eventname: str, *args, **kwargs) -> NoReturn:
+        """向所有的进程广播通知触发指定的事件"""
+
+        if "manager" in modules.keys():
+            manager = modules.manager
+            manager.boardcast(eventname, *args, **kwargs)
+
+        # 当远程管理建立失败的时候保证本地执行
+        else:
+            event = self.event(eventname)
+            event.notify(*args, **kwargs)
 
     def add(self, event: Event) -> NoReturn:
         """
