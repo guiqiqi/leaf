@@ -18,6 +18,7 @@ class User:
     # 头像与缩略图大小 - (width, height, 是否强制缩放)
     AvatarSize = (80, 80, True)
     AvatarThumbnailSize = (50, 50, True)
+    AvatarType = {"jpg", "jpeg", "png", "gif"}
 
     Indexs = StaticDict({
         # 根据 Id 的索引方式请勿删除 - 会导致错误
