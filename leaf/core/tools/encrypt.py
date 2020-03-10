@@ -146,7 +146,7 @@ class EncryptTools:
     @staticmethod
     def SHA256(clear: str) -> str:
         """使用SHA256算法对传入消息进行摘要计算"""
-        SHA256 = hashlib.sha1()
+        SHA256 = hashlib.sha256()
         clear = clear.encode()
         SHA256.update(clear)
         cipher = SHA256.hexdigest()
