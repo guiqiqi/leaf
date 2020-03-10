@@ -4,7 +4,7 @@
 
 ![Logo](https://github.com/guiqiqi/leaf/blob/dev/docs/logo-bar.png?raw=true)
 
-`Leaf` 旨在实现一个对普通用户易用、对开发者友好的 *轻型* 开源 CMS 框架；`Leaf` 基于 `Python3.5+` 构建，后端使用 `Flask` 作为基础框架、`mongoengine` 进行数据库建模。
+`Leaf` 旨在实现一个对普通用户易用、对开发者友好的 *轻型* 开源 CMS 框架；`Leaf` 基于 `Python3.6+` 构建，后端使用 `Flask` 作为基础框架、`mongoengine` 进行数据库建模。
 
 我们希望能减少普通用户搭建微信商城的成本，同时为有开发能力的朋友提供更多样化的功能。
 
@@ -104,6 +104,14 @@ gunicorn -w 4 -b 0.0.0.0:80 run:server --daemon
 
 ## Other
 
+### Resources
+
+目前 `Leaf` 的官方文档站点已经上线，基于 `readthedocs` 搭建，欢迎大家来访问：
+
+- [官方文档站](https://docs.wxleaf.dev)
+- [官方首页](https://wxleaf.dev)
+- ...
+
 ### Wanted
 
 - `Leaf` 仍在开发阶段，仍有很多不完美的地方，希望大家能够在 `Issue` 中提出，帮助她变得更好。
@@ -132,8 +140,6 @@ gunicorn -w 4 -b 0.0.0.0:80 run:server --daemon
 [@lsdlab](https://github.com/lsdlab) - 前端及官网展示页面支持
 
 @刘修岩 from *天津大学建筑学院* - `Logo` 制作
-
-~~另外，我们现在已经建立了一个微信讨论组，如果你也想提供 *点子/创意/技术支持/...* 欢迎加入我们~~
 
 ### Thanks
 
