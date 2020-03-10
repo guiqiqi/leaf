@@ -3,6 +3,8 @@
 from typing import List
 
 from flask import request
+from flask import send_file
+from flask import Response
 from bson import ObjectId
 
 from . import rbac
@@ -162,3 +164,59 @@ def remove_user_from_group(userid: str, groupid: str) -> bool:
 def get_all_indexs() -> dict:
     """获取所有的索引类型信息"""
     return _rbac_settings.User.Indexs
+
+
+@rbac.route("/users/avatar/<string:userid>", methods=["POST"])
+@wrapper.require("leaf.views.rbac.user.update", checkuser=True)
+@wrapper.wrap("size")
+def update_user_avatar(userid: str) -> int:
+    """更新用户头像"""
+    userid = validator.objectid(userid)
+    user = functions.Retrieve.byid(userid)
+    avatar = request.files.get("avatar", None)
+    if user.avatar.gridout and avatar:
+        user.avatar.replace(avatar)
+        user.save()
+        return user.avatar.length
+    return 0
+
+
+@rbac.route("/users/avatar/<string:userid>", methods=["DELETE"])
+@wrapper.require("leaf.views.rbac.user.update", checkuser=True)
+@wrapper.wrap("status")
+def delete_user_avatar(userid: str) -> bool:
+    """删除用户头像"""
+    userid = validator.objectid(userid)
+    user = functions.Retrieve.byid(userid)
+    if user.avatar.size:
+        user.avatar.delete()
+        user.save()
+        return True
+    return False
+
+
+@rbac.route("/users/avatar/<string:userid>", methods=["GET"])
+def get_user_avatar(userid: str) -> bytes:
+    """获取用户头像"""
+    userid = validator.objectid(userid)
+    user = functions.Retrieve.byid(userid)
+    is_thumbnail = request.args.get("thumbnail", type=bool, default=False)
+
+    # 检查用户是否有头像
+    if not user.avatar.size:
+        return Response(status=404)
+
+    # 判断请求的是否为缩略图
+    if is_thumbnail:
+        handler = user.avatar.thumbnail
+    else:
+        handler = user.avatar.get()
+
+    # 检查是否缓存过
+    last_requested = request.headers.get("If-Modified-Since")
+    last_modified = handler.upload_date
+    if last_requested == last_modified:
+        return Response(status=304)
+
+    return send_file(handler, last_modified=last_modified,
+                     mimetype="image/" + user.avatar.format.lower())

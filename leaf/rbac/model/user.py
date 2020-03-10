@@ -2,6 +2,7 @@
 
 import mongoengine
 
+from .. import settings
 from ...core.tools import time
 from .group import Group
 
@@ -36,4 +37,7 @@ class User(mongoengine.Document):
     groups = mongoengine.ListField(mongoengine.ReferenceField(
         Group, reverse_delete_rule=mongoengine.PULL), default=list)
     indexs = mongoengine.EmbeddedDocumentListField(UserIndex, default=list)
+    avatar = mongoengine.ImageField(
+        size=settings.User.AvatarSize,
+        thumbnail_size=settings.User.AvatarThumbnailSize)
     informations = mongoengine.DictField()
