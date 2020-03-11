@@ -8,41 +8,6 @@
 
 我们希望能减少普通用户搭建微信商城的成本，同时为有开发能力的朋友提供更多样化的功能。
 
-**`Leaf` 当前的开发仍在进行当中，最新的代码变动请参考 `dev` 分支**
-
----
-
-## 安装及部署
-
-### 安装
-
-提供两种安装方式：
-- 手动安装：从本项目下载代码到您的目录，运行 `python setup.py install`
-- 自动安装：运行 `pip install wxleaf`
-
-**请注意，在正式版本发布之前，在代码分支 `dev`, `beta` 的代码都不可用于生产环境**
-
-在正式版本的 `release` 之前，*推荐* 使用手动安装模式（自动安装的包仍会不定期更新）
-
----
-
-### 部署
-
-`Leaf` 的部署很简单，只需四个步骤：
-
-1. 创建一个您的项目文件夹，用于保存您项目相关的文件
-2. 编写配置文件 - 可以直接参考项目 `config.py` 进行修改即可
-3. 编写运行文件 - 参考 `run.py` 内的注释，选择自己需要加载的模块即可
-4. 使用 `Gunicorn ` 进行部署，示例命令：
-
-```shell
-gunicorn -w 4 -b 0.0.0.0:80 run:server --daemon
-```
-
-更多的参数配置请参考 `Gunicorn` 的[官方使用文档](https://docs.gunicorn.org/en/stable/)。
-
-同时，我们也建议您在生产环境中使用 `Nginx` 作为代理转发，提升静态资源的访问性能。
-
 ---
 
 ## 特性介绍
@@ -99,56 +64,3 @@ gunicorn -w 4 -b 0.0.0.0:80 run:server --daemon
 我们会编写一些示例代码助于开发者的理解。
 
 **示例代码将会在 `demo` 文件夹中不断更新**，您也可以在 `Leaf` 的任意版本中找到示例插件（`Access Token` 中控插件）的代码，相信会更有助您的二次开发。
-
----
-
-## Other
-
-### Resources
-
-目前 `Leaf` 的官方文档站点已经上线，基于 `readthedocs` 搭建，欢迎大家来访问：
-
-- [官方文档站](https://docs.wxleaf.dev)
-- [官方首页](https://wxleaf.dev)
-- ...
-
-### Wanted
-
-- `Leaf` 仍在开发阶段，仍有很多不完美的地方，希望大家能够在 `Issue` 中提出，帮助她变得更好。
-- `Leaf` 的后端工作已经接近完成，现在需要前端小伙伴们的支持，将它变成一个好看的全栈项目。
-- ~~`Leaf` 到现在还没有一个合适的 Logo, 希望各位能够帮助~~ (已实现)
-
-### Todo
-
-1. ~~完善 `JWT Token` 的鉴权流程，实现 `api.wraps.require` 装饰器 - 一周内~~ (已完成)
-2. ~~完成用户/组/权限/访问点相关的 `CRUD` 以及视图函数 - 一周内 (2020.2.17 修周假)~~ (已完成)
-3. 完成 `SKU/SPU` 的 `CRUD` 以及视图函数 - 一个月内
-4. 完成订单模块的 `CRUD` 以及视图函数 - 近期
-5. 编写给前端同学的 `API` 文档 - 两个月内 (部分完成)
-6. 完善微信公众平台的 `API` 支持 - 两个月内
-7. 完成微信支付相关错误码收集 - 两个月内
-8. 编写单元测试 - 三个月内
-9. 编写给后端同学二次开发的文档 - 三个月内
-10. 架设属于 `Leaf` 自己的官网、插件市场 - 有生之年
-
-*To be continued...*
-
-### Contributors
-
-[@guiqiqi](https://github.com/guiqiqi) - `Leaf` 框架及后端支持
-
-@刘修岩 from *天津大学建筑学院* - `Logo` 制作
-
-### Thanks
-
-`Leaf` 项目的诞生离不开众多开源项目的支持。事实上，我们和他们一样都希望构建一个更好的开源世界。我总是相信：**We can make the world a better place.**
-
-在此特别感谢以下开源项目：
-- [python](https://github.com/python/cpython)
-- [flask](https://github.com/Legrandin/pycryptodome)
-- [mongoengine](https://github.com/MongoEngine/mongoengine)
-- [pycryptodome](https://github.com/Legrandin/pycryptodome)
-
-**另外，希望这次疫情快速过去，武汉加油，中国加油！♥**
-
-**祝您使用愉快 ;)**
