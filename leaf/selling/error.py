@@ -19,3 +19,9 @@ class ProductParameterConflicting(_error.Error):
     """产品参数信息冲突"""
     code = 10027
     description = "产品参数信息发现重复"
+
+
+class StockNotFound(_error.Error):
+    """根据给定信息找不到对应商品"""
+    code = 10028
+    description = "根据给定信息找不到对应的商品"

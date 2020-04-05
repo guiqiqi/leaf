@@ -200,7 +200,7 @@ def get_user_avatar(userid: str) -> bytes:
     """获取用户头像"""
     userid = validator.objectid(userid)
     user = functions.Retrieve.byid(userid)
-    is_thumbnail = request.args.get("thumbnail", type=bool, default=False)
+    is_thumbnail = bool(request.args.get("thumbnail", type=int, default=0))
 
     # 检查用户是否有头像
     if not user.avatar.size:
