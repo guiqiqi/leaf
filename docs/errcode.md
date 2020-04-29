@@ -1,9 +1,8 @@
-## Leaf 现有错误码及其说明
 
 以下是 _Leaf_ 的现有的所有错误代码及其描述:
 
 | 错误代码 | 错误描述 | 所属模块 |
-| ------- | ------- | ------ |
+| :----: | | :----: | :----: |
 | 10010 | 非法的 ObjectId 字符串 | leaf.api.error |
 | 10011 | 项目达到最大注册数量限制 | leaf.core.events |
 | 10012 | 非法根节点名称 | leaf.core.events |
@@ -22,6 +21,8 @@
 | 10025 | 根据给定信息找不到对应的产品 | leaf.selling.error |
 | 10026 | 找不到对应的产品参数信息 | leaf.selling.error |
 | 10027 | 产品参数信息发现重复 | leaf.selling.error |
+| 10028 | 根据给定信息找不到对应的商品 | leaf.selling.error |
+| 10029 | 不允许给定的货币类型进行交易 | leaf.selling.error |
 | 10101 | 插件载入时出错 | leaf.plugins.error |
 | 10102 | 没有找到对应的插件 | leaf.plugins.error |
 | 10103 | 插件 init 函数错误 | leaf.plugins.error |

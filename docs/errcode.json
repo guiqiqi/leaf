@@ -71,6 +71,14 @@
         "description": "产品参数信息发现重复",
         "module": "leaf.selling.error"
     },
+    "10028": {
+        "description": "根据给定信息找不到对应的商品",
+        "module": "leaf.selling.error"
+    },
+    "10029": {
+        "description": "不允许给定的货币类型进行交易",
+        "module": "leaf.selling.error"
+    },
     "10101": {
         "description": "插件载入时出错",
         "module": "leaf.plugins.error"
