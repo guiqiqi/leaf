@@ -13,11 +13,10 @@ from collections import OrderedDict as _ODict
 from typing import List as _List
 from typing import Dict as _Dict
 
-# pylint: disable=wrong-import-position
-
 workdir: str = _os.path.dirname(_os.path.realpath(__file__))
 __import__("sys").path.append(_os.path.dirname(workdir))
 
+# pylint: disable=wrong-import-position
 from leaf.core import error as _error
 
 # 设定错误信息存储类
