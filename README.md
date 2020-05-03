@@ -148,7 +148,4 @@ gunicorn -w 4 -b 0.0.0.0:80 run:server --daemon
 - [flask](https://github.com/Legrandin/pycryptodome)
 - [mongoengine](https://github.com/MongoEngine/mongoengine)
 - [pycryptodome](https://github.com/Legrandin/pycryptodome)
-
-**另外，希望这次疫情快速过去，武汉加油，中国加油！♥**
-
 **祝您使用愉快 ;)**
