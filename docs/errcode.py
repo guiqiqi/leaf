@@ -5,6 +5,7 @@
 """
 
 # 将文件路径向上转移
+import os as _os
 import json as _json
 import argparse as _argparse
 from collections import namedtuple as _namedtuple
@@ -12,8 +13,10 @@ from collections import OrderedDict as _ODict
 from typing import List as _List
 from typing import Dict as _Dict
 
+workdir: str = _os.path.dirname(_os.path.realpath(__file__))
+__import__("sys").path.append(_os.path.dirname(workdir))
+
 # pylint: disable=wrong-import-position
-__import__("os").chdir("..")
 from leaf.core import error as _error
 
 # 设定错误信息存储类
@@ -75,9 +78,6 @@ def __json(informations: _Dict[int, ErrorInfo]) -> str:
 def export(filename: str, _type: str) -> _Dict[int, ErrorInfo]:
     """导出文件"""
 
-    # 切换到当前目录
-    __import__("os").chdir("docs")
-
     content = ''
     if _type == "markdown":
         content = __HEADER + __markdown(__informations)
@@ -89,7 +89,7 @@ def export(filename: str, _type: str) -> _Dict[int, ErrorInfo]:
 
     # 完成导出, 切换出当前目录
     print("错误代码已导出到文件 '" + filename + "'")
-    __import__("os").chdir("..")
+
     return __informations
 
 

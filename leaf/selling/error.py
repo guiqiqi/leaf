@@ -25,3 +25,9 @@ class StockNotFound(_error.Error):
     """根据给定信息找不到对应商品"""
     code = 10028
     description = "根据给定信息找不到对应的商品"
+
+
+class InvalidCurrency(_error.Error):
+    """非允许的交易货币类型"""
+    code = 10029
+    description = "不允许给定的货币类型进行交易"

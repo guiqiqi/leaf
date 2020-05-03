@@ -106,7 +106,7 @@ gunicorn -w 4 -b 0.0.0.0:80 run:server --daemon
 
 ### Resources
 
-目前 `Leaf` 的官方文档站点已经上线，基于 `readthedocs` 搭建，欢迎大家来访问：
+目前 `Leaf` 的官方文档站点已经上线，基于 `readthedocs` 搭建，欢迎大家访问：
 
 - [官方文档站](https://docs.wxleaf.dev)
 - [官方首页](https://wxleaf.dev)
@@ -120,16 +120,16 @@ gunicorn -w 4 -b 0.0.0.0:80 run:server --daemon
 
 ### Todo
 
-1. ~~完善 `JWT Token` 的鉴权流程，实现 `api.wraps.require` 装饰器 - 一周内~~ (已完成)
-2. ~~完成用户/组/权限/访问点相关的 `CRUD` 以及视图函数 - 一周内 (2020.2.17 修周假)~~ (已完成)
-3. 完成 `SKU/SPU` 的 `CRUD` 以及视图函数 - 一个月内
-4. 完成订单模块的 `CRUD` 以及视图函数 - 近期
-5. 编写给前端同学的 `API` 文档 - 两个月内 (部分完成)
-6. 完善微信公众平台的 `API` 支持 - 两个月内
-7. 完成微信支付相关错误码收集 - 两个月内
-8. 编写单元测试 - 三个月内
-9. 编写给后端同学二次开发的文档 - 三个月内
-10. 架设属于 `Leaf` 自己的官网、插件市场 - 有生之年
+1. ~~完善 `JWT Token` 的鉴权流程，实现 `api.wraps.require` 装饰器 ~~ (已完成)
+2. ~~完成用户/组/权限/访问点相关的 `CRUD` 以及视图函数 ~~ (已完成)
+3. 完成 `SKU/SPU` 的 `CRUD` 以及视图函数 -- (已完成)
+4. 完成订单模块的 `CRUD` 以及视图函数
+5. 编写给前端同学的 `API` 文档
+6. 完善微信公众平台的 `API` 支持
+7. 完成微信支付相关错误码收集
+8. 编写单元测试
+9. 编写给后端同学二次开发的文档
+10. 架设属于 `Leaf` 自己的官网、插件市场
 
 *To be continued...*
 
@@ -148,7 +148,4 @@ gunicorn -w 4 -b 0.0.0.0:80 run:server --daemon
 - [flask](https://github.com/Legrandin/pycryptodome)
 - [mongoengine](https://github.com/MongoEngine/mongoengine)
 - [pycryptodome](https://github.com/Legrandin/pycryptodome)
-
-**另外，希望这次疫情快速过去，武汉加油，中国加油！♥**
-
 **祝您使用愉快 ;)**

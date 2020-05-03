@@ -8,6 +8,8 @@ from ...api import wrapper
 from ...api import validator
 from ...core.tools import web
 
+from ...selling import error
+from ...selling import settings
 from ...selling.commodity import Stock
 from ...selling.commodity import Product
 from ...selling.commodity import StocksGenerator
@@ -35,7 +37,7 @@ def get_batch_products() -> List[Product]:
 @wrapper.require("leaf.views.commodity.product.get")
 @wrapper.wrap("product")
 def get_product_byid(productid: str) -> Product:
-    """根据产品名称查找产品"""
+    """根据产品ID查找产品"""
     productid = validator.objectid(productid)
     return functions.Retrieve.byid(productid)
 
@@ -160,7 +162,13 @@ def generate_goods_from_product(productid: str) -> List[Stock]:
     save: bool = bool(request.form.get("save", default=0, type=int))
     price: float = request.form.get("price", default=0.0, type=float)
     inventory: int = request.form.get("inventory", default=0, type=int)
-    currency: str = request.form.get("currency", default="CNY", type=str)
+    currency: str = request.form.get(
+        "currency", default=settings.General.DefaultCurrency, type=str)
+
+    # 检测货币类型是否允许设置
+    if not currency in settings.General.AllowCurrency:
+        raise error.InvalidCurrency(currency)
+
     productid = validator.objectid(productid)
     product = functions.Retrieve.byid(productid)
     generator = StocksGenerator(product)
