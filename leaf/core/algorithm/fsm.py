@@ -1,5 +1,6 @@
 """实现一个支持上下文管理器的有限状态机"""
 
+import string
 from typing import List, Set, Dict, Tuple, NoReturn, Optional, Any
 
 from ..error import Error
@@ -48,7 +49,8 @@ class Event:
             result: 在动作发生之后用于保存动作函数的相关值
         """
         self.__time: int = timetools.now()
-        self.__opcode: str = enctools.random(16)
+        self.__opcode: str = enctools.random(
+            16, string.digits + string.ascii_letters)
         self.__extra: dict = dict()
 
     def append(self, key, value) -> NoReturn:
