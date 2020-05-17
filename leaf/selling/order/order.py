@@ -1,73 +1,18 @@
 """订单类数据库模型"""
 
 import pickle
-import logging
 from typing import List, NoReturn
 import mongoengine
 
-from . import manager as _man
 from . import events
+from . import manager as _man
 from .. import error
 from .. import settings
 from ..commodity import stock
+
 from ...core import modules
 from ...core import schedule
-from ...core.error import Error as _Error
 from ...core.algorithm import fsm
-from ...views import wxpay as _wxpay
-
-
-# 注册支付成功与失败及退款提醒事件
-# 位置参数列表 - openid, transaction id, trade_out_no, cash_fee
-logger = logging.getLogger("leaf.selling.order")
-
-
-def _paysucess_handler(_openid: str, tactid: str, orderid: str, amount: float) -> NoReturn:
-    """支付成功通知处理"""
-    # pylint: disable=no-member
-    order = Order.objects(id=orderid)
-
-    try:
-        # 被通知到的订单不存在 - 记录错误(严重错误)
-        if not order:
-            raise error.InvalidPaymentCallback(
-                orderid + ' - ' + str(amount))
-        order: Order = order.pop()
-
-        # 生成一个支付成功的有限状态机事件
-        paid = events.PayingSuccess()
-        paid.action(tactid, amount)
-        order.manager.handle(paid)
-
-    except _Error as _error:
-        logger.exception(_error)
-
-
-def _payfail_handler(_openid: str, tactid: str, orderid: str,
-                     amount: float, reason: str) -> NoReturn:
-    """支付失败通知处理"""
-    # pylint: disable=no-member
-    order = Order.objects(id=orderid)
-
-    try:
-        # 被通知到的订单不存在 - 记录错误(严重错误)
-        if not order:
-            raise error.InvalidPaymentCallback(
-                orderid + ' - ' + str(amount))
-        order: Order = order.pop()
-
-        # 生成一个支付失败的有限状态机事件
-        payfailed = events.PayingFailed()
-        payfailed.action(tactid, reason)
-        order.manager.handle(payfailed)
-
-    except _Error as _error:
-        logger.exception(_error)
-
-
-_wxpay.paysuccess.hook(_paysucess_handler)
-_wxpay.payfail.hook(_payfail_handler)
-# _wxpay.refund.hook()  # 暂时不启用
 
 
 class Order(mongoengine.Document):
@@ -88,7 +33,7 @@ class Order(mongoengine.Document):
 
     @staticmethod
     def create(goods: List[stock.Stock],
-               timeout: int = settings.Order.OrderTimeout) -> Order:
+               timeout: int = settings.Order.OrderTimeout):
         """根据给定的商品列表创建一个订单类实例后入库"""
 
         # 检查列表是否为空
@@ -134,7 +79,6 @@ class Order(mongoengine.Document):
         timer = schedule.Worker(__cancel_order, timeout, 1)
         schedule_manager: schedule.Manager = modules.schedules
         schedule_manager.start(timer)
-
         return order.save()
 
     @property

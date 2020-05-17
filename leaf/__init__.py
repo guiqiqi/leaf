@@ -248,8 +248,10 @@ class Init:
         server: _Flask = self.__modules.server
         from .views.rbac import rbac as _rbac
         from .views.commodity import commodity as _commodity
+        from .views.order import order as _order
         server.register_blueprint(_rbac, url_prefix="/rbac")
         server.register_blueprint(_commodity, url_prefix="/commodity")
+        server.register_blueprint(_order, url_prefix="/order")
 
         return self.__modules.server
 
