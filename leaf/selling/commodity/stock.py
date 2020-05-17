@@ -3,6 +3,7 @@
 import mongoengine
 
 from .product import Product
+from .. import settings
 
 
 class Stock(mongoengine.Document):
@@ -31,7 +32,7 @@ class Stock(mongoengine.Document):
     addition = mongoengine.StringField()
     tags = mongoengine.ListField(mongoengine.StringField())
     price = mongoengine.FloatField()
-    currency = mongoengine.StringField()
+    currency = mongoengine.StringField(default=settings.General.DefaultCurrency)
     inventory = mongoengine.IntField()
-    onsale = mongoengine.BooleanField()
+    onsale = mongoengine.BooleanField(default=True)
     extensions = mongoengine.DictField(default=dict)
