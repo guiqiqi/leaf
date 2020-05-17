@@ -131,3 +131,6 @@ dmypy.json
 # Leaf multiprocessing control
 .leaf.lock
 .*.lock
+
+# Visual Studio Code config files
+.vscode/
