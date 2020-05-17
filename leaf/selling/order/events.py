@@ -52,8 +52,9 @@ class PayingFailed(fsm.Event):
     """支付平台通知支付失败"""
     description: str = settings.Description.PayingFailed
 
-    def action(self, reason: str) -> NoReturn:
+    def action(self, payid: str, reason: str) -> NoReturn:
         """记录支付失败的原因"""
+        self.append(settings.ExtraInformation.PayId, payid)
         self.append(settings.ExtraInformation.PayFailReason, reason)
 
 

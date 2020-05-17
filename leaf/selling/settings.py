@@ -1,5 +1,6 @@
 """产品与销售相关设置"""
 
+from ..core.schedule import MINUTE
 from ..core.schedule import HOUR
 
 
@@ -10,6 +11,12 @@ class General:
     AllowCurrency = {
         "CNY", "USD", "RUB"
     }  # 允许设置的价格单位
+
+
+class Order:
+    """订单相关的设置项目"""
+
+    OrderTimeout = 30 * MINUTE  # 默认订单超时时间为30min
 
 
 class Product:

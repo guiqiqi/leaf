@@ -17,8 +17,10 @@ from . import settings
 _TransferTable = (
     (status.Created, events.Confirm, status.Confirmed),
     (status.Created, events.UserClose, status.Closed),
+    (status.Created, events.OrderTimedOut, status.Closed),
     (status.Confirmed, events.Paying, status.Paying),
     (status.Confirmed, events.UserClose, status.Closed),
+    (status.Confirmed, events.OrderTimedOut, status.Closed),
     (status.Paying, events.PayingSuccess, status.Paid),
     (status.Paying, events.PayingFailed, status.PayFailed),
     (status.PayFailed, events.OrderTimedOut, status.Closed),
