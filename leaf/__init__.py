@@ -103,7 +103,7 @@ class Init:
             address = handler.read().strip()
             handler.close()
             manager = core.parallel.Controller.connect(address, conf.authkey)
-            # # pylint: disable=no-member
+            # pylint: disable=no-member
             async_events = manager.bind(_os.getpid())
             self.__modules.manager = manager
 
