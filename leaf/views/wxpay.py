@@ -36,22 +36,30 @@ logger = logging.getLogger("leaf.views.wxpay")
 
 
 # 注册支付成功与失败提醒事件
-# 位置参数列表 - appid, openid, trade_out_no, cash_fee
+# 位置参数列表 - openid, payid, trade_out_no, cash_fee
 paysuccess = events.Event(
     "leaf.payments.wxpay.notify.pay.success",
     ((str, str, str, float), {}),
     "支付成功时的结果通知"
 )
 
+# 增加退款原因参数
 payfail = events.Event(
     "leaf.payments.wxpay.notify.pay.fail",
-    ((str, str, str, float), {}),
+    ((str, str, str, float, str), {}),
     "支付失败时的结果通知"
+)
+
+refund = events.Event(
+    "leaf.payments.wxpay.notify.refund.success",
+    ((str, str, str, float), {}),
+    "退款成功的结果通知"
 )
 
 manager: events.Manager = modules.events
 manager.add(paysuccess)
 manager.add(payfail)
+manager.add(refund)
 
 
 @wxpay.route("/refund_notify", methods=["POST"])
@@ -78,7 +86,6 @@ def payment_notify_handler() -> str:
         return _STANDARD_REPLY
 
     response = response.get(const.WXPayAddress.XMLTag, {})
-
     sigtool: signature = modules.payments.wxpay.signature
 
     # 校验签名是否正确
@@ -90,10 +97,10 @@ def payment_notify_handler() -> str:
             return _STANDARD_REPLY
 
     # 获取需要的信息
-    appid = response.get(const.WXPayBasic.AppID)
     openid = response.get(const.WXPayBasic.OpenID)
     orderid = response.get(const.WXPayOrder.ID.In)
     fee = response.get(const.WXPaymentNotify.Fee)
+    transcationid = response.get(const.WXPayBasic.TransactionID)
 
     kvparas = dict()
     for key, value in settings.PaymentNotify.Keys.items():
@@ -104,10 +111,11 @@ def payment_notify_handler() -> str:
 
     # 支付失败
     if result != const.WXPayResponse.Success:
-        payfail.notify(appid, openid, orderid, fee, **kvparas)
+        reason = response.get(const.WXPaymentNotify.Error.Description)
+        payfail.notify(openid, transcationid, orderid, fee, reason, **kvparas)
         return _STANDARD_REPLY
 
     fee = payment.currency_reverter(int(fee))
-    paysuccess.notify(appid, openid, orderid, fee, **kvparas)
+    paysuccess.notify(openid, transcationid, orderid, fee, **kvparas)
 
     return _STANDARD_REPLY

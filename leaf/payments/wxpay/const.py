@@ -32,6 +32,7 @@ class WXPayBasic:
     AppID = "appid"  # appid键
     Mch = "mch_id"  # 商户号键
     OpenID = "openid"  # OpenID
+    TransactionID = "transaction_id"  # 微信支付交易ID
 
 
 class WXPaymentNotify:
@@ -45,7 +46,7 @@ class WXPaymentNotify:
     class Error:
         """支付失败"""
         Code = "err_code"  # 错误代码键
-        Description = "description"  # 错误描述
+        Description = "err_code_des"  # 错误描述
 
 
 class WXPayResponse:
