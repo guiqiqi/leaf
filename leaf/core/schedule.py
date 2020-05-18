@@ -22,12 +22,14 @@ class Worker:
         return "<Leaf ScheduleWorker>"
 
     def __init__(self, task: Callable[[], object], interval: float,
-                 runtimes: Optional[int] = 0, id_: Optional[str] = None,
+                 runtimes: Optional[int] = 0, instantly: Optional[bool] = True,
+                 id_: Optional[str] = None,
                  fineness: Optional[float] = 1):
         """
         任务类初始化函数
         task: 需要运行的任务函数 - 需要经过包装(无参)
         interval: 每次运行的时间间隔
+        instantly: 创建任务时是否立即运行
         runtimes: 可以指定任务运行指定次数后终止 - 默认为0 - 无限次
         id: 需要时可以手动指定该任务的id - 默认为自动生成
         fineness: 检查任务是否终止的细度 - 默认为1s
@@ -36,6 +38,7 @@ class Worker:
         self.__task = task
         self.__interval = interval
         self.__fineness = fineness
+        self.__instantly = instantly
 
         # 初始化任务变量
         self.__status = False  # 任务是否在运行
@@ -89,8 +92,11 @@ class Worker:
                 self.stop()
 
             # 执行任务
-            # self.__results.put(self.__task())
-            self.__task()
+            if not self.__instantly:
+                self.__instantly = True
+                runtimes += 1
+            else:
+                self.__task()
 
             # 进行任务休眠 - 休眠失败则退出执行
             try:

@@ -70,16 +70,17 @@ class Order(mongoengine.Document):
         instance = _man.StatusManager(order.id)
         instance.start()
         order.instance = pickle.dumps(instance)
+        order.save()
 
         # 设置订单超时定时器
         def __cancel_order():
             """取消当前订单"""
             cancellation = events.OrderTimedOut()
             order.manager.handle(cancellation)
-        timer = schedule.Worker(__cancel_order, timeout, 1)
+        timer = schedule.Worker(__cancel_order, timeout, 1, False)
         schedule_manager: schedule.Manager = modules.schedules
         schedule_manager.start(timer)
-        return order.save()
+        return order
 
     @property
     def manager(self):
