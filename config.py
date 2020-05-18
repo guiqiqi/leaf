@@ -44,6 +44,17 @@ basic = Static({
 })
 
 
+# 开发相关配置
+# 在生产环境请务必禁用开发者模式!
+# enable: 启用开发者模式 - 仅当为 True 时以下选项生效
+#         该选项同时影响 Flask 的默认 Debug 启动参数
+# token: 开发用 JWT Token - 无需验证身份
+devlopment = Static({
+    "enable": False,
+    "token": "here is a secret token"
+})
+
+
 # 错误与日志处理配置
 logging = Static({
 

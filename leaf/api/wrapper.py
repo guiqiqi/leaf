@@ -22,6 +22,7 @@ from . import settings
 from . import validator
 from .. import rbac
 from ..core import error
+from ..core import modules
 
 
 logger = logging.getLogger("leaf.api")
@@ -164,9 +165,16 @@ def require(pointname: str, checkuser: bool = False) -> Callable:
         def wrapper(*args, **kwargs) -> Any:
             """参数包装器"""
 
+            # 检查是否启用开发模式的 JWT Token
+            _devmode = modules.server.debug
+            _devtoken = modules.server.devjwt
+            _gettoken = _request.headers.get("Authorization", str())
+            if _devmode and _devtoken == _gettoken:
+                return function(*args, **kwargs)
+
             # 验证 token 是否正确
             try:
-                payload: dict = validator.jwttoken()
+                payload: dict = validator.jwttoken(_gettoken)
             except error.Error as _error:
                 logger.warning(_error)
                 return settings.Authorization.UnAuthorized(_error)

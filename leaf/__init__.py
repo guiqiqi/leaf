@@ -232,7 +232,7 @@ class Init:
 
         return message
 
-    def server(self) -> _Flask:
+    def server(self, dev: core.algorithm.StaticDict) -> _Flask:
         """
         服务器初始化函数:
             创建 Flask 服务器
@@ -243,6 +243,8 @@ class Init:
         self.__modules.server = _Flask("leaf")
         self.__modules.server.logger = self.__modules.logging.logger
         self.__modules.server.secret_key = core.tools.encrypt.random(64)
+        self.__modules.server.debug = dev.enable
+        self.__modules.server.devjwt = dev.token
 
         # 引用其他的 views 视图函数并注册 Blueprints 蓝图
         server: _Flask = self.__modules.server

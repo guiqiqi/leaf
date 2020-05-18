@@ -9,7 +9,7 @@ import config
 init = leaf.Init()
 init.kernel(config.basic)
 init.logging(config.logging)
-init.server()
+init.server(config.devlopment)
 init.database(config.database)
 
 # 以下模块请根据需要启用/禁用初始化
@@ -30,4 +30,4 @@ schedules: leaf.core.schedule.Manager = leaf.modules.schedules  # 任务调度�
 
 # 如果需要启用 Flask 自带的 Web Server 进行调试
 # 请取消下面一行的注释并给定 Flask 运行参数即可
-# server.run(host="0.0.0.0", port=80, ...)
+# server.run(host="127.0.0.1", port=8080)

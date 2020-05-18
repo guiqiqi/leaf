@@ -1,6 +1,6 @@
 """API 函数工具库"""
 
-from typing import List
+from typing import List, Optional
 
 import bson
 from flask import g as _g
@@ -40,7 +40,7 @@ def operator(modified: str) -> bson.ObjectId:
     return objectid(modified)
 
 
-def jwttoken() -> dict:
+def jwttoken(authorization: Optional[str] = None) -> dict:
     """
     验证传入的 JWT Token 是否正确并返回 payload, 可能的错误:
         rbac.jwt.error.InvalidToken - Token 解析失败
@@ -50,7 +50,8 @@ def jwttoken() -> dict:
         rbac.jwt.error.SignatureNotValid - 签名信息验证失败
     """
     # 获取 Bearer-Token
-    authorization: str = _request.headers.get("Authorization")
+    if not authorization:
+        authorization: str = _request.headers.get("Authorization")
 
     # 通过 Authorization 头获取 Token
     token: str = str()
