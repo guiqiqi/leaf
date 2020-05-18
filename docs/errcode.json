@@ -79,6 +79,26 @@
         "description": "不允许给定的货币类型进行交易",
         "module": "leaf.selling.error"
     },
+    "10030": {
+        "description": "不能用空商品列表创建订单",
+        "module": "leaf.selling.error"
+    },
+    "10031": {
+        "description": "商品货币类型不统一",
+        "module": "leaf.selling.error"
+    },
+    "10032": {
+        "description": "试图创建订单的商品已经停售",
+        "module": "leaf.selling.error"
+    },
+    "10033": {
+        "description": "所选商品库存不足",
+        "module": "leaf.selling.error"
+    },
+    "10034": {
+        "description": "无法找到支付平台通知到的订单",
+        "module": "leaf.selling.error"
+    },
     "10101": {
         "description": "插件载入时出错",
         "module": "leaf.plugins.error"

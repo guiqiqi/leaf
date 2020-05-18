@@ -23,6 +23,11 @@
 | 10027 | 产品参数信息发现重复 | leaf.selling.error |
 | 10028 | 根据给定信息找不到对应的商品 | leaf.selling.error |
 | 10029 | 不允许给定的货币类型进行交易 | leaf.selling.error |
+| 10030 | 不能用空商品列表创建订单 | leaf.selling.error |
+| 10031 | 商品货币类型不统一 | leaf.selling.error |
+| 10032 | 试图创建订单的商品已经停售 | leaf.selling.error |
+| 10033 | 所选商品库存不足 | leaf.selling.error |
+| 10034 | 无法找到支付平台通知到的订单 | leaf.selling.error |
 | 10101 | 插件载入时出错 | leaf.plugins.error |
 | 10102 | 没有找到对应的插件 | leaf.plugins.error |
 | 10103 | 插件 init 函数错误 | leaf.plugins.error |
