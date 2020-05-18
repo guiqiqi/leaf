@@ -60,7 +60,7 @@ def add_group() -> Group:
     name: str = request.form.get("name", type=str, default='')
     description: str = request.form.get("description", type=str, default='')
     permission: int = request.form.get("permission", type=int, default=0)
-    group: Group = Group(name, description, permission)
+    group: Group = Group(name=name, description=description, permission=permission)
     return group.save()
 
 
