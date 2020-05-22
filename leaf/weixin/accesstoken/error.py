@@ -2,7 +2,6 @@
 AccessToken 获取插件错误类定义
 """
 
-from ...core import modules
 from ...core import error as _oerror
 
 Error = _oerror.Error
@@ -54,14 +53,3 @@ class AccessTokenStatusError(Error):
     """当前的 AccessToken 状态不正常时抛出"""
     code = 14205
     description = "缓存的 AccessToken 状态异常"
-
-
-messenger: _oerror.Messenger = modules.error.messenger
-messenger.register(AConnectionError)
-messenger.register(InvalidResponse)
-messenger.register(ReachedMaxRetries)
-messenger.register(NoCachedAccessToken)
-messenger.register(AccessTokenStatusError)
-messenger.register(InvalidAppID)
-messenger.register(InvalidAppSecret)
-messenger.register(IPLimited)
