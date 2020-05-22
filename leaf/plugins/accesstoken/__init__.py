@@ -1,39 +1,40 @@
 """
-Leaf 微信公众平台AccessToken管理插件
+使 leaf.weixin.accesstoken 模块获得的
+微信公众平台 AccessToken 有接口对外公布
 """
 
 from flask import abort
-from flask import request
 
-from . import patch
 from . import error
-from . import events
 from . import settings
 
 from ... import api
 from ...core import modules
-from ...core.abstract import plugin
+from ...weixin.accesstoken import Patcher
+from ...core.abstract.plugin import Plugin
 
-# 获取器实例
-patcher = patch.Patcher(settings.AppID, settings.AppSecret)
-
-plugin = plugin.Plugin(
-    "AccessToken 中间控制插件",
-    patcher.start, patcher.restart, patcher.stop,
-    "a018e199e0624f29a06928865cfc9c7a",
+plugin = Plugin(
+    "AccessToken 导出插件",
+    Plugin.nothing, Plugin.nothing, Plugin.nothing,
     author="桂小方",
-    description="提供一个微信公众平台 AccessToken 中控服务器",
-    version="beta - 0.1.1",
-    date="2019-09-09"
+    description="将微信模块获取到的 AccessToken 对外公布",
+    version="beta - 0.2.0",
+    date="2020-05-23"
 )
 
-# 注册主域
+# 注册插件主域
 modules.plugins.register(plugin, ["accesstoken"])
 
-
-@plugin.route("/", methods=["POST"])
-@api.wrapper.iplimit(["127.0.0.1"])
+# 导出接口
+@plugin.route("/", methods=["GET"])
+@api.wrapper.iplimit(settings.AuthorizedHost)
 @api.wrapper.wrap("accesstoken")
 def accesstoken():
     """获取当前已经缓存的 accesstoken"""
+    patcher: Patcher = modules.weixin.accesstoken
+
+    # 如果更新器不在运行返回
+    if not patcher.status:
+        raise error.PatcherNotRunning()
+
     return patcher.get()
