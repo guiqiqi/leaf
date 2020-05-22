@@ -14,7 +14,7 @@ from ...core.tools import web
 from ...core.tools import time
 
 
-logger = logging.getLogger("leaf.plugins.accesstoken")
+logger = logging.getLogger("leaf.weixin.accesstoken")
 
 
 class Patcher:
@@ -86,6 +86,8 @@ class Patcher:
 
         # 遇到网络错误
         if response.code != 200:
+            failed = modules.events.event("leaf.weixin.accesstoken.failed")
+            failed.boardcast()
             raise error.AConnectionError(response.code)
 
         # 尝试解析数据
@@ -106,7 +108,7 @@ class Patcher:
         self.__expire = expires + time.now()
 
         # 发送事件通知
-        updated = modules.events.event("leaf.plugins.accesstoken.updated")
+        updated = modules.events.event("leaf.weixin.accesstoken.updated")
         updated.boardcast(self.__cache, self.__expire)
 
         return self.__cache
@@ -122,7 +124,7 @@ class Patcher:
         self.__work.stop()
         self.__status = False
 
-        stopped = modules.events.event("leaf.plugins.accesstoken.stopped")
+        stopped = modules.events.event("leaf.weixin.accesstoken.stopped")
         stopped.boardcast()
 
     def restart(self) -> NoReturn:
@@ -134,6 +136,11 @@ class Patcher:
         # 函数会触发事件通知使得插件状态失效
         self.__work.stop()
         self.__work.start()
+
+    @property
+    def status(self) -> bool:
+        """返回当前更新器是否在工作"""
+        return self.__status
 
     def get(self) -> str:
         """

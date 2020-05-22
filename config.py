@@ -91,10 +91,18 @@ logging = Static({
 # appid - 微信公众平台 AppId
 # aeskey - 微信公众平台 AESKey
 # token - 微信公众平台消息传递 Token
+# secret - 微信公众平台 AppSecret
+# accesstoken.enbale - 是否启用 ACToken 自动更新功能
+# accesstoken.retries - 遇到错误之后的重试次数
 weixin = Static({
     "appid": "wxabcd1234abcd1234",
     "aeskey": "s5d6t7vybotcre3465d68f7ybvtd4sd5687g8huhyvt",
-    "token": "s547d6figobunb67568d8f7g8ohjiks1"
+    "token": "s547d6figobunb67568d8f7g8ohjiks1",
+    "secret": "f5a3462707c2a31e51ff1b04efd1ed39",
+    "accesstoken": Static({
+        "enable": True,
+        "retries": 5
+    })
 })
 
 

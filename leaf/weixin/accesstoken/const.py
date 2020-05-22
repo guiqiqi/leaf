@@ -1,5 +1,5 @@
 """
-AccessToken 获取插件常量定义
+AccessToken 获取常量定义
 """
 
 # 请求中携带的参数键

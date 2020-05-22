@@ -223,6 +223,17 @@ class Init:
         event = weixin.reply.Event(encryptor)
         self.__modules.weixin.message = message
         self.__modules.weixin.event = event
+        self.__modules.weixin.accesstoken = weixin.accesstoken.Patcher(
+            conf.appid, conf.secret)
+
+        # 判断是否启用 AccessToken 自动更新功能
+        if conf.accesstoken.enable:
+            weixin.accesstoken.settings.MaxRetries = conf.accesstoken.retries
+            self.__modules.weixin.accesstoken.start()
+        _events: core.events.Manager = self.__modules.events
+        _events.add(weixin.accesstoken.events.updated)
+        _events.add(weixin.accesstoken.events.failed)
+        _events.add(weixin.accesstoken.events.stopped)
 
         # 注册微信蓝图
         from .views.weixin import weixin as _weixin
