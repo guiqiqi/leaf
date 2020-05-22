@@ -134,3 +134,9 @@ dmypy.json
 
 # Visual Studio Code config files
 .vscode/
+
+# MacOS Annoying file
+.DS_Store
+
+# Local test env
+.test/
