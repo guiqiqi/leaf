@@ -25,7 +25,7 @@ class Plugin:
     __pattern = re.compile("<.*?>")  # 搜索函数需要的参数序列
 
     @staticmethod
-    def __nothing_did_func(*args, **kwargs) -> NoReturn:
+    def nothing(*args, **kwargs) -> NoReturn:
         """一个什么都不干的函数"""
 
     @staticmethod
@@ -90,8 +90,8 @@ class Plugin:
         self.__service_name = "leaf.plugins" + self.name
 
         # 请求前后绑定函数
-        self.__func_before_request = self.__nothing_did_func
-        self.__func_after_request = self.__nothing_did_func
+        self.__func_before_request = self.nothing
+        self.__func_after_request = self.nothing
 
         # 路由器的路由信息注册
         self.__urlmaps = Map()
