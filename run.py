@@ -13,9 +13,9 @@ init.server(config.devlopment)
 init.database(config.database)
 
 # 以下模块请根据需要启用/禁用初始化
-init.plugins(config.plugins)  # 插件模块
 init.weixin(config.weixin)  # 微信公众平台支持模块
 init.wxpay(config.wxpay)  # 微信支付支持模块
+init.plugins(config.plugins)  # 插件模块
 
 # 获取服务模块
 server: flask.Flask = leaf.modules.server
