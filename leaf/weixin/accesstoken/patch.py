@@ -12,6 +12,7 @@ from ...core import modules
 from ...core import schedule
 from ...core.tools import web
 from ...core.tools import time
+from ...core.error import Messenger
 
 
 logger = logging.getLogger("leaf.weixin.accesstoken")
@@ -101,7 +102,8 @@ class Patcher:
             # 这时微信平台返回了异常提示
             code = int(info.get(const.CODE, 0))
             message = info.get(const.MESSAGE, '')
-            raise error.messenger.error(code, message)
+            raiser: Messenger = modules.error.messenger
+            raise raiser.error(code, message=message)
 
         # 更新缓存
         self.__cache = token
