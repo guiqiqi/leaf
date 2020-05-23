@@ -1,6 +1,9 @@
 """微信公众平台设置"""
 
+import os
+
 Interface = "callback"  # 微信公众平台的回调地址
+ErrcodesFile = os.path.dirname(os.path.realpath(__file__)) + "/" + "errcodes.json"  # 错误代码存储文件
 
 class User:
     """用户信息相关设置"""
