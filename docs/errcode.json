@@ -182,5 +182,37 @@
     "13005": {
         "description": "未定义的用户索引类型",
         "module": "leaf.rbac.error"
+    },
+    "14013": {
+        "description": "不正确的 APPID",
+        "module": "leaf.weixin.accesstoken.error"
+    },
+    "14101": {
+        "description": "在获取过程中遇到网络错误",
+        "module": "leaf.weixin.accesstoken.error"
+    },
+    "14125": {
+        "description": "不正确的 AppSecret",
+        "module": "leaf.weixin.accesstoken.error"
+    },
+    "14164": {
+        "description": "请在公众平台添加当前 IP 到白名单",
+        "module": "leaf.weixin.accesstoken.error"
+    },
+    "14202": {
+        "description": "获取到了不正确的响应 - 留意中间人攻击",
+        "module": "leaf.weixin.accesstoken.error"
+    },
+    "14203": {
+        "description": "经过多次重试后仍无法正常更新 AccessToken - 插件将停止运行",
+        "module": "leaf.weixin.accesstoken.error"
+    },
+    "14204": {
+        "description": "暂时没有缓存的 AccessToken",
+        "module": "leaf.weixin.accesstoken.error"
+    },
+    "14205": {
+        "description": "缓存的 AccessToken 状态异常",
+        "module": "leaf.weixin.accesstoken.error"
     }
 }

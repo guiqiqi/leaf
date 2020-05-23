@@ -49,3 +49,11 @@
 | 13003 | 传入的例外用户组无法被识别/用户ID错误 | leaf.rbac.error |
 | 13004 | 访问点名称冲突 | leaf.rbac.error |
 | 13005 | 未定义的用户索引类型 | leaf.rbac.error |
+| 14013 | 不正确的 APPID | leaf.weixin.accesstoken.error |
+| 14101 | 在获取过程中遇到网络错误 | leaf.weixin.accesstoken.error |
+| 14125 | 不正确的 AppSecret | leaf.weixin.accesstoken.error |
+| 14164 | 请在公众平台添加当前 IP 到白名单 | leaf.weixin.accesstoken.error |
+| 14202 | 获取到了不正确的响应 - 留意中间人攻击 | leaf.weixin.accesstoken.error |
+| 14203 | 经过多次重试后仍无法正常更新 AccessToken - 插件将停止运行 | leaf.weixin.accesstoken.error |
+| 14204 | 暂时没有缓存的 AccessToken | leaf.weixin.accesstoken.error |
+| 14205 | 缓存的 AccessToken 状态异常 | leaf.weixin.accesstoken.error |

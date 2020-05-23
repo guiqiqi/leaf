@@ -111,17 +111,15 @@ class Init:
         self.__modules.error = core.algorithm.AttrDict()
         self.__modules.error.messenger = core.error.Messenger()
 
+        # 利用反射自动搜索注册所有的错误子类信息
+        errors = core.error.Error.__subclasses__()
+        for instance in errors:
+            self.__modules.error.messenger.register(instance)
+
         # 生成事件管理器与任务计划调度
         self.__modules.events = core.events.Manager(asyncs=async_events)
         self.__modules.schedules = core.schedule.Manager(
             not self.__modules.is_master)
-
-        # 注册 Events 中的错误信息
-        messenger: core.error.Messenger = self.__modules.error.messenger
-        messenger.register(core.events.EventNotFound)
-        messenger.register(core.events.InvalidEventName)
-        messenger.register(core.events.InvalidRootName)
-        messenger.register(core.events.ReachedMaxReg)
 
         # 添加 leaf.exit 事件项目
         atexit = core.events.Event("leaf.exit", ((), {}), "在 Leaf 框架退出时执行")
@@ -146,13 +144,6 @@ class Init:
             self.__modules.plugins = plugins.Manager(plugins.current)
         else:
             self.__modules.plugins = plugins.Manager(conf.directory)
-
-        # 注册 Plugins 模块中的错误消息
-        messenger: core.error.Messenger = self.__modules.error.messenger
-        messenger.register(plugins.error.PluginImportError)
-        messenger.register(plugins.error.PluginNotFound)
-        messenger.register(plugins.error.PluginInitError)
-        messenger.register(plugins.error.PluginRuntimeError)
 
         # 扫描所有并载入模块
         manager: plugins.Manager = self.__modules.plugins
@@ -234,6 +225,11 @@ class Init:
         _events.add(weixin.accesstoken.events.updated)
         _events.add(weixin.accesstoken.events.failed)
         _events.add(weixin.accesstoken.events.stopped)
+
+        # 注册微信公众平台错误码描述文件
+        messenger: core.error.Messenger = self.__modules.error.messenger
+        with open(weixin.settings.ErrcodesFile, 'r') as handler:
+            messenger.load(handler)
 
         # 注册微信蓝图
         from .views.weixin import weixin as _weixin
