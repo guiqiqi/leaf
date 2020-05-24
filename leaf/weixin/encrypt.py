@@ -50,7 +50,7 @@ class Encrypt:
         cipher: bytes = encrypt.AESencrypt(aligned, self.__aeskey)
         cipher: bytes = encrypt.base64encode(cipher)
 
-        return cipher
+        return cipher.decode()
 
     def decrypt(self, cipher: bytes) -> str:
         """

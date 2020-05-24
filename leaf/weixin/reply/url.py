@@ -43,6 +43,7 @@ def verify(encryptor: Encrypt, paramaters: list, request: str) -> Tuple[bool, di
     返回是否加密的 bool 值与解包后的字典
     """
     request = web.XMLparser(request)
+    request = request.get(const.Message.Root)
 
     # 获取URL中的参数
     encrypted = URLParamater.encrypted(paramaters)
@@ -52,8 +53,7 @@ def verify(encryptor: Encrypt, paramaters: list, request: str) -> Tuple[bool, di
 
     # 判断是否加密
     if not encrypted:
-        message = request.get(const.Message.Root)
-        return False, message
+        return False, request
 
     # 验证加密是否正确
     encrypted_msg: str = request.get(const.Encrypt.Message.Content)
@@ -63,11 +63,12 @@ def verify(encryptor: Encrypt, paramaters: list, request: str) -> Tuple[bool, di
         raise error.SignatureError(expectation + ' - ' + signature)
 
     # 解密数据包
+    message = dict()
     try:
         message = encryptor.decrypt(encrypted_msg.encode())
+        message = web.XMLparser(message)
         message = message.get(const.Message.Root)
     except ValueError as _error:
         raise error.DecryptError(_error)
 
-    message = web.XMLparser(message)
     return True, message
