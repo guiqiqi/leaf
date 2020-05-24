@@ -2,7 +2,7 @@
 
 import setuptools
 
-VERSION = "1.0.9.1.dev1"
+VERSION = "1.0.9.1.dev2"
 
 # 读取项目说明
 with open("README.md", "r", encoding="utf-8") as handler:
@@ -27,6 +27,9 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/guiqiqi/leaf",
     packages=setuptools.find_packages(),
+    package_data={
+        "leaf.weixin": ["errcodes.json"]
+    },
     classifiers=[
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
