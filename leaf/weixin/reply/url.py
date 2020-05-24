@@ -68,4 +68,5 @@ def verify(encryptor: Encrypt, paramaters: list, request: str) -> Tuple[bool, di
         raise error.DecryptError(_error)
 
     message = web.XMLparser(message)
+    message = message.get(const.Message.Root)
     return True, message
