@@ -52,7 +52,8 @@ def verify(encryptor: Encrypt, paramaters: list, request: str) -> Tuple[bool, di
 
     # 判断是否加密
     if not encrypted:
-        return False, request
+        message = request.get(const.Message.Root)
+        return False, message
 
     # 验证加密是否正确
     encrypted_msg: str = request.get(const.Encrypt.Message.Content)
@@ -64,9 +65,9 @@ def verify(encryptor: Encrypt, paramaters: list, request: str) -> Tuple[bool, di
     # 解密数据包
     try:
         message = encryptor.decrypt(encrypted_msg.encode())
+        message = message.get(const.Message.Root)
     except ValueError as _error:
         raise error.DecryptError(_error)
 
     message = web.XMLparser(message)
-    message = message.get(const.Message.Root)
     return True, message
