@@ -7,7 +7,7 @@
 1. 安装最新版本的 `Leaf`:
 
    ```shell
-   pip install leaf
+   pip install wxleaf
    ```
 
    版本应在 `1.0.9.1.dev8` 及以上
