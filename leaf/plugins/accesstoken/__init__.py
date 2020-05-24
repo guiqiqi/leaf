@@ -18,7 +18,7 @@ plugin = Plugin(
     Plugin.nothing, Plugin.nothing, Plugin.nothing,
     author="桂小方",
     description="将微信模块获取到的 AccessToken 对外公布",
-    version="beta - 0.2.0",
+    version="beta - 0.2.1",
     date="2020-05-23"
 )
 
@@ -32,9 +32,4 @@ modules.plugins.register(plugin, ["accesstoken"])
 def accesstoken():
     """获取当前已经缓存的 accesstoken"""
     patcher: Patcher = modules.weixin.accesstoken
-
-    # 如果更新器不在运行返回
-    if not patcher.status:
-        raise error.PatcherNotRunning()
-
     return patcher.get()

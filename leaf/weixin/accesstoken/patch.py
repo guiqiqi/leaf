@@ -153,6 +153,9 @@ class Patcher:
         """
         返回缓存的 APPID
         """
+        if self.__expire == 0 and not self.__status:
+            raise error.ReachedMaxRetries("经过多次失败之后, 更新器已经停止工作")
+
         if self.__expire == 0:
             raise error.AccessTokenStatusError("正在获取token, 请稍后再试")
 
