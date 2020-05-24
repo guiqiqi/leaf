@@ -217,14 +217,19 @@ class Init:
         self.__modules.weixin.accesstoken = weixin.accesstoken.Patcher(
             conf.appid, conf.secret)
 
-        # 判断是否启用 AccessToken 自动更新功能
+        # 判断是否启用 AccessToken 自动更新功能 - 仅在主进程启用
         if conf.accesstoken.enable:
             weixin.accesstoken.settings.MaxRetries = conf.accesstoken.retries
-            self.__modules.weixin.accesstoken.start()
+            if self.__modules.is_master:
+                self.__modules.weixin.accesstoken.start()
         _events: core.events.Manager = self.__modules.events
         _events.add(weixin.accesstoken.events.updated)
         _events.add(weixin.accesstoken.events.failed)
         _events.add(weixin.accesstoken.events.stopped)
+
+        # 设置在其他进程的 AccessToken 的更新事件
+        weixin.accesstoken.events.updated.hook(
+            self.__modules.weixin.accesstoken.set)
 
         # 注册微信公众平台错误码描述文件
         messenger: core.error.Messenger = self.__modules.error.messenger

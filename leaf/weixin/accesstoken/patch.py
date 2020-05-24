@@ -47,6 +47,11 @@ class Patcher:
         self.__work: schedule.Worker = schedule.Worker(
             self._do, settings.Gap)
 
+    def set(self, cache: str, expire: int) -> NoReturn:
+        """手动设置当前的 AccessToken 信息"""
+        self.__cache = cache
+        self.__expire = expire + time.now()
+
     def start(self):
         """开始任务执行"""
         manager: schedule.Manager = modules.schedules
@@ -105,13 +110,13 @@ class Patcher:
             raiser: Messenger = modules.error.messenger
             raise raiser.error(code, message=message)
 
-        # 更新缓存
-        self.__cache = token
-        self.__expire = expires + time.now()
+        # 更新缓存 - 由广播通知的 update 事件处理
+        # self.__cache = token
+        # self.__expire = expires + time.now()
 
         # 发送事件通知
         updated = modules.events.event("leaf.weixin.accesstoken.updated")
-        updated.boardcast(self.__cache, self.__expire)
+        updated.boardcast(token, expires)
 
         return self.__cache
 
