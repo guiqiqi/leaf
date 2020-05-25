@@ -2,6 +2,7 @@
 
 import json
 import logging
+import time as _t
 from typing import NoReturn
 
 from . import error
@@ -65,6 +66,7 @@ class Patcher:
         当 update 执行遇到错误时则将 retries 减一递归
         当 retires = 0 时停止任务运行
         """
+        _t.sleep(settings.Pre)
         if retires == 0:
             self.stop()
             return

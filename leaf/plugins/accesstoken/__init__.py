@@ -5,9 +5,6 @@
 
 from flask import abort
 
-from . import error
-from . import settings
-
 from ... import api
 from ...core import modules
 from ...weixin.accesstoken import Patcher
@@ -22,12 +19,15 @@ plugin = Plugin(
     date="2020-05-23"
 )
 
+# 接口公开主机域
+AuthorizedHost = ["127.0.0.1"]
+
 # 注册插件主域
 modules.plugins.register(plugin, ["accesstoken"])
 
 # 导出接口
 @plugin.route("/", methods=["GET"])
-@api.wrapper.iplimit(settings.AuthorizedHost)
+@api.wrapper.iplimit(AuthorizedHost)
 @api.wrapper.wrap("accesstoken")
 def accesstoken():
     """获取当前已经缓存的 accesstoken"""
