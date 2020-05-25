@@ -10,6 +10,7 @@ Leaf 框架初始化文件:
 """
 
 import os as _os
+import time as _time
 import atexit as _atexit
 from typing import Tuple as _Tuple
 from typing import Union as _Union
@@ -98,10 +99,13 @@ class Init:
                 handler.write(str(address))
                 handler.flush()
 
-            # 连接到调度服务
+            # 获取调度服务地址 - 增加延迟保证主服务进程顺利写入地址
+            _time.sleep(0.5)
             handler = open(conf.locker, 'r')
             address = handler.read().strip()
             handler.close()
+
+            # 连接到调度服务
             manager = core.parallel.Controller.connect(address, conf.authkey)
             # pylint: disable=no-member
             async_events = manager.bind(_os.getpid())
