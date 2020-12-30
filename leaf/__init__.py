@@ -237,7 +237,7 @@ class Init:
 
         # 注册微信公众平台错误码描述文件
         messenger: core.error.Messenger = self.__modules.error.messenger
-        with open(weixin.settings.ErrcodesFile, 'r') as handler:
+        with open(weixin.settings.ErrcodesFile, 'r', encoding="utf-8") as handler:
             messenger.load(handler)
 
         # 注册微信蓝图
